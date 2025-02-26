@@ -1,6 +1,5 @@
 import { ComponentType, FC, LazyExoticComponent, Suspense } from 'react'
 import { Loading } from 'react-vant';
-import React from 'react';
 
 type LazyImportProps = {
   lazy?: LazyExoticComponent<ComponentType>
