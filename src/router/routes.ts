@@ -10,7 +10,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/b',
-    element: lazy(() => import('@/pages/page-b')),
+    element: lazy(() => import('@/pages/task/list')),
     children: [
       //
     ]
