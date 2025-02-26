@@ -12,3 +12,4 @@
 - react-router-dom 路由配置
 - 配置路径别名@
 - 修改页签标题
+- 引入tailwindcss
