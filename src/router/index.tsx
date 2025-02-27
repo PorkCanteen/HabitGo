@@ -2,7 +2,6 @@ import Loading from '@/pages/loading'
 import { ComponentType, LazyExoticComponent } from 'react'
 import { createBrowserRouter, RouteObject } from 'react-router'
 import routes from './routes'
-import React from "react";
 
 export type RouteConfig = Omit<RouteObject, 'element' | 'children'> & {
   element?: LazyExoticComponent<ComponentType>
