@@ -4,6 +4,8 @@ import { Tabbar } from "react-vant";
 import { SettingO, TodoListO, SmileO } from "@react-vant/icons";
 import { useEffect, useState } from "react";
 import { map } from "lodash";
+import 'normalize.css'
+import './App.css'
 
 // 图标大小
 const IconSize = "1.2em";
@@ -17,7 +19,7 @@ interface tabItem {
 const originalTabList: Array<tabItem> = [
   {
     name: "task",
-    text: "任务",
+    text: "待办",
     icon: <TodoListO fontSize={IconSize} />,
     path: "/task",
   },
@@ -56,9 +58,11 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="h-full w-full">
       {/* 使用RouterProvider组件将路由组件放到内容区域 再将刚刚配置的router传入router项 */}
+      <div className="router-container">
       <RouterProvider router={router} />
+      </div>
       {/* 底部菜单栏 */}
       <Tabbar value={tabName} onChange={(name) => setTabName(name as string)}>
         {map(tabList, (tab) => {
