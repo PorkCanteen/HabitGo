@@ -12,6 +12,7 @@ interface TaskItem {
 }
 
 const TaskList = () => {
+  const [finished, setFinished] = useState(false);
   // 初始任务数据
   const [tasks, setTasks] = useState<TaskItem[]>([
     { id: "1", name: "运动", count: 3, isCompleted: false, description: "每天运动30分钟"},
@@ -23,8 +24,6 @@ const TaskList = () => {
     { id: "7", name: "准备考试", count: 0, isCompleted: false },
     { id: "8", name: "总结", count: 0, isCompleted: false },
   ]);
-
-  const [finished, setFinished] = useState(false);
 
   // 处理任务点击
   const handleClick = (id: string) => {
@@ -56,7 +55,7 @@ const TaskList = () => {
       <List onLoad={onListLoad} finished={finished}>
         {tasks.map((task) => (
           <Cell
-            key="task.id"
+            key={task.id}
             onClick={() => handleClick(task.id)}
             clickable
             icon={task.isCompleted ? <Star color="orange"></Star> : <StarO color="#333"></StarO>}
