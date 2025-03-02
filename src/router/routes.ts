@@ -1,24 +1,17 @@
-import { lazy } from 'react'
-import { RouteConfig } from './index'
+import { lazy } from "react";
+import { RouteConfig } from "./index";
 const routes: RouteConfig[] = [
   {
-    path: '/',
-    element: lazy(() => import('@/pages/page-a')),
+    path: "/task",
+    element: lazy(() => import("@/pages/task/TaskBoard")),
     children: [
       //
-    ]
+    ],
   },
   {
-    path: '/task',
-    element: lazy(() => import('@/pages/task/TaskBoard')),
-    children: [
-      //
-    ]
+    path: "*",
+    element: lazy(() => import("@/pages/page-a")),
   },
-  {
-    path: '*',
-    element: lazy(() => import('@/pages/page-a'))
-  }
-]
+];
 
-export default routes
+export default routes;

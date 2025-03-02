@@ -52,7 +52,7 @@ function App() {
           return {
             ...tab,
             badge: {
-              content: taskCount,
+              content: taskCount || null,
             },
           };
         }
