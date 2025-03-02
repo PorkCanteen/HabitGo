@@ -1,6 +1,8 @@
 import { Star, StarO } from "@react-vant/icons";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { List, Cell } from "react-vant";
+import CountContext from "@/CountContext";
+import { size, filter } from "lodash";
 
 // 任务项
 interface TaskItem {
@@ -12,18 +14,43 @@ interface TaskItem {
 }
 
 const TaskList = () => {
+  // 修改父组件任务数量
+  const countContext = useContext(CountContext);
   const [finished, setFinished] = useState(false);
   // 初始任务数据
   const [tasks, setTasks] = useState<TaskItem[]>([
-    { id: "1", name: "运动", count: 3, isCompleted: false, description: "每天运动30分钟"},
-    { id: "2", name: "学习React", count: 5, isCompleted: false, description: "每天学习30分钟"},
-    { id: "3", name: "泡脚", count: 2, isCompleted: false, description: "每周泡脚2次" },
-    { id: "4", name: "读书", count: 8, isCompleted: false },
+    {
+      id: "1",
+      name: "运动",
+      count: 3,
+      isCompleted: false,
+      description: "每天运动30分钟",
+    },
+    {
+      id: "2",
+      name: "学习React",
+      count: 5,
+      isCompleted: false,
+      description: "每天学习30分钟",
+    },
+    {
+      id: "3",
+      name: "泡脚",
+      count: 2,
+      isCompleted: false,
+      description: "每周泡脚2次",
+    },
+    { id: "4", name: "读书", count: 8, isCompleted: true },
     { id: "5", name: "喝茶", count: 0, isCompleted: false },
     { id: "6", name: "散步", count: 0, isCompleted: false },
     { id: "7", name: "准备考试", count: 0, isCompleted: false },
     { id: "8", name: "总结", count: 0, isCompleted: false },
   ]);
+
+  // 计算未完成任务数量
+  const getUnfinishedTaskCount = () => {
+    return size(filter(tasks, (task) => !task.isCompleted));
+  };
 
   // 处理任务点击
   const handleClick = (id: string) => {
@@ -38,7 +65,12 @@ const TaskList = () => {
         return task;
       })
     );
+    countContext?.setTaskCount(getUnfinishedTaskCount());
   };
+
+  useEffect(() => {
+    countContext?.setTaskCount(getUnfinishedTaskCount());
+  });
 
   // 定义颜色样式
   const getStyle = (isCompleted: boolean) => ({
@@ -46,8 +78,7 @@ const TaskList = () => {
   });
 
   const onListLoad = async () => {
-    console.log("List loaded");
-    setFinished(true)
+    setFinished(true);
   };
 
   return (
@@ -58,12 +89,19 @@ const TaskList = () => {
             key={task.id}
             onClick={() => handleClick(task.id)}
             clickable
-            icon={task.isCompleted ? <Star color="orange"></Star> : <StarO color="#333"></StarO>}
+            icon={
+              task.isCompleted ? (
+                <Star color="orange"></Star>
+              ) : (
+                <StarO color="#333"></StarO>
+              )
+            }
             title={<span style={getStyle(task.isCompleted)}>{task.name}</span>}
             label={<span className="text-zinc-400">{task.description}</span>}
             value={
               <span style={getStyle(task.isCompleted)}>
-                <span className="text-">完成次数: </span>{task.count}
+                <span className="text-">完成次数: </span>
+                {task.count}
               </span>
             }
           ></Cell>
