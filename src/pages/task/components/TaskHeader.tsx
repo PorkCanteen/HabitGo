@@ -1,11 +1,12 @@
-import { Ellipsis, BarChartO } from "@react-vant/icons";
+import { Ellipsis } from "@react-vant/icons";
+import dogIcon from '@/assets/dogIcon.svg'
 
 const taskHeaderText = "待办任务";
 const TaskHeader = () => {
   return (
     <div className="flex justify-between items-center h-20 px-4 bg-green-100 text-3xl">
       <div>
-        <BarChartO fontSize={"24px"} />
+        <img src={dogIcon} alt="" className="w-12 h-12" />
       </div>
       <div className="text-3xl">{taskHeaderText}</div>
       <div>
