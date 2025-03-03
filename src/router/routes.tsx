@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { RouteConfig } from "./index";
+
 const routes: RouteConfig[] = [
   {
     path: "/task",
@@ -10,7 +11,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: "*",
-    element: lazy(() => import("@/pages/page-a")),
+    element: lazy(() => import("@/pages/404")),
   },
 ];
 

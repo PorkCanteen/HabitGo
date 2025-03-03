@@ -70,7 +70,7 @@ function App() {
         </CountContext.Provider>
       </div>
       {/* 底部菜单栏 */}
-      <Tabbar value={tabName} onChange={(name) => setTabName(name as string)}>
+      <Tabbar value={tabName} activeColor="#f26d2c" onChange={(name) => setTabName(name as string)}>
         {map(tabList, (tab) => {
           return (
             <Tabbar.Item
