@@ -1,8 +1,9 @@
 import { Star, StarO } from "@react-vant/icons";
 import { useContext, useEffect, useState } from "react";
-import { List, Cell } from "react-vant";
+import { List } from "react-vant";
 import CountContext from "@/CountContext";
 import { size, filter } from "lodash";
+import TaskItem from "./TaskItem";
 
 // 任务项
 interface TaskItem {
@@ -13,38 +14,73 @@ interface TaskItem {
   isCompleted: boolean;
 }
 
+const taskListData = [
+  {
+    id: "1",
+    name: "运动",
+    count: 3,
+    isCompleted: false,
+    description: "每天运动30分钟",
+  },
+  {
+    id: "2",
+    name: "学习React",
+    count: 5,
+    isCompleted: false,
+    description: "每天学习30分钟",
+  },
+  {
+    id: "3",
+    name: "泡脚",
+    count: 2,
+    isCompleted: false,
+    description: "每周泡脚2次",
+  },
+  {
+    id: "4",
+    name: "读书",
+    count: 8,
+    isCompleted: true,
+    description: "读万卷书",
+  },
+  {
+    id: "5",
+    name: "喝茶",
+    count: 0,
+    isCompleted: false,
+    description: "多喝水",
+  },
+  {
+    id: "6",
+    name: "散步",
+    count: 1523,
+    isCompleted: false,
+    description: "gogogo",
+  },
+  {
+    id: "7",
+    name: "准备考试",
+    count: 142,
+    isCompleted: false,
+    description: "背题背题",
+  },
+  {
+    id: "8",
+    name: "总结",
+    count: 15,
+    isCompleted: false,
+    description: "温故而知新",
+  },
+];
+
 const TaskList = () => {
   // 修改父组件任务数量
   const countContext = useContext(CountContext);
   const [finished, setFinished] = useState(false);
   // 初始任务数据
   const [tasks, setTasks] = useState<TaskItem[]>([
-    {
-      id: "1",
-      name: "运动",
-      count: 3,
-      isCompleted: false,
-      description: "每天运动30分钟",
-    },
-    {
-      id: "2",
-      name: "学习React",
-      count: 5,
-      isCompleted: false,
-      description: "每天学习30分钟",
-    },
-    {
-      id: "3",
-      name: "泡脚",
-      count: 2,
-      isCompleted: false,
-      description: "每周泡脚2次",
-    },
-    { id: "4", name: "读书", count: 8, isCompleted: true },
-    { id: "5", name: "喝茶", count: 0, isCompleted: false },
-    { id: "6", name: "散步", count: 0, isCompleted: false },
-    { id: "7", name: "准备考试", count: 0, isCompleted: false },
-    { id: "8", name: "总结", count: 0, isCompleted: false },
+    ...taskListData,
+    ...taskListData,
   ]);
 
   // 计算未完成任务数量
@@ -82,13 +118,15 @@ const TaskList = () => {
   };
 
   return (
-    <div className="p-2 task-list">
+    <div className=" p-2 h-full overflow-y-auto">
       <List onLoad={onListLoad} finished={finished}>
         {tasks.map((task) => (
-          <Cell
+          <TaskItem
             key={task.id}
-            onClick={() => handleClick(task.id)}
-            clickable
+            title={task.name}
+            label={task.description}
+            value={task.count}
+            taskClick={() => handleClick(task.id)}
             icon={
               task.isCompleted ? (
                 <Star color="orange"></Star>
@@ -96,15 +134,7 @@ const TaskList = () => {
                 <StarO color="#333"></StarO>
               )
             }
-            title={<span style={getStyle(task.isCompleted)}>{task.name}</span>}
-            label={<span className="text-zinc-400">{task.description}</span>}
-            value={
-              <span style={getStyle(task.isCompleted)}>
-                <span className="text-">完成次数: </span>
-                {task.count}
-              </span>
-            }
-          ></Cell>
+          ></TaskItem>
         ))}
       </List>
     </div>
