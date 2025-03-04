@@ -2,7 +2,15 @@ import { Arrow } from "@react-vant/icons";
 import { useState } from "react";
 import { Popup } from "react-vant";
 import TaskForm from "../form/TaskForm";
-const TaskItem = ({ title, label, value, icon, isCompleted, taskClick }) => {
+const TaskItem = ({
+  title,
+  label,
+  value,
+  icon,
+  isCompleted,
+  taskClick,
+  taskType,
+}) => {
   const [showDetail, setShowDetail] = useState(false);
   return (
     <div className="flex justify-between items-center w-full  bg-white border-b-gray-100 border-b-2 h-24 ">
@@ -14,7 +22,17 @@ const TaskItem = ({ title, label, value, icon, isCompleted, taskClick }) => {
         {/* 标题 */}
         <div className="flex items-center">
           <span className="text-2xl">{icon}</span>
-          <span className="text-2xl ml-2">{title}</span>
+          <span className="text-2xl ml-2 flex items-center">
+            {title}
+            {taskType && (
+              <span
+                className="px-1 rounded-md text-white text-base ml-2"
+                style={{ backgroundColor: taskType.color }}
+              >
+                {taskType.text}
+              </span>
+            )}
+          </span>
         </div>
         {/* 描述 */}
         <div className="text-xl ml-8 text-gray-400 mt-1">{label}</div>

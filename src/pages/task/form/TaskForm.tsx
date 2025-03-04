@@ -42,10 +42,9 @@ const TaskForm = () => {
           name="taskType"
           label="分类"
         >
-          <Radio.Group defaultValue="1">
-            <Radio name="1" iconSize={15} checkedColor="#f8a128">分类1</Radio>
-            <Radio name="2" iconSize={15} checkedColor="#f8a128">分类2</Radio>
-            <Radio name="2" iconSize={15} checkedColor="#f8a128">分类3</Radio>
+          <Radio.Group defaultValue={1}>
+            <Radio name={1} iconSize={15} checkedColor="#f8a128">主要任务</Radio>
+            <Radio name={2} iconSize={15} checkedColor="#f8a128">次要任务</Radio>
           </Radio.Group>
         </Form.Item>
       </Form>

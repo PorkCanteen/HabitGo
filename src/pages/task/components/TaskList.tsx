@@ -5,6 +5,13 @@ import CountContext from "@/CountContext";
 import { size, filter } from "lodash";
 import TaskItem from "./TaskItem";
 
+const taskTypeMap = {
+  1: {
+    text: "主要任务",
+    color: "#ee7068",
+  },
+};
+
 // 任务项
 interface TaskItem {
   id: string;
@@ -12,8 +19,8 @@ interface TaskItem {
   description?: string;
   count: number;
   isCompleted: boolean;
+  taskType: number;
 }
-
 const taskListData = [
   {
     id: "1",
@@ -21,6 +28,7 @@ const taskListData = [
     count: 3,
     isCompleted: false,
     description: "每天运动30分钟",
+    taskType: 1,
   },
   {
     id: "2",
@@ -28,6 +36,7 @@ const taskListData = [
     count: 5,
     isCompleted: false,
     description: "每天学习30分钟",
+    taskType: 1,
   },
   {
     id: "3",
@@ -35,6 +44,7 @@ const taskListData = [
     count: 2,
     isCompleted: false,
     description: "每周泡脚2次",
+    taskType: 1,
   },
   {
     id: "4",
@@ -42,6 +52,7 @@ const taskListData = [
     count: 8,
     isCompleted: true,
     description: "读万卷书",
+    taskType: 2,
   },
   {
     id: "5",
@@ -49,6 +60,7 @@ const taskListData = [
     count: 0,
     isCompleted: false,
     description: "多喝水",
+    taskType: 0,
   },
   {
     id: "6",
@@ -56,6 +68,7 @@ const taskListData = [
     count: 1523,
     isCompleted: false,
     description: "gogogo",
+    taskType: 0,
   },
   {
     id: "7",
@@ -63,6 +76,7 @@ const taskListData = [
     count: 142,
     isCompleted: false,
     description: "背题背题",
+    taskType: 0,
   },
   {
     id: "8",
@@ -70,6 +84,7 @@ const taskListData = [
     count: 15,
     isCompleted: false,
     description: "温故而知新",
+    taskType: 0,
   },
 ];
 
@@ -105,11 +120,6 @@ const TaskList = () => {
     countContext?.setTaskCount(getUnfinishedTaskCount());
   });
 
-  // 定义颜色样式
-  const getStyle = (isCompleted: boolean) => ({
-    color: isCompleted ? "#999" : "#333",
-  });
-
   const onListLoad = async () => {
     setFinished(true);
   };
@@ -123,6 +133,7 @@ const TaskList = () => {
             title={task.name}
             label={task.description}
             value={task.count}
+            taskType={taskTypeMap[task.taskType]}
             taskClick={() => handleClick(task.id)}
             icon={
               task.isCompleted ? (
