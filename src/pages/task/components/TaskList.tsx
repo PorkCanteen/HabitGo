@@ -1,4 +1,3 @@
-import { Star, StarO } from "@react-vant/icons";
 import { useContext, useEffect, useState } from "react";
 import { List } from "react-vant";
 import CountContext from "@/CountContext";
@@ -133,15 +132,9 @@ const TaskList = () => {
             title={task.name}
             label={task.description}
             value={task.count}
+            isCompleted={task.isCompleted}
             taskType={taskTypeMap[task.taskType]}
             taskClick={() => handleClick(task.id)}
-            icon={
-              task.isCompleted ? (
-                <Star color="orange"></Star>
-              ) : (
-                <StarO color="#333"></StarO>
-              )
-            }
           ></TaskItem>
         ))}
       </List>

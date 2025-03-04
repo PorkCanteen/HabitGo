@@ -1,17 +1,20 @@
-import { Arrow } from "@react-vant/icons";
+import { Arrow, Star, StarO } from "@react-vant/icons";
 import { useState } from "react";
 import { Popup } from "react-vant";
 import TaskForm from "../form/TaskForm";
+import "./TaskItem.scss";
 const TaskItem = ({
   title,
   label,
   value,
-  icon,
   isCompleted,
   taskClick,
   taskType,
 }) => {
   const [showDetail, setShowDetail] = useState(false);
+  const handleClick = () => {
+    setShowDetail(true);
+  };
   return (
     <div className="flex justify-between items-center w-full  bg-white border-b-gray-100 border-b-2 h-24 ">
       {/* 左侧区域 */}
@@ -20,8 +23,20 @@ const TaskItem = ({
         onClick={taskClick}
       >
         {/* 标题 */}
-        <div className="flex items-center">
-          <span className="text-2xl">{icon}</span>
+        <div className="flex items-center icon-wrapper">
+          <span className="text-2xl">
+            {isCompleted ? (
+              <Star
+                color="orange"
+                className={`${isCompleted ? "icon active" : "icon"}`}
+              ></Star>
+            ) : (
+              <StarO
+                color="#333"
+                className={`${!isCompleted ? "icon" : "icon leaving"}`}
+              ></StarO>
+            )}
+          </span>
           <span className="text-2xl ml-2 flex items-center">
             {title}
             {taskType && (
@@ -46,7 +61,7 @@ const TaskItem = ({
         {/* 更多按钮 */}
         <div
           className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
-          onClick={() => setShowDetail(true)}
+          onClick={handleClick}
         >
           <Arrow></Arrow>
         </div>
