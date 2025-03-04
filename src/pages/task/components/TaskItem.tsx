@@ -1,5 +1,9 @@
 import { Arrow } from "@react-vant/icons";
+import { useState } from "react";
+import { Popup } from "react-vant";
+import TaskForm from "../form/TaskForm";
 const TaskItem = ({ title, label, value, icon, isCompleted, taskClick }) => {
+  const [showDetail, setShowDetail] = useState(false);
   return (
     <div className="flex justify-between items-center w-full  bg-white border-b-gray-100 border-b-2 h-24 ">
       {/* 左侧区域 */}
@@ -24,11 +28,26 @@ const TaskItem = ({ title, label, value, icon, isCompleted, taskClick }) => {
         {/* 更多按钮 */}
         <div
           className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
-          onClick={() => {}}
+          onClick={() => setShowDetail(true)}
         >
           <Arrow></Arrow>
         </div>
       </div>
+      <Popup
+        visible={showDetail}
+        overlay={true}
+        round={true}
+        closeOnClickOverlay={true}
+        closeable={true}
+        title="编辑任务"
+        style={{ width: "80%", height: '100%' }}
+        position="right"
+        onClose={() => setShowDetail(false)}
+      >
+        <div className="px-16">
+            <TaskForm></TaskForm>
+        </div>
+      </Popup>
     </div>
   );
 };

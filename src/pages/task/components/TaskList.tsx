@@ -78,10 +78,7 @@ const TaskList = () => {
   const countContext = useContext(CountContext);
   const [finished, setFinished] = useState(false);
   // 初始任务数据
-  const [tasks, setTasks] = useState<TaskItem[]>([
-    ...taskListData,
-    ...taskListData,
-  ]);
+  const [tasks, setTasks] = useState<TaskItem[]>(taskListData);
 
   // 计算未完成任务数量
   const getUnfinishedTaskCount = () => {
