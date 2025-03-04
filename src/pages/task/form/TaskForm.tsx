@@ -7,7 +7,7 @@ const TaskForm = () => {
     console.log(values);
   };
   return (
-    <div>
+    <div className="px-6">
       <Form
         form={form}
         onFinish={onFinish}

@@ -40,13 +40,11 @@ const TaskItem = ({ title, label, value, icon, isCompleted, taskClick }) => {
         closeOnClickOverlay={true}
         closeable={true}
         title="编辑任务"
-        style={{ width: "80%", height: '100%' }}
+        style={{ width: "80%", height: "100%" }}
         position="right"
         onClose={() => setShowDetail(false)}
       >
-        <div className="px-6">
-            <TaskForm></TaskForm>
-        </div>
+        <TaskForm></TaskForm>
       </Popup>
     </div>
   );
