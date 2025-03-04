@@ -21,7 +21,7 @@ const TaskTool = () => {
         <Add
           className={isAnimating ? "scale-animation" : ""}
           fontSize={"40px"}
-          color="skyblue"
+          color="#e9973a"
           onClick={handleClick}
         />
       </div>
