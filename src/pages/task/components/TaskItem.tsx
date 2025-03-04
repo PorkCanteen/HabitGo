@@ -44,7 +44,7 @@ const TaskItem = ({ title, label, value, icon, isCompleted, taskClick }) => {
         position="right"
         onClose={() => setShowDetail(false)}
       >
-        <div className="px-16">
+        <div className="px-6">
             <TaskForm></TaskForm>
         </div>
       </Popup>
