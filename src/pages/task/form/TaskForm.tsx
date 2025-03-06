@@ -23,20 +23,20 @@ const TaskForm = ({ task = defaultTask }) => {
       >
         <Form.Item
           tooltip={{
-            message: "请确保任务名唯一",
+            message: "请确保习惯名唯一",
           }}
-          rules={[{ required: true, message: "请填写任务名" }]}
+          rules={[{ required: true, message: "请填写习惯名" }]}
           name="name"
-          label="任务名"
+          label="习惯名"
         >
-          <Input placeholder="请输入任务名" />
+          <Input placeholder="请输入习惯名" />
         </Form.Item>
         <Form.Item
-          rules={[{ required: true, message: "请填写任务描述" }]}
+          rules={[{ required: true, message: "请填写习惯描述" }]}
           name="description"
-          label="任务描述"
+          label="习惯描述"
         >
-          <Input.TextArea placeholder="请输入任务描述" />
+          <Input.TextArea placeholder="请输入习惯描述" />
         </Form.Item>
         <Form.Item
           rules={[{ required: false, message: "请选择分类" }]}
@@ -45,10 +45,10 @@ const TaskForm = ({ task = defaultTask }) => {
         >
           <Radio.Group>
             <Radio name={1} iconSize={15} checkedColor="#f8a128">
-              主要任务
+              主要
             </Radio>
             <Radio name={2} iconSize={15} checkedColor="#f8a128">
-              次要任务
+              次要
             </Radio>
           </Radio.Group>
         </Form.Item>

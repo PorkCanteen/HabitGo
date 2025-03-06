@@ -31,7 +31,7 @@ const TaskTool = () => {
         round={true}
         closeOnClickOverlay={true}
         closeable={true}
-        title="新建任务"
+        title="新建习惯"
         style={{ width: "80%", height: "100%" }}
         position="right"
         onClose={() => setShowDetail(false)}

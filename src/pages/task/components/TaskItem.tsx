@@ -12,7 +12,7 @@ interface TaskItemParams {
 
 const taskTypeMap = {
   1: {
-    text: "主要任务",
+    text: "主要",
     color: "#ee7068",
   },
 };
@@ -82,7 +82,7 @@ const TaskItem = ({ taskClick, task }: TaskItemParams) => {
         round={true}
         closeOnClickOverlay={true}
         closeable={true}
-        title="编辑任务"
+        title="编辑习惯"
         style={{ width: "80%", height: "100%" }}
         position="right"
         onClose={() => setShowDetail(false)}

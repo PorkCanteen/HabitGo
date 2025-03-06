@@ -3,7 +3,7 @@ import dogIcon from "@/assets/dogIcon.svg";
 import "./taskHeader.scss";
 import { useState } from "react";
 
-const taskHeaderText = "待办任务";
+const taskHeaderText = "我的习惯";
 const TaskHeader = () => {
   const [isJumping, setIsJumping] = useState(false);
   const handleLogoClick = () => {

@@ -4,7 +4,7 @@ import CountContext from "@/CountContext";
 import { size, filter } from "lodash";
 import TaskItem from "./TaskItem";
 
-// 任务项
+// 习惯项
 export interface Task {
   id: string;
   name: string;
@@ -99,18 +99,18 @@ const taskListData = [
 ];
 
 const TaskList = () => {
-  // 修改父组件任务数量
+  // 修改父组件习惯数量
   const countContext = useContext(CountContext);
   const [finished, setFinished] = useState(false);
-  // 初始任务数据
+  // 初始习惯数据
   const [tasks, setTasks] = useState<Task[]>(taskListData);
 
-  // 计算未完成任务数量
+  // 计算未完成习惯数量
   const getUnfinishedTaskCount = () => {
     return size(filter(tasks, (task) => !task.isCompleted));
   };
 
-  // 处理任务点击
+  // 处理习惯点击
   const handleClick = (id: string) => {
     setTasks(
       tasks.map((task) => {

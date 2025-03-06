@@ -20,14 +20,14 @@ interface tabItem {
 const originalTabList: Array<tabItem> = [
   {
     name: "task",
-    text: "待办",
-    icon: <TodoListO fontSize={IconSize} />,
+    text: "习惯",
+    icon: <SmileO fontSize={IconSize} />,
     path: "/task",
   },
   {
     name: "todo",
-    text: "计划",
-    icon: <SmileO fontSize={IconSize} />,
+    text: "待办",
+    icon: <TodoListO fontSize={IconSize} />,
     path: "/todo",
   },
   {
@@ -39,12 +39,12 @@ const originalTabList: Array<tabItem> = [
 ];
 
 function App() {
-  // 待办任务列表-未完成个数
+  // 习惯列表-未完成个数
   const [taskCount, setTaskCount] = useState(0);
   // tab列表
   const [tabName, setTabName] = useState("task");
   const [tabList, setTabList] = useState(originalTabList);
-  // 监听任务数量变化-更新tab列表
+  // 监听习惯数量变化-更新tab列表
   useEffect(() => {
     setTabList(
       map(originalTabList, (tab) => {
