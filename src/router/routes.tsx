@@ -10,6 +10,13 @@ const routes: RouteConfig[] = [
     ],
   },
   {
+    path: "/todo",
+    element: lazy(() => import("@/pages/todo/TodoBoard")),
+    children: [
+      //
+    ],
+  },
+  {
     path: "*",
     element: lazy(() => import("@/pages/404")),
   },
