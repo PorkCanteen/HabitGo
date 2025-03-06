@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { List } from "react-vant";
-import CountContext from "@/CountContext";
 import { size, filter } from "lodash";
 import TaskItem from "./TaskItem";
 
@@ -99,8 +98,6 @@ const taskListData = [
 ];
 
 const TaskList = () => {
-  // 修改父组件习惯数量
-  const countContext = useContext(CountContext);
   const [finished, setFinished] = useState(false);
   // 初始习惯数据
   const [tasks, setTasks] = useState<Task[]>(taskListData);
@@ -123,12 +120,7 @@ const TaskList = () => {
         return task;
       })
     );
-    countContext?.setTaskCount(getUnfinishedTaskCount());
   };
-
-  useEffect(() => {
-    countContext?.setTaskCount(getUnfinishedTaskCount());
-  });
 
   const onListLoad = async () => {
     setFinished(true);
