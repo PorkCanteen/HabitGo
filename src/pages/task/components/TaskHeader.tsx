@@ -1,5 +1,5 @@
-import { Ellipsis } from "@react-vant/icons";
 import dogIcon from "@/assets/dogIcon.png";
+import pigIcon from "@/assets/pigIcon.png";
 import "./taskHeader.scss";
 import { useState } from "react";
 
@@ -18,13 +18,18 @@ const TaskHeader = () => {
         <img
           src={dogIcon}
           alt=""
-          className={(isJumping ? "logo-active" : "") + " w-12 h-12 logo"}
+          className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
           onClick={handleLogoClick}
         />
       </div>
       <div className="text-3xl">{taskHeaderText}</div>
       <div>
-        <Ellipsis fontSize={"24px"} />
+      <img
+          src={pigIcon}
+          alt=""
+          className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
+          onClick={handleLogoClick}
+        />
       </div>
     </div>
   );
