@@ -4,21 +4,16 @@ import CountContext from "@/CountContext";
 import { size, filter } from "lodash";
 import TaskItem from "./TaskItem";
 
-const taskTypeMap = {
-  1: {
-    text: "主要任务",
-    color: "#ee7068",
-  },
-};
-
 // 任务项
-interface TaskItem {
+export interface Task {
   id: string;
   name: string;
   description?: string;
   count: number;
   isCompleted: boolean;
   taskType: number;
+  targetType: number;
+  targetCount: number;
 }
 const taskListData = [
   {
@@ -28,6 +23,8 @@ const taskListData = [
     isCompleted: false,
     description: "每天运动30分钟",
     taskType: 1,
+    targetType: 1,
+    targetCount: 1,
   },
   {
     id: "2",
@@ -36,6 +33,8 @@ const taskListData = [
     isCompleted: false,
     description: "每天学习30分钟",
     taskType: 1,
+    targetType: 1,
+    targetCount: 1,
   },
   {
     id: "3",
@@ -44,6 +43,8 @@ const taskListData = [
     isCompleted: false,
     description: "每周泡脚2次",
     taskType: 1,
+    targetType: 2,
+    targetCount: 2,
   },
   {
     id: "4",
@@ -52,6 +53,8 @@ const taskListData = [
     isCompleted: true,
     description: "读万卷书",
     taskType: 2,
+    targetType: 1,
+    targetCount: 1,
   },
   {
     id: "5",
@@ -60,6 +63,8 @@ const taskListData = [
     isCompleted: false,
     description: "多喝水",
     taskType: 0,
+    targetType: 1,
+    targetCount: 1,
   },
   {
     id: "6",
@@ -68,6 +73,8 @@ const taskListData = [
     isCompleted: false,
     description: "gogogo",
     taskType: 0,
+    targetType: 1,
+    targetCount: 1,
   },
   {
     id: "7",
@@ -76,6 +83,8 @@ const taskListData = [
     isCompleted: false,
     description: "背题背题",
     taskType: 0,
+    targetType: 1,
+    targetCount: 1,
   },
   {
     id: "8",
@@ -84,6 +93,8 @@ const taskListData = [
     isCompleted: false,
     description: "温故而知新",
     taskType: 0,
+    targetType: 1,
+    targetCount: 1,
   },
 ];
 
@@ -92,7 +103,7 @@ const TaskList = () => {
   const countContext = useContext(CountContext);
   const [finished, setFinished] = useState(false);
   // 初始任务数据
-  const [tasks, setTasks] = useState<TaskItem[]>(taskListData);
+  const [tasks, setTasks] = useState<Task[]>(taskListData);
 
   // 计算未完成任务数量
   const getUnfinishedTaskCount = () => {
@@ -129,11 +140,7 @@ const TaskList = () => {
         {tasks.map((task) => (
           <TaskItem
             key={task.id}
-            title={task.name}
-            label={task.description}
-            value={task.count}
-            isCompleted={task.isCompleted}
-            taskType={taskTypeMap[task.taskType]}
+            task={task}
             taskClick={() => handleClick(task.id)}
           ></TaskItem>
         ))}

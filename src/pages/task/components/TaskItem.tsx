@@ -3,14 +3,21 @@ import { useState } from "react";
 import { Popup } from "react-vant";
 import TaskForm from "../form/TaskForm";
 import "./TaskItem.scss";
-const TaskItem = ({
-  title,
-  label,
-  value,
-  isCompleted,
-  taskClick,
-  taskType,
-}) => {
+import { Task } from "./TaskList";
+
+interface TaskItemParams {
+  task: Task;
+  taskClick: () => void;
+}
+
+const taskTypeMap = {
+  1: {
+    text: "主要任务",
+    color: "#ee7068",
+  },
+};
+
+const TaskItem = ({ taskClick, task }: TaskItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
   const handleClick = () => {
     setShowDetail(true);
@@ -25,38 +32,41 @@ const TaskItem = ({
         {/* 标题 */}
         <div className="flex items-center icon-wrapper">
           <span className="text-2xl">
-            {isCompleted ? (
+            {task.isCompleted ? (
               <Star
                 color="orange"
-                className={`${isCompleted ? "icon active" : "icon"}`}
+                className={`${task.isCompleted ? "icon active" : "icon"}`}
               ></Star>
             ) : (
               <StarO
                 color="#333"
-                className={`${!isCompleted ? "icon" : "icon leaving"}`}
+                className={`${!task.isCompleted ? "icon" : "icon leaving"}`}
               ></StarO>
             )}
           </span>
           <span className="text-2xl ml-2 flex items-center">
-            {title}
-            {taskType && (
+            {task.name}
+            {taskTypeMap[task.taskType] && (
               <span
                 className="px-1 rounded-md text-white text-base ml-2"
-                style={{ backgroundColor: taskType.color }}
+                style={{ backgroundColor: taskTypeMap[task.taskType].color }}
               >
-                {taskType.text}
+                {taskTypeMap[task.taskType].text}
               </span>
             )}
           </span>
         </div>
         {/* 描述 */}
-        <div className="text-xl ml-8 text-gray-400 mt-1">{label}</div>
+        <div className="text-xl ml-8 text-gray-400 mt-1">
+          {task.description}
+        </div>
       </div>
       {/* 右侧区域 */}
       <div className="flex items-center ">
         {/* 完成次数 */}
         <div className="text-xl px-3 w-48 flex justify-end items-center text-gray-600">
-          完成次数：<span className="text-green-500 text-2xl">{value}</span>
+          完成次数：
+          <span className="text-green-500 text-2xl">{task.count}</span>
         </div>
         {/* 更多按钮 */}
         <div
@@ -77,7 +87,7 @@ const TaskItem = ({
         position="right"
         onClose={() => setShowDetail(false)}
       >
-        <TaskForm></TaskForm>
+        <TaskForm task={task}></TaskForm>
       </Popup>
     </div>
   );
