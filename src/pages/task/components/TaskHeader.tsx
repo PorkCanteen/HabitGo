@@ -1,5 +1,5 @@
 import { Ellipsis } from "@react-vant/icons";
-import dogIcon from "@/assets/dogIcon.svg";
+import dogIcon from "@/assets/dogIcon.png";
 import "./taskHeader.scss";
 import { useState } from "react";
 
