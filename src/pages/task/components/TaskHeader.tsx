@@ -18,13 +18,13 @@ const TaskHeader = () => {
         <img
           src={dogIcon}
           alt=""
-          className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
+          className={(isJumping ? "logo-active" : "") + " w-14 h-14 logo"}
           onClick={handleLogoClick}
         />
       </div>
       <div className="text-3xl">{taskHeaderText}</div>
       <div>
-      <img
+        <img
           src={pigIcon}
           alt=""
           className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
