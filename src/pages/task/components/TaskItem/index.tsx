@@ -1,9 +1,9 @@
 import { Arrow, Star, StarO } from "@react-vant/icons";
 import { useState } from "react";
 import { Popup } from "react-vant";
-import TaskForm from "../form/TaskForm";
-import "./TaskItem.scss";
-import { Task } from "./TaskList";
+import TaskForm from "../../form/TaskForm";
+import "./index.scss";
+import { Task } from "../TaskList";
 
 interface TaskItemParams {
   task: Task;

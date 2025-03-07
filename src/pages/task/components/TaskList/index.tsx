@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { List } from "react-vant";
 import { size, filter } from "lodash";
-import TaskItem from "./TaskItem";
+import TaskItem from "../TaskItem";
 
 // 习惯项
 export interface Task {

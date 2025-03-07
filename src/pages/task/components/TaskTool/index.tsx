@@ -1,8 +1,8 @@
 import { Add } from "@react-vant/icons";
 import { useState } from "react";
 import { Popup } from "react-vant";
-import TaskForm from "../form/TaskForm";
-import "./TaskTool.scss";
+import TaskForm from "../../form/TaskForm";
+import "./index.scss";
 
 const TaskTool = () => {
   const [showDetail, setShowDetail] = useState(false); // 是否显示详情弹框

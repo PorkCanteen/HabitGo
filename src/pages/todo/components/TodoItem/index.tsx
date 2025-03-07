@@ -1,4 +1,4 @@
-import { Todo } from "./TodoList";
+import { Todo } from "../TodoList";
 
 interface TodoItemParams {
   todo: Todo;

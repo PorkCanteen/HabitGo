@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { List } from "react-vant";
-import TodoItem from "./TodoItem";
+import TodoItem from "../TodoItem";
 
 // 习惯项
 export interface Todo {

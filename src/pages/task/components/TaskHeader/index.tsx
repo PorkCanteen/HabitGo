@@ -1,6 +1,6 @@
 import dogIcon from "@/assets/dogIcon.png";
 import pigIcon from "@/assets/pigIcon.png";
-import "./taskHeader.scss";
+import "./index.scss";
 import { useState } from "react";
 
 const taskHeaderText = "我的习惯";
