@@ -1,6 +1,6 @@
-import dogIcon from "@/assets/dogIcon.png";
-import pigIcon from "@/assets/pigIcon.png";
-import "./taskHeader.scss";
+import dogIcon from "@/assets/dogIconBold.png";
+import pigIcon from "@/assets/pigIconBold.png";
+import "./index.scss";
 import { useState } from "react";
 
 const taskHeaderText = "我的习惯";
@@ -18,13 +18,13 @@ const TaskHeader = () => {
         <img
           src={dogIcon}
           alt=""
-          className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
+          className={(isJumping ? "logo-active" : "") + " w-14 h-14 logo"}
           onClick={handleLogoClick}
         />
       </div>
       <div className="text-3xl">{taskHeaderText}</div>
       <div>
-      <img
+        <img
           src={pigIcon}
           alt=""
           className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}

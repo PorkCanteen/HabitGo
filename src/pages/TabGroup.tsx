@@ -2,7 +2,7 @@ import { SettingO, SmileO, TodoListO } from "@react-vant/icons";
 import { Tabbar } from "react-vant";
 import { map } from "lodash";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // 图标大小
 const IconSize = "1.2em";
@@ -39,20 +39,19 @@ const TabGroup = () => {
   const [tabName, setTabName] = useState("task");
   const [tabList, setTabList] = useState(originalTabList);
   const navigate = useNavigate();
+  const location = useLocation();
   const onTabChange = (name: string) => {
-    setTabName(name as string)
-    navigate(`/${name}`)
-  }
+    setTabName(name as string);
+    navigate(`/${name}`);
+  };
   // 监听习惯数量变化-更新tab列表
   useEffect(() => {
+    const tabName = location.pathname.split("/")[1];
+    setTabName(tabName);
     setTabList(originalTabList);
   }, []);
   return (
-    <Tabbar
-      value={tabName}
-      activeColor="#f26d2c"
-      onChange={onTabChange}
-    >
+    <Tabbar value={tabName} activeColor="#f26d2c" onChange={onTabChange}>
       {map(tabList, (tab) => {
         return (
           <Tabbar.Item
