@@ -1,58 +1,113 @@
-import { Star, StarO } from "@react-vant/icons";
-import { useContext, useEffect, useState } from "react";
-import { List, Cell } from "react-vant";
-import CountContext from "@/CountContext";
+import { useState } from "react";
+import { List } from "react-vant";
 import { size, filter } from "lodash";
+import TaskItem from "./TaskItem";
 
-// 任务项
-interface TaskItem {
+// 习惯项
+export interface Task {
   id: string;
   name: string;
   description?: string;
   count: number;
   isCompleted: boolean;
+  taskType: number;
+  targetType: number;
+  targetCount: number;
 }
+const taskListData = [
+  {
+    id: "1",
+    name: "运动",
+    count: 3,
+    isCompleted: false,
+    description: "每天运动30分钟",
+    taskType: 1,
+    targetType: 1,
+    targetCount: 1,
+  },
+  {
+    id: "2",
+    name: "学习React",
+    count: 5,
+    isCompleted: false,
+    description: "每天学习30分钟",
+    taskType: 1,
+    targetType: 1,
+    targetCount: 1,
+  },
+  {
+    id: "3",
+    name: "泡脚",
+    count: 2,
+    isCompleted: false,
+    description: "每周泡脚2次",
+    taskType: 1,
+    targetType: 2,
+    targetCount: 2,
+  },
+  {
+    id: "4",
+    name: "读书",
+    count: 8,
+    isCompleted: true,
+    description: "读万卷书",
+    taskType: 2,
+    targetType: 1,
+    targetCount: 1,
+  },
+  {
+    id: "5",
+    name: "喝茶",
+    count: 0,
+    isCompleted: false,
+    description: "多喝水",
+    taskType: 0,
+    targetType: 1,
+    targetCount: 1,
+  },
+  {
+    id: "6",
+    name: "散步",
+    count: 1523,
+    isCompleted: false,
+    description: "gogogo",
+    taskType: 0,
+    targetType: 1,
+    targetCount: 1,
+  },
+  {
+    id: "7",
+    name: "准备考试",
+    count: 142,
+    isCompleted: false,
+    description: "背题背题",
+    taskType: 0,
+    targetType: 1,
+    targetCount: 1,
+  },
+  {
+    id: "8",
+    name: "总结",
+    count: 15,
+    isCompleted: false,
+    description: "温故而知新",
+    taskType: 0,
+    targetType: 1,
+    targetCount: 1,
+  },
+];
 
 const TaskList = () => {
-  // 修改父组件任务数量
-  const countContext = useContext(CountContext);
   const [finished, setFinished] = useState(false);
-  // 初始任务数据
-  const [tasks, setTasks] = useState<TaskItem[]>([
-    {
-      id: "1",
-      name: "运动",
-      count: 3,
-      isCompleted: false,
-      description: "每天运动30分钟",
-    },
-    {
-      id: "2",
-      name: "学习React",
-      count: 5,
-      isCompleted: false,
-      description: "每天学习30分钟",
-    },
-    {
-      id: "3",
-      name: "泡脚",
-      count: 2,
-      isCompleted: false,
-      description: "每周泡脚2次",
-    },
-    { id: "4", name: "读书", count: 8, isCompleted: true },
-    { id: "5", name: "喝茶", count: 0, isCompleted: false },
-    { id: "6", name: "散步", count: 0, isCompleted: false },
-    { id: "7", name: "准备考试", count: 0, isCompleted: false },
-    { id: "8", name: "总结", count: 0, isCompleted: false },
-  ]);
+  // 初始习惯数据
+  const [tasks, setTasks] = useState<Task[]>(taskListData);
 
-  // 计算未完成任务数量
+  // 计算未完成习惯数量
   const getUnfinishedTaskCount = () => {
     return size(filter(tasks, (task) => !task.isCompleted));
   };
 
-  // 处理任务点击
+  // 处理习惯点击
   const handleClick = (id: string) => {
     setTasks(
       tasks.map((task) => {
@@ -65,46 +120,21 @@ const TaskList = () => {
         return task;
       })
     );
-    countContext?.setTaskCount(getUnfinishedTaskCount());
   };
-
-  useEffect(() => {
-    countContext?.setTaskCount(getUnfinishedTaskCount());
-  });
-
-  // 定义颜色样式
-  const getStyle = (isCompleted: boolean) => ({
-    color: isCompleted ? "#999" : "#333",
-  });
 
   const onListLoad = async () => {
     setFinished(true);
   };
 
   return (
-    <div className="p-2 task-list">
+    <div className=" p-2 h-full overflow-y-auto">
       <List onLoad={onListLoad} finished={finished}>
         {tasks.map((task) => (
-          <Cell
+          <TaskItem
             key={task.id}
-            onClick={() => handleClick(task.id)}
-            clickable
-            icon={
-              task.isCompleted ? (
-                <Star color="orange"></Star>
-              ) : (
-                <StarO color="#333"></StarO>
-              )
-            }
-            title={<span style={getStyle(task.isCompleted)}>{task.name}</span>}
-            label={<span className="text-zinc-400">{task.description}</span>}
-            value={
-              <span style={getStyle(task.isCompleted)}>
-                <span className="text-">完成次数: </span>
-                {task.count}
-              </span>
-            }
-          ></Cell>
+            task={task}
+            taskClick={() => handleClick(task.id)}
+          ></TaskItem>
         ))}
       </List>
     </div>

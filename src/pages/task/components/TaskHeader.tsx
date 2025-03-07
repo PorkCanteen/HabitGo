@@ -1,16 +1,38 @@
-import { Ellipsis, ClockO } from "@react-vant/icons";
+import dogIcon from "@/assets/dogIcon.png";
+import pigIcon from "@/assets/pigIcon.png";
+import "./taskHeader.scss";
+import { useState } from "react";
 
-const taskHeaderText = '待办任务'
+const taskHeaderText = "我的习惯";
 const TaskHeader = () => {
-  return <div className="flex justify-between items-center h-16 px-4 bg-blue-50 text-3xl">
-    <div>
-      <ClockO fontSize={'24px'} />
+  const [isJumping, setIsJumping] = useState(false);
+  const handleLogoClick = () => {
+    setIsJumping(true);
+    setTimeout(() => {
+      setIsJumping(false);
+    }, 1000);
+  };
+  return (
+    <div className="flex justify-between items-center h-20 px-4 bg-green-100 text-3xl">
+      <div>
+        <img
+          src={dogIcon}
+          alt=""
+          className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
+          onClick={handleLogoClick}
+        />
+      </div>
+      <div className="text-3xl">{taskHeaderText}</div>
+      <div>
+      <img
+          src={pigIcon}
+          alt=""
+          className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
+          onClick={handleLogoClick}
+        />
+      </div>
     </div>
-    <div className="text-3xl">{taskHeaderText}</div>
-    <div>
-      <Ellipsis fontSize={'24px'} />
-    </div>
-  </div>;
+  );
 };
 
 export default TaskHeader;
