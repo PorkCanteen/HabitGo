@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { List } from "react-vant";
-import { size, filter } from "lodash";
 import TaskItem from "../TaskItem";
 
 // 习惯项
 export interface Task {
-  id: string;
+  id: number;
   name: string;
   description?: string;
   count: number;
-  isCompleted: boolean;
+  isCompleted: number;
   taskType: number;
   targetType: number;
   targetCount: number;
@@ -100,19 +99,29 @@ const taskListData = [
 const TaskList = () => {
   const [finished, setFinished] = useState(false);
   // 初始习惯数据
-  const [tasks, setTasks] = useState<Task[]>(taskListData);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/task/list");
+        const json = await response.json();
+        setTasks(json.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setFinished(true);
+      }
+    };
 
-  // 计算未完成习惯数量
-  const getUnfinishedTaskCount = () => {
-    return size(filter(tasks, (task) => !task.isCompleted));
-  };
+    fetchData();
+  }, []); // 空依赖数组表示只运行一次
 
   // 处理习惯点击
-  const handleClick = (id: string) => {
+  const handleClick = (id: number) => {
     setTasks(
       tasks.map((task) => {
         if (task.id === id) {
-          const complete = !task.isCompleted;
+          const complete = task.isCompleted === 1 ? 0 : 1;
           // 只在标记为完成时增加次数，取消完成时保持次数不变
           const newCount = complete ? task.count + 1 : task.count;
           return { ...task, isCompleted: complete, count: newCount };
