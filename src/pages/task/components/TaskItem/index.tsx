@@ -8,6 +8,7 @@ import { Task } from "../TaskList";
 interface TaskItemParams {
   task: Task;
   taskClick: () => void;
+  updateList: () => void;
 }
 
 const taskTypeMap = {
@@ -17,10 +18,14 @@ const taskTypeMap = {
   },
 };
 
-const TaskItem = ({ taskClick, task }: TaskItemParams) => {
+const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
   const handleClick = () => {
     setShowDetail(true);
+  };
+  const onFormClose = () => {
+    setShowDetail(false);
+    updateList();
   };
   return (
     <div className="flex justify-between items-center w-full  bg-white border-b-gray-100 border-b-2 h-24 ">
@@ -87,7 +92,7 @@ const TaskItem = ({ taskClick, task }: TaskItemParams) => {
         position="right"
         onClose={() => setShowDetail(false)}
       >
-        <TaskForm task={task} close={() => setShowDetail(false)}></TaskForm>
+        <TaskForm task={task} close={onFormClose}></TaskForm>
       </Popup>
     </div>
   );

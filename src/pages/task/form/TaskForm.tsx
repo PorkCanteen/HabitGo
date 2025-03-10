@@ -15,7 +15,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
 
   const onFinish = async (values: any) => {
     // 创建
-    if (isEditMode) {
+    if (!isEditMode) {
       try {
         await fetch("http://localhost:8080/task", {
           method: "POST",
@@ -28,9 +28,32 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      // 编辑
+      try {
+        await fetch(`http://localhost:8080/task/${task.id}`, {
+          method: "PUT",
+          body: JSON.stringify(values),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        close();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
-  const deleteTask = () => {};
+  const deleteTask = async () => {
+    try {
+      await fetch(`http://localhost:8080/task/${task.id}`, {
+        method: "DELETE",
+      });
+      close();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="px-6">
       <Form

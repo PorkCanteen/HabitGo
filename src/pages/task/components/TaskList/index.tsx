@@ -100,19 +100,18 @@ const TaskList = () => {
   const [finished, setFinished] = useState(false);
   // 初始习惯数据
   const [tasks, setTasks] = useState<Task[]>([]);
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/task/list");
+      const json = await response.json();
+      setTasks(json.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setFinished(true);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/task/list");
-        const json = await response.json();
-        setTasks(json.data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setFinished(true);
-      }
-    };
-
     fetchData();
   }, []); // 空依赖数组表示只运行一次
 
@@ -143,6 +142,7 @@ const TaskList = () => {
             key={task.id}
             task={task}
             taskClick={() => handleClick(task.id)}
+            updateList={fetchData}
           ></TaskItem>
         ))}
       </List>
