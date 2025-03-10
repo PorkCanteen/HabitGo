@@ -1,11 +1,58 @@
-import { Button, Input, Form, Radio } from "react-vant";
-const defaultTask = { taskType: 1, targetType: 1, targetCount: "1" };
+import { Button, Input, Form, Radio, Notify } from "react-vant";
+import { Task } from "../components/TaskList";
+const defaultTask: Task = {
+  name: "",
+  count: 0,
+  isCompleted: 0,
+  taskType: 1,
+  targetType: 1,
+  targetCount: 1,
+};
 
-const TaskForm = ({ task = defaultTask }) => {
+const TaskForm = ({ task = defaultTask, close = () => {} }) => {
+  const isEditMode = !!task.id;
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log(values);
+  const onFinish = async (values: any) => {
+    // 创建
+    if (!isEditMode) {
+      try {
+        await fetch("http://localhost:8080/task", {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        close();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // 编辑
+      try {
+        await fetch(`http://localhost:8080/task/${task.id}`, {
+          method: "PUT",
+          body: JSON.stringify(values),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        close();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  const deleteTask = async () => {
+    try {
+      await fetch(`http://localhost:8080/task/${task.id}`, {
+        method: "DELETE",
+      });
+      close();
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="px-6">
@@ -17,6 +64,11 @@ const TaskForm = ({ task = defaultTask }) => {
             <Button round nativeType="submit" color="#f19c34" block>
               确定
             </Button>
+            {isEditMode && (
+              <Button className="mt-3" round color="#e15241" block onClick={deleteTask}>
+                删除
+              </Button>
+            )}
           </div>
         }
         initialValues={task}
