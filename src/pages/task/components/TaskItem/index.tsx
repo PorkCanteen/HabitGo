@@ -87,7 +87,7 @@ const TaskItem = ({ taskClick, task }: TaskItemParams) => {
         position="right"
         onClose={() => setShowDetail(false)}
       >
-        <TaskForm task={task}></TaskForm>
+        <TaskForm task={task} close={() => setShowDetail(false)}></TaskForm>
       </Popup>
     </div>
   );

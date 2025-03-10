@@ -4,7 +4,7 @@ import TaskItem from "../TaskItem";
 
 // 习惯项
 export interface Task {
-  id: number;
+  id?: number;
   name: string;
   description?: string;
   count: number;

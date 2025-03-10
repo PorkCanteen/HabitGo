@@ -36,7 +36,7 @@ const TaskTool = () => {
         position="right"
         onClose={() => setShowDetail(false)}
       >
-        <TaskForm></TaskForm>
+        <TaskForm close={() => setShowDetail(false)}></TaskForm>
       </Popup>
     </div>
   );
