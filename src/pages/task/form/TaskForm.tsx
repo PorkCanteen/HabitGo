@@ -24,18 +24,6 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
         data: values,
       });
       close();
-      // try {
-      //   await fetch("http://localhost:8080/task", {
-      //     method: "POST",
-      //     body: JSON.stringify(values),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   });
-      //   close();
-      // } catch (error) {
-      //   console.log(error);
-      // }
     } else {
       // 编辑
       await sendRequest({
@@ -44,18 +32,6 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
         data: values,
       });
       close();
-      // try {
-      //   await fetch(`http://localhost:8080/task/${task.id}`, {
-      //     method: "PUT",
-      //     body: JSON.stringify(values),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   });
-      //   close();
-      // } catch (error) {
-      //   console.log(error);
-      // }
     }
   };
   const deleteTask = async () => {
@@ -64,14 +40,6 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
       method: "DELETE",
     });
     close();
-    // try {
-    //   await fetch(`http://localhost:8080/task/${task.id}`, {
-    //     method: "DELETE",
-    //   });
-    //   close();
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
   return (
     <div className="px-6">

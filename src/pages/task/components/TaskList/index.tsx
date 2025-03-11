@@ -98,12 +98,12 @@ const taskListData = [
 ];
 
 const TaskList = () => {
-  const { loading, error, sendRequest } = useHttp();
+  const { sendRequest } = useHttp();
   const [finished, setFinished] = useState(false);
   // 初始习惯数据
   const [tasks, setTasks] = useState<Task[]>([]);
   const fetchData = async () => {
-    const data = await sendRequest({
+    const { data } = await sendRequest({
       url: "/task/list",
       method: "GET",
     });
@@ -142,7 +142,7 @@ const TaskList = () => {
           <TaskItem
             key={task.id}
             task={task}
-            taskClick={() => handleClick(task.id)}
+            taskClick={() => task.id !== undefined && handleClick(task.id)}
             updateList={fetchData}
           ></TaskItem>
         ))}
