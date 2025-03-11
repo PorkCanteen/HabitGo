@@ -14,88 +14,6 @@ export interface Task {
   targetType: number;
   targetCount: number;
 }
-const taskListData = [
-  {
-    id: 1,
-    name: "运动",
-    count: 3,
-    isCompleted: 0,
-    description: "每天运动30分钟",
-    taskType: 1,
-    targetType: 1,
-    targetCount: 1,
-  },
-  {
-    id: 2,
-    name: "学习React",
-    count: 5,
-    isCompleted: 0,
-    description: "每天学习30分钟",
-    taskType: 1,
-    targetType: 1,
-    targetCount: 1,
-  },
-  {
-    id: 3,
-    name: "泡脚",
-    count: 2,
-    isCompleted: 0,
-    description: "每周泡脚2次",
-    taskType: 1,
-    targetType: 2,
-    targetCount: 2,
-  },
-  {
-    id: 4,
-    name: "读书",
-    count: 8,
-    isCompleted: 1,
-    description: "读万卷书",
-    taskType: 2,
-    targetType: 1,
-    targetCount: 1,
-  },
-  {
-    id: 5,
-    name: "喝茶",
-    count: 0,
-    isCompleted: 0,
-    description: "多喝水",
-    taskType: 0,
-    targetType: 1,
-    targetCount: 1,
-  },
-  {
-    id: 6,
-    name: "散步",
-    count: 1523,
-    isCompleted: 0,
-    description: "gogogo",
-    taskType: 0,
-    targetType: 1,
-    targetCount: 1,
-  },
-  {
-    id: 7,
-    name: "准备考试",
-    count: 142,
-    isCompleted: 0,
-    description: "背题背题",
-    taskType: 0,
-    targetType: 1,
-    targetCount: 1,
-  },
-  {
-    id: 8,
-    name: "总结",
-    count: 15,
-    isCompleted: 0,
-    description: "温故而知新",
-    taskType: 0,
-    targetType: 1,
-    targetCount: 1,
-  },
-];
 
 const TaskList = () => {
   const { sendRequest } = useHttp();
@@ -103,12 +21,12 @@ const TaskList = () => {
   // 初始习惯数据
   const [tasks, setTasks] = useState<Task[]>([]);
   const fetchData = async () => {
-    const { data } = await sendRequest({
+    const res: any = await sendRequest({
       url: "/task/list",
       method: "GET",
     });
-    if (data && data.length) {
-      setTasks(data);
+    if (res.data && res.data.length) {
+      setTasks(res.data);
     }
     setFinished(true);
   };
