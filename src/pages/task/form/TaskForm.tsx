@@ -1,5 +1,6 @@
 import { Button, Input, Form, Radio, Notify } from "react-vant";
 import { Task } from "../components/TaskList";
+import { useHttp } from "@/hooks/useHttp";
 const defaultTask: Task = {
   name: "",
   count: 0,
@@ -12,47 +13,65 @@ const defaultTask: Task = {
 const TaskForm = ({ task = defaultTask, close = () => {} }) => {
   const isEditMode = !!task.id;
   const [form] = Form.useForm();
+  const { loading, error, sendRequest } = useHttp();
 
   const onFinish = async (values: any) => {
     // 创建
     if (!isEditMode) {
-      try {
-        await fetch("http://localhost:8080/task", {
-          method: "POST",
-          body: JSON.stringify(values),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        close();
-      } catch (error) {
-        console.log(error);
-      }
+      await sendRequest({
+        url: "/task",
+        method: "POST",
+        data: values,
+      });
+      close();
+      // try {
+      //   await fetch("http://localhost:8080/task", {
+      //     method: "POST",
+      //     body: JSON.stringify(values),
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   });
+      //   close();
+      // } catch (error) {
+      //   console.log(error);
+      // }
     } else {
       // 编辑
-      try {
-        await fetch(`http://localhost:8080/task/${task.id}`, {
-          method: "PUT",
-          body: JSON.stringify(values),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        close();
-      } catch (error) {
-        console.log(error);
-      }
+      await sendRequest({
+        url: `/task/${task.id}`,
+        method: "PUT",
+        data: values,
+      });
+      close();
+      // try {
+      //   await fetch(`http://localhost:8080/task/${task.id}`, {
+      //     method: "PUT",
+      //     body: JSON.stringify(values),
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   });
+      //   close();
+      // } catch (error) {
+      //   console.log(error);
+      // }
     }
   };
   const deleteTask = async () => {
-    try {
-      await fetch(`http://localhost:8080/task/${task.id}`, {
-        method: "DELETE",
-      });
-      close();
-    } catch (error) {
-      console.log(error);
-    }
+    await sendRequest({
+      url: `/task/${task.id}`,
+      method: "DELETE",
+    });
+    close();
+    // try {
+    //   await fetch(`http://localhost:8080/task/${task.id}`, {
+    //     method: "DELETE",
+    //   });
+    //   close();
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   return (
     <div className="px-6">
@@ -65,7 +84,13 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
               确定
             </Button>
             {isEditMode && (
-              <Button className="mt-3" round color="#e15241" block onClick={deleteTask}>
+              <Button
+                className="mt-3"
+                round
+                color="#e15241"
+                block
+                onClick={deleteTask}
+              >
                 删除
               </Button>
             )}

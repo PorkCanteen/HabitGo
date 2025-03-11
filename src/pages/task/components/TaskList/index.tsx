@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { List } from "react-vant";
 import TaskItem from "../TaskItem";
+import { useHttp } from "@/hooks/useHttp";
 
 // 习惯项
 export interface Task {
@@ -97,19 +98,19 @@ const taskListData = [
 ];
 
 const TaskList = () => {
+  const { loading, error, sendRequest } = useHttp();
   const [finished, setFinished] = useState(false);
   // 初始习惯数据
   const [tasks, setTasks] = useState<Task[]>([]);
   const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/task/list");
-      const json = await response.json();
-      setTasks(json.data);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setFinished(true);
+    const data = await sendRequest({
+      url: "/task/list",
+      method: "GET",
+    });
+    if (data && data.length) {
+      setTasks(data);
     }
+    setFinished(true);
   };
   useEffect(() => {
     fetchData();
