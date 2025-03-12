@@ -1,4 +1,4 @@
-import { Button, Input, Form, Radio, Notify } from "react-vant";
+import { Button, Input, Form, Radio } from "react-vant";
 import { Task } from "../components/TaskList";
 import { useHttp } from "@/hooks/useHttp";
 const defaultTask: Task = {
@@ -13,9 +13,9 @@ const defaultTask: Task = {
 const TaskForm = ({ task = defaultTask, close = () => {} }) => {
   const isEditMode = !!task.id;
   const [form] = Form.useForm();
-  const { loading, error, sendRequest } = useHttp();
+  const { sendRequest } = useHttp();
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: unknown) => {
     // 创建
     if (!isEditMode) {
       await sendRequest({

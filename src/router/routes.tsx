@@ -11,7 +11,7 @@ const routes: RouteConfig[] = [
       {
         index: true,
         loader: () => redirect("/task"),
-        element: Navigate,
+        element: lazy(() => import("react-router-dom").then(() => ({ default: () => <Navigate to="/task" /> }))),
       },
       {
         path: "/task",
@@ -20,16 +20,22 @@ const routes: RouteConfig[] = [
           //
         ],
       },
-      {
-        path: "/todo",
-        element: lazy(() => import("@/pages/todo/TodoBoard")),
-        children: [
-          //
-        ],
-      },
+      // {
+      //   path: "/todo",
+      //   element: lazy(() => import("@/pages/todo/TodoBoard")),
+      //   children: [
+      //     //
+      //   ],
+      // },
     ],
   },
-
+  {
+    path: "/login",
+    element: lazy(() => import("@/pages/login")),
+    children: [
+      //
+    ],
+  },
   {
     path: "*",
     element: lazy(() => import("@/pages/404")),
