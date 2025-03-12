@@ -3,7 +3,7 @@ type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 export interface RequestConfig {
   url: string;
   method?: HttpMethod;
-  data?: any;
+  data?: unknown;
   headers?: Record<string, string>;
   timeout?: number;
   baseUrl?: string;
@@ -64,8 +64,8 @@ export const request = async <T>(config: RequestConfig): Promise<T> => {
 // 快捷方法
 export const http = {
   get: <T>(url: string) => request<T>({ url, method: "GET" }),
-  post: <T>(url: string, data?: any) =>
+  post: <T>(url: string, data?: unknown) =>
     request<T>({ url, method: "POST", data }),
-  put: <T>(url: string, data?: any) => request<T>({ url, method: "PUT", data }),
+  put: <T>(url: string, data?: unknown) => request<T>({ url, method: "PUT", data }),
   delete: <T>(url: string) => request<T>({ url, method: "DELETE" }),
 };
