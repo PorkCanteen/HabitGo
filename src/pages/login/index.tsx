@@ -1,11 +1,15 @@
 import { Form, Input, Button } from "react-vant";
 import dogIconBold from "@/assets/dogIconBold.png";
 import "./index.css";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+  
   const handleLogin = (values: { username: string; password: string }) => {
     // 预留请求接口
     console.log("Login values:", values);
+    navigate("/task");
   };
 
   return (
