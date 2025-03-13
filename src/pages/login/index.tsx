@@ -14,7 +14,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen text-center w-full">
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full px-12">
         <div className="rotate-container">
           <img
             src={dogIconBold}
