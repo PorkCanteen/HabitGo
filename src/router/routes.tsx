@@ -27,6 +27,10 @@ const routes: RouteConfig[] = [
       //     //
       //   ],
       // },
+      {
+        path: '/setting',
+        element: lazy(() => import("@/pages/setting/SettingBoard")),
+      }
     ],
   },
   {

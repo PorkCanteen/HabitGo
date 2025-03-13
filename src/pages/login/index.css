@@ -12,6 +12,6 @@
   animation: rotate 2s linear infinite;
 }
 
-body {
+.login-body {
   background-color: #faf3e6;
 }
