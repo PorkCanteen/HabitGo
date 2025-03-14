@@ -32,17 +32,33 @@ const TodoItem = ({ todo, todoClick }: TodoItemParams) => {
           </span>
           <span
             className={`text-2xl ml-2 flex items-center justify-between w-full ${
-              todo.isFinished ? "line-through" : ""
+              todo.isFinished ? "line-through text-gray-500" : ""
             }`}
           >
+            {/* 名称 */}
             <span>{todo.name}</span>
+            {/* 计划时间 */}
             <span className="text-xl">计划时间：{todo.finishDate}</span>
           </span>
         </div>
+        {/* 剩余/超期时间 */}
+        {!todo.isFinished && (
+          <div
+            className={`text-xl ml-8 px-2 ${
+              calculateDayDifference(todo.finishDate).isDelay
+                ? "bg-red-500"
+                : "bg-green-500"
+            } text-white rounded-md mt-1 w-fit`}
+          >
+            {calculateDayDifference(todo.finishDate).text}
+          </div>
+        )}
         {/* 描述 */}
-        <div className="text-xl ml-8 text-gray-400 mt-1">
-          {todo.description}
-        </div>
+        {!todo.isFinished && (
+          <div className="text-xl ml-8 text-gray-500 mt-1">
+            {todo.description}
+          </div>
+        )}
       </div>
       {/* 右侧区域 */}
       <div className="flex items-center ">
@@ -56,3 +72,16 @@ const TodoItem = ({ todo, todoClick }: TodoItemParams) => {
 };
 
 export default TodoItem;
+
+const calculateDayDifference = (finishDate: string) => {
+  const today = new Date();
+  const targetDate = new Date(finishDate);
+  const timeDiff = targetDate.getTime() - today.getTime();
+  const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  const text = dayDiff >= 0 ? `剩余${dayDiff}天` : `超期${-dayDiff}天`;
+  const isDelay = dayDiff < 0;
+  return {
+    text,
+    isDelay,
+  };
+};
