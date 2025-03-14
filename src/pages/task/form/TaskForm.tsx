@@ -1,6 +1,7 @@
 import { Button, Input, Form, Radio } from "react-vant";
 import { Task } from "../components/TaskList";
 import { useHttp } from "@/hooks/useHttp";
+import { useState } from "react";
 const defaultTask: Task = {
   name: "",
   count: 0,
@@ -14,6 +15,11 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
   const isEditMode = !!task.id;
   const [form] = Form.useForm();
   const { sendRequest } = useHttp();
+
+  const [targetType, setTargetType] = useState(task.targetType);
+  const handleTargetTypeChange = (value: number) => {
+    setTargetType(value);
+  };
 
   const onFinish = async (values: unknown) => {
     // 创建
@@ -102,7 +108,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
           name="targetType"
           label="目标类型"
         >
-          <Radio.Group>
+          <Radio.Group onChange={handleTargetTypeChange}>
             <Radio name={1} iconSize={15} checkedColor="#f8a128">
               按日
             </Radio>
@@ -114,13 +120,15 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
             </Radio>
           </Radio.Group>
         </Form.Item>
-        <Form.Item
-          rules={[{ required: true, message: "请输入目标次数" }]}
-          name="targetCount"
-          label="目标次数"
-        >
-          <Input type="digit" placeholder="请输入目标次数" />
-        </Form.Item>
+        {targetType !== 1 && ( // 仅在目标类型不是“按日”时显示
+          <Form.Item
+            rules={[{ required: true, message: "请输入目标次数" }]}
+            name="targetCount"
+            label="目标次数"
+          >
+            <Input type="digit" placeholder="请输入目标次数" />
+          </Form.Item>
+        )}
       </Form>
     </div>
   );
