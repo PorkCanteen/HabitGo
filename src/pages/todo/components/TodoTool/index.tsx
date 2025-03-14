@@ -40,7 +40,7 @@ const TodoTool = ({ updateList }: TodoToolParams) => {
         closeOnClickOverlay={true}
         closeable={true}
         title="新建待办"
-        style={{ width: "90%", height: "100%" }}
+        style={{ width: "85%", height: "100%" }}
         position="right"
         onClose={() => setShowDetail(false)}
       >

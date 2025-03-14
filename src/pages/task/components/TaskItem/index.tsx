@@ -92,7 +92,7 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
         closeOnClickOverlay={true}
         closeable={true}
         title="编辑习惯"
-        style={{ width: "80%", height: "100%" }}
+        style={{ width: "85%", height: "100%" }}
         position="right"
         onClose={() => setShowDetail(false)}
       >

@@ -40,7 +40,7 @@ const TaskTool = ({ updateList }: TaskToolParams) => {
         closeOnClickOverlay={true}
         closeable={true}
         title="新建习惯"
-        style={{ width: "80%", height: "100%" }}
+        style={{ width: "85%", height: "100%" }}
         position="right"
         onClose={() => setShowDetail(false)}
       >
