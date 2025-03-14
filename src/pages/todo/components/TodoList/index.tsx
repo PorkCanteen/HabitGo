@@ -8,7 +8,7 @@ export interface Todo {
   name: string;
   description?: string;
   finishDate: string;
-  isFinished?: number;
+  isFinished: number;
 }
 const todoListData = [
   {
@@ -32,6 +32,29 @@ const todoListData = [
     name: "吃大餐",
     description: "吃大餐吃大餐吃大餐吃大餐吃大餐吃大餐吃大餐吃大餐。",
     finishDate: "2025-03-01",
+    isFinished: 0,
+  },
+  {
+    id: "4",
+    name: "吃霸王餐",
+    description:
+      "吃霸王餐吃霸王餐吃霸王餐吃霸王餐吃霸王餐吃霸王餐吃霸王餐吃霸王餐。",
+    finishDate: "2025-03-02",
+    isFinished: 1,
+  },
+  {
+    id: "5",
+    name: "吃鸿门宴",
+    description:
+      "吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴。",
+    finishDate: "2025-03-03",
+    isFinished: 1,
+  },
+  {
+    id: "6",
+    name: "吃期头",
+    description: "吃期头吃期头吃期头吃期头吃期头吃期头吃期头吃期头。",
+    finishDate: "2025-03-04",
     isFinished: 1,
   },
 ];
@@ -47,13 +70,15 @@ const TodoList = () => {
   // 处理习惯点击
   const handleClick = (id: string) => {
     setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          const finished = todo.isFinished ? 0 : 1;
-          return { ...todo, isFinished: finished };
-        }
-        return todo;
-      })
+      todos
+        .map((todo) => {
+          if (todo.id === id) {
+            const finished = todo.isFinished ? 0 : 1;
+            return { ...todo, isFinished: finished };
+          }
+          return todo;
+        })
+        .sort((a, b) => a.isFinished - b.isFinished)
     );
   };
 
