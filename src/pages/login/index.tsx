@@ -1,15 +1,29 @@
-import { Form, Input, Button } from "react-vant";
+import { Form, Input, Button, Dialog } from "react-vant";
 import dogIconBold from "@/assets/dogIconBold.png";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
+import { useHttp } from "@/hooks/useHttp";
 
 const Login = () => {
   const navigate = useNavigate();
+  const {sendRequest} = useHttp();
   
-  const handleLogin = (values: { username: string; password: string }) => {
+  const handleLogin = async (values: { username: string; password: string }) => {
     // 预留请求接口
-    console.log("Login values:", values);
-    navigate("/task");
+    const res: any = await sendRequest({
+      url: "/user/login",
+      method: "POST",
+      data: values,
+    });
+    console.log("Login values:", res);
+    if(res.code === "200") {
+      navigate("/task");
+    } else {
+      console.log("Login failed:", res.message);
+      // Dialog.alert({
+      //   message: res.message,
+      // })
+    }
   };
 
   return (
