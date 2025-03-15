@@ -56,7 +56,9 @@ const TodoItem = ({ todo, todoClick }: TodoItemParams) => {
         {/* 描述 */}
         {!todo.isFinished && (
           <div className="text-xl ml-8 text-gray-500 mt-1">
-            {todo.description}
+            {todo.description && todo.description.split('\n').map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
           </div>
         )}
       </div>
