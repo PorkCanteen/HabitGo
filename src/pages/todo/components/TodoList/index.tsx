@@ -1,74 +1,46 @@
-import { useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { List } from "react-vant";
 import TodoItem from "../TodoItem";
+import { useHttp } from "@/hooks/useHttp";
 
 // 习惯项
 export interface Todo {
-  id: string;
+  id?: number;
   name: string;
   description?: string;
   finishDate: string;
   isFinished: number;
 }
-const todoListData = [
-  {
-    id: "1",
-    name: "基本功能开发",
-    description:
-      "完成移动端项目基本功能的前端开发，包括列表、详情、编辑、删除等功能，以及用户登录。细节及接口交互在下个阶段开始。",
-    finishDate: "2025-05-01",
-    isFinished: 0,
-  },
-  {
-    id: "2",
-    name: "旅游攻略",
-    description:
-      "完成旅游攻略，包含天气情况、出游时间、酒店预定、机票价格及时间安排、景点及兴趣点标注、注意事项、需要提前准备携带的物品清单。",
-    finishDate: "2025-04-01",
-    isFinished: 0,
-  },
-  {
-    id: "3",
-    name: "吃大餐",
-    description: "吃大餐吃大餐吃大餐吃大餐吃大餐吃大餐吃大餐吃大餐。",
-    finishDate: "2025-03-01",
-    isFinished: 0,
-  },
-  {
-    id: "4",
-    name: "吃霸王餐",
-    description:
-      "吃霸王餐吃霸王餐吃霸王餐吃霸王餐吃霸王餐吃霸王餐吃霸王餐吃霸王餐。",
-    finishDate: "2025-03-02",
-    isFinished: 1,
-  },
-  {
-    id: "5",
-    name: "吃鸿门宴",
-    description:
-      "吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴吃鸿门宴。",
-    finishDate: "2025-03-03",
-    isFinished: 1,
-  },
-  {
-    id: "6",
-    name: "吃期头",
-    description: "吃期头吃期头吃期头吃期头吃期头吃期头吃期头吃期头。",
-    finishDate: "2025-03-04",
-    isFinished: 1,
-  },
-];
 
-const TodoList = () => {
+const TodoList = forwardRef((props, ref) => {
+  const { sendRequest } = useHttp();
   const [finished, setFinished] = useState(false);
   // 初始待办数据
-  const [todos, setTodos] = useState<Todo[]>(todoListData);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const onListLoad = async () => {
     setFinished(true);
   };
+  const fetchData = async () => {
+    const res: any = await sendRequest({
+      url: "/todo/list",
+      method: "GET",
+    });
+    if (res.data && res.data.length) {
+      setTodos(res.data);
+    }
+    setFinished(true);
+  };
+
+  useImperativeHandle(ref, () => ({
+    fetchData
+  }));
+
+  useEffect(() => {
+    fetchData();
+  }, []); // 空依赖数组表示只运行一次
 
   // 处理习惯点击
-  const handleClick = (id: string) => {
+  const handleClick = (id: number) => {
     setTodos(
       todos
         .map((todo) => {
@@ -95,6 +67,6 @@ const TodoList = () => {
       </List>
     </div>
   );
-};
+});
 
 export default TodoList;

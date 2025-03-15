@@ -2,7 +2,6 @@ import { Button, Input, Form, DatetimePicker } from "react-vant";
 import { Todo } from "../components/TodoList";
 import { useHttp } from "@/hooks/useHttp";
 const defaultTask: Todo = {
-  id: "",
   name: "",
   description: "",
   finishDate: "",
