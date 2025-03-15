@@ -1,15 +1,31 @@
 import { Arrow, Checked, Passed } from "@react-vant/icons";
 import { Todo } from "../TodoList";
 import "./index.scss";
+import { Popup } from "react-vant";
+import TodoForm from "../../form/TodoForm";
+import { useState } from "react";
 
 interface TodoItemParams {
   todo: Todo;
   todoClick: () => void;
+  updateList: () => void;
 }
 
-const TodoItem = ({ todo, todoClick }: TodoItemParams) => {
+const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
+  const [showDetail, setShowDetail] = useState(false);
+  const handleClick = () => {
+    setShowDetail(true);
+  };
+  const onFormClose = () => {
+    setShowDetail(false);
+    updateList();
+  };
   return (
-    <div className={`flex justify-between items-center w-full  ${todo.isFinished ? "bg-gray-50" : "bg-white"} border-b-gray-100 border-b-2 h-fit `}>
+    <div
+      className={`flex justify-between items-center w-full  ${
+        todo.isFinished ? "bg-gray-50" : "bg-white"
+      } border-b-gray-100 border-b-2 h-fit `}
+    >
       {/* 左侧区域 */}
       <div
         className="pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
@@ -56,19 +72,36 @@ const TodoItem = ({ todo, todoClick }: TodoItemParams) => {
         {/* 描述 */}
         {!todo.isFinished && (
           <div className="text-xl ml-8 text-gray-500 mt-1">
-            {todo.description && todo.description.split('\n').map((line, index) => (
-              <div key={index}>{line}</div>
-            ))}
+            {todo.description &&
+              todo.description
+                .split("\n")
+                .map((line, index) => <div key={index}>{line}</div>)}
           </div>
         )}
       </div>
       {/* 右侧区域 */}
       <div className="flex items-center ">
         {/* 更多按钮 */}
-        <div className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200">
+        <div
+          className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
+          onClick={handleClick}
+        >
           <Arrow></Arrow>
         </div>
       </div>
+      <Popup
+        visible={showDetail}
+        overlay={true}
+        round={true}
+        closeOnClickOverlay={true}
+        closeable={true}
+        title="编辑待办"
+        style={{ width: "85%", height: "100%" }}
+        position="right"
+        onClose={() => setShowDetail(false)}
+      >
+        <TodoForm todo={todo} close={onFormClose}></TodoForm>
+      </Popup>
     </div>
   );
 };

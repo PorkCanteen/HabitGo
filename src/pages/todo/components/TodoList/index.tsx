@@ -62,6 +62,7 @@ const TodoList = forwardRef((props, ref) => {
             key={todo.id}
             todo={todo}
             todoClick={() => todo.id !== undefined && handleClick(todo.id)}
+            updateList={fetchData}
           ></TodoItem>
         ))}
       </List>
