@@ -9,7 +9,7 @@ interface TodoItemParams {
 
 const TodoItem = ({ todo, todoClick }: TodoItemParams) => {
   return (
-    <div className="flex justify-between items-center w-full  bg-white border-b-gray-100 border-b-2 h-fit ">
+    <div className={`flex justify-between items-center w-full  ${todo.isFinished ? "bg-gray-50" : "bg-white"} border-b-gray-100 border-b-2 h-fit `}>
       {/* 左侧区域 */}
       <div
         className="pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
