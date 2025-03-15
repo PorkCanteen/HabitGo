@@ -1,40 +1,45 @@
 import { Button, Input, Form, DatetimePicker } from "react-vant";
 import { Todo } from "../components/TodoList";
 import { useHttp } from "@/hooks/useHttp";
-const defaultTask: Todo = {
+import dayjs from "dayjs";
+const defaultTodo: Todo = {
   name: "",
   description: "",
   finishDate: "",
   isFinished: 0,
 };
 
-const TodoForm = ({ task = defaultTask, close = () => {} }) => {
-  const isEditMode = !!task.id;
+const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
+  const isEditMode = !!todo.id;
   const [form] = Form.useForm();
   const { sendRequest } = useHttp();
 
-  const onFinish = async (values: unknown) => {
+  const onFinish = async (values: Todo) => {
+    const params = {
+      ...values,
+      finishDate: dayjs(values.finishDate).format("YYYY-MM-DD"),
+    }
     // 创建
     if (!isEditMode) {
       await sendRequest({
-        url: "/task",
+        url: "/todo",
         method: "POST",
-        data: values,
+        data: params,
       });
       close();
     } else {
       // 编辑
       await sendRequest({
-        url: `/task/${task.id}`,
+        url: `/todo/${todo.id}`,
         method: "PUT",
-        data: values,
+        data: params,
       });
       close();
     }
   };
-  const deleteTask = async () => {
+  const deleteTodo = async () => {
     await sendRequest({
-      url: `/task/${task.id}`,
+      url: `/todo/${todo.id}`,
       method: "DELETE",
     });
     close();
@@ -55,14 +60,14 @@ const TodoForm = ({ task = defaultTask, close = () => {} }) => {
                 round
                 color="#e15241"
                 block
-                onClick={deleteTask}
+                onClick={deleteTodo}
               >
                 删除
               </Button>
             )}
           </div>
         }
-        initialValues={task}
+        initialValues={todo}
       >
         <Form.Item
           tooltip={{
