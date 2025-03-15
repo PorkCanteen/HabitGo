@@ -1,4 +1,4 @@
-import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
+import { useState, forwardRef, useImperativeHandle } from "react";
 import { List } from "react-vant";
 import TaskItem from "../TaskItem";
 import { useHttp } from "@/hooks/useHttp";
@@ -32,12 +32,8 @@ const TaskList = forwardRef((props, ref) => {
   };
 
   useImperativeHandle(ref, () => ({
-    fetchData
+    fetchData,
   }));
-
-  useEffect(() => {
-    fetchData();
-  }, []); // 空依赖数组表示只运行一次
 
   // 处理习惯点击
   const handleClick = (id: number) => {
@@ -55,7 +51,7 @@ const TaskList = forwardRef((props, ref) => {
   };
 
   const onListLoad = async () => {
-    setFinished(true);
+    await fetchData();
   };
 
   return (

@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { List } from "react-vant";
 import TodoItem from "../TodoItem";
 import { useHttp } from "@/hooks/useHttp";
@@ -17,9 +17,7 @@ const TodoList = forwardRef((props, ref) => {
   const [finished, setFinished] = useState(false);
   // 初始待办数据
   const [todos, setTodos] = useState<Todo[]>([]);
-  const onListLoad = async () => {
-    setFinished(true);
-  };
+  
   const fetchData = async () => {
     const res: any = await sendRequest({
       url: "/todo/list",
@@ -35,10 +33,6 @@ const TodoList = forwardRef((props, ref) => {
     fetchData
   }));
 
-  useEffect(() => {
-    fetchData();
-  }, []); // 空依赖数组表示只运行一次
-
   // 处理习惯点击
   const handleClick = (id: number) => {
     setTodos(
@@ -52,6 +46,10 @@ const TodoList = forwardRef((props, ref) => {
         })
         .sort((a, b) => a.isFinished - b.isFinished)
     );
+  };
+
+  const onListLoad = async () => {
+    await fetchData()
   };
 
   return (
