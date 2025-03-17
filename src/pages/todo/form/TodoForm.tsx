@@ -2,6 +2,7 @@ import { Button, Input, Form, DatetimePicker } from "react-vant";
 import { Todo } from "../components/TodoList";
 import { useHttp } from "@/hooks/useHttp";
 import dayjs from "dayjs";
+import { Notify } from "@/pages/components/Notify";
 const defaultTodo: Todo = {
   name: "",
   description: "",
@@ -26,6 +27,7 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
         method: "POST",
         data: params,
       });
+      Notify.show({ type: 'success', message: '创建成功' });
       close();
     } else {
       // 编辑
@@ -34,6 +36,7 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
         method: "PUT",
         data: params,
       });
+      Notify.show({ type: 'success', message: '修改成功' });
       close();
     }
   };
@@ -42,6 +45,7 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
       url: `/todo/${todo.id}`,
       method: "DELETE",
     });
+    Notify.show({ type: 'success', message: '删除成功' });
     close();
   };
   return (

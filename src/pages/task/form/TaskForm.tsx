@@ -2,6 +2,7 @@ import { Button, Input, Form, Radio } from "react-vant";
 import { Task } from "../components/TaskList";
 import { useHttp } from "@/hooks/useHttp";
 import { useState } from "react";
+import { Notify } from "@/pages/components/Notify";
 const defaultTask: Task = {
   name: "",
   count: 0,
@@ -29,6 +30,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
         method: "POST",
         data: values,
       });
+      Notify.show({ type: 'success', message: '创建成功' });
       close();
     } else {
       // 编辑
@@ -37,6 +39,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
         method: "PUT",
         data: values,
       });
+      Notify.show({ type: 'success', message: '修改成功' });
       close();
     }
   };
@@ -45,6 +48,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
       url: `/task/${task.id}`,
       method: "DELETE",
     });
+    Notify.show({ type: 'success', message: '删除成功' });
     close();
   };
   return (
