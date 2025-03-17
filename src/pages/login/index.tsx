@@ -1,8 +1,16 @@
-import { Form, Input, Button, Dialog } from "react-vant";
+import { Form, Input, Button } from "react-vant";
 import dogIconBold from "@/assets/dogIconBold.png";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
+import { Notify } from "../components/Notify";
+
+// 定义 LoginResponse 接口
+interface LoginResponse {
+  code: string;
+  message: string;
+  // 其他可能的字段
+}
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,19 +18,17 @@ const Login = () => {
   
   const handleLogin = async (values: { username: string; password: string }) => {
     // 预留请求接口
-    const res: any = await sendRequest({
+    const res: LoginResponse | null = await sendRequest({
       url: "/user/login",
       method: "POST",
       data: values,
     });
-    console.log("Login values:", res);
-    if(res.code === "200") {
+
+    // 添加类型检查
+    if (res && res.code === "200") {
       navigate("/task");
     } else {
-      console.log("Login failed:", res.message);
-      // Dialog.alert({
-      //   message: res.message,
-      // })
+      Notify.show({ type: 'danger', message: res?.message || '系统错误' });
     }
   };
 

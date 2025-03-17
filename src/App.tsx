@@ -2,7 +2,7 @@ import { RouterProvider } from "react-router";
 import router from "./router";
 import "normalize.css";
 import "./App.css";
-
+import { Notify } from "./pages/components/Notify";
 function App() {
   return (
     <div className="h-full w-full">
@@ -10,6 +10,7 @@ function App() {
       <div className="router-container">
         <RouterProvider router={router} />
       </div>
+      <Notify.Component />
     </div>
   );
 }
