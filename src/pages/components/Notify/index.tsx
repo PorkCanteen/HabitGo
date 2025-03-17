@@ -23,7 +23,7 @@ const NotifyComponent: React.FC = () => {
     isMounted: false,
     message: "",
     type: "info",
-    duration: 2000,
+    duration: 1000,
   });
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const NotifyComponent: React.FC = () => {
 
   const typeStyles = {
     info: { backgroundColor: "#1989fa" },
-    success: { backgroundColor: "#3cbd53" },
+    success: { backgroundColor: "#5ac561" },
     warning: { backgroundColor: "#ff976a" },
     danger: { backgroundColor: "#e84c34" },
   };
@@ -86,7 +86,7 @@ const NotifyComponent: React.FC = () => {
   );
 };
 
-export const Notify = {
+const Notify = {
   Component: NotifyComponent,
   show: (options: NotifyOptions) => {
     if (setGlobalState) {
@@ -100,3 +100,5 @@ export const Notify = {
     }
   },
 };
+
+export default Notify;

@@ -3,7 +3,7 @@ import dogIconBold from "@/assets/dogIconBold.png";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
-import { Notify } from "../components/Notify";
+import Notify from "../components/Notify";
 
 // 定义 LoginResponse 接口
 interface LoginResponse {

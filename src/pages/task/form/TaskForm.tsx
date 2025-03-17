@@ -2,7 +2,7 @@ import { Button, Input, Form, Radio } from "react-vant";
 import { Task } from "../components/TaskList";
 import { useHttp } from "@/hooks/useHttp";
 import { useState } from "react";
-import { Notify } from "@/pages/components/Notify";
+import Notify from "@/pages/components/Notify";
 const defaultTask: Task = {
   name: "",
   count: 0,

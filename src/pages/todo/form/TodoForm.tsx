@@ -2,7 +2,7 @@ import { Button, Input, Form, DatetimePicker } from "react-vant";
 import { Todo } from "../components/TodoList";
 import { useHttp } from "@/hooks/useHttp";
 import dayjs from "dayjs";
-import { Notify } from "@/pages/components/Notify";
+import Notify from "@/pages/components/Notify";
 const defaultTodo: Todo = {
   name: "",
   description: "",
