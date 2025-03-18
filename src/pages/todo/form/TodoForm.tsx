@@ -1,4 +1,4 @@
-import { Button, Input, Form, DatetimePicker } from "react-vant";
+import { Button, Input, Form, DatetimePicker, Radio } from "react-vant";
 import { Todo } from "../components/TodoList";
 import { useHttp } from "@/hooks/useHttp";
 import dayjs from "dayjs";
@@ -6,6 +6,7 @@ import Notify from "@/pages/components/Notify";
 const defaultTodo: Todo = {
   name: "",
   description: "",
+  type: 1,
   finishDate: "",
   isFinished: 0,
 };
@@ -19,7 +20,7 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
     const params = {
       ...values,
       finishDate: dayjs(values.finishDate).format("YYYY-MM-DD"),
-    }
+    };
     // 创建
     if (!isEditMode) {
       await sendRequest({
@@ -27,7 +28,7 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
         method: "POST",
         data: params,
       });
-      Notify.show({ type: 'success', message: '创建成功' });
+      Notify.show({ type: "success", message: "创建成功" });
       close();
     } else {
       // 编辑
@@ -36,7 +37,7 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
         method: "PUT",
         data: params,
       });
-      Notify.show({ type: 'success', message: '修改成功' });
+      Notify.show({ type: "success", message: "修改成功" });
       close();
     }
   };
@@ -45,7 +46,7 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
       url: `/todo/${todo.id}`,
       method: "DELETE",
     });
-    Notify.show({ type: 'success', message: '删除成功' });
+    Notify.show({ type: "success", message: "删除成功" });
     close();
   };
   return (
@@ -92,6 +93,16 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
             placeholder="请输入待办详情"
             autoSize={{ minHeight: 120 }}
           />
+        </Form.Item>
+        <Form.Item
+          rules={[{ required: true, message: "请选择待办类型" }]}
+          name="type"
+          label="待办类型"
+        >
+          <Radio.Group defaultValue="1" direction="horizontal">
+            <Radio name="1" checkedColor="#f8a128">紧急</Radio>
+            <Radio name="2" checkedColor="#f8a128">常规</Radio>
+          </Radio.Group>
         </Form.Item>
         <Form.Item
           rules={[{ required: true, message: "请选择完成时间" }]}

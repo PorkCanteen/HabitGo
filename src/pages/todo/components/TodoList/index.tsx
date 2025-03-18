@@ -7,6 +7,7 @@ import { useHttp } from "@/hooks/useHttp";
 export interface Todo {
   id?: number;
   name: string;
+  type?: number;
   description?: string;
   finishDate: string;
   isFinished: number;
