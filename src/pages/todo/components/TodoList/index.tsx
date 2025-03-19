@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import { List } from "react-vant";
 import TodoItem from "../TodoItem";
 import { useHttp } from "@/hooks/useHttp";
-import "./index.scss";
+import "@/styles/common.scss";
 
 // 习惯项
 export interface Todo {

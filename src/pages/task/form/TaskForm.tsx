@@ -107,7 +107,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
           name="taskType"
           label="分类"
         >
-          <Radio.Group>
+          <Radio.Group direction="horizontal">
             <Radio name={1} iconSize={15} checkedColor="#f8a128">
               主要
             </Radio>
@@ -121,7 +121,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
           name="targetType"
           label="目标类型"
         >
-          <Radio.Group onChange={handleTargetTypeChange}>
+          <Radio.Group onChange={handleTargetTypeChange} direction="horizontal">
             <Radio name={1} iconSize={15} checkedColor="#f8a128">
               按日
             </Radio>
