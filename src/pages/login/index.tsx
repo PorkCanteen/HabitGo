@@ -4,13 +4,7 @@ import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "../components/Notify";
-
-// 定义 LoginResponse 接口
-interface LoginResponse {
-  code: string;
-  message: string;
-  // 其他可能的字段
-}
+import { ResponseData } from "@/utils/http";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,7 +12,7 @@ const Login = () => {
   
   const handleLogin = async (values: { username: string; password: string }) => {
     // 预留请求接口
-    const res: LoginResponse | null = await sendRequest({
+    const res: ResponseData | null = await sendRequest({
       url: "/user/login",
       method: "POST",
       data: values,

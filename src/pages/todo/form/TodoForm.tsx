@@ -3,6 +3,7 @@ import { Todo } from "../components/TodoList";
 import { useHttp } from "@/hooks/useHttp";
 import dayjs from "dayjs";
 import Notify from "@/pages/components/Notify";
+import { ResponseData } from "@/utils/http";
 const defaultTodo: Todo = {
   name: "",
   description: "",
@@ -23,22 +24,31 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
     };
     // 创建
     if (!isEditMode) {
-      await sendRequest({
+      const res: ResponseData | null = await sendRequest({
         url: "/todo",
         method: "POST",
         data: params,
       });
-      Notify.show({ type: "success", message: "创建成功" });
-      close();
+
+      if (res && res.code === "200") {
+        Notify.show({ type: "success", message: "创建成功" });
+        close();
+      } else {
+        Notify.show({ type: "danger", message: res?.message || "系统错误" });
+      }
     } else {
       // 编辑
-      await sendRequest({
+      const res: ResponseData | null = await sendRequest({
         url: `/todo/${todo.id}`,
         method: "PUT",
         data: params,
       });
-      Notify.show({ type: "success", message: "修改成功" });
-      close();
+      if (res && res.code === "200") {
+        Notify.show({ type: "success", message: "修改成功" });
+        close();
+      } else {
+        Notify.show({ type: "danger", message: res?.message || "系统错误" });
+      }
     }
   };
   const deleteTodo = async () => {
@@ -99,9 +109,13 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
           name="type"
           label="待办类型"
         >
-          <Radio.Group defaultValue="1" direction="horizontal">
-            <Radio name="1" checkedColor="#f8a128">紧急</Radio>
-            <Radio name="2" checkedColor="#f8a128">常规</Radio>
+          <Radio.Group defaultValue={1} direction="horizontal">
+            <Radio name={1} checkedColor="#f8a128">
+              紧急
+            </Radio>
+            <Radio name={2} checkedColor="#f8a128">
+              常规
+            </Radio>
           </Radio.Group>
         </Form.Item>
         <Form.Item

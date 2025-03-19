@@ -69,3 +69,10 @@ export const http = {
   put: <T>(url: string, data?: unknown) => request<T>({ url, method: "PUT", data }),
   delete: <T>(url: string) => request<T>({ url, method: "DELETE" }),
 };
+
+export interface ResponseData {
+  code: string;
+  message: string;
+  data?: unknown;
+  // 其他可能的字段
+}

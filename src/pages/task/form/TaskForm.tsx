@@ -3,6 +3,7 @@ import { Task } from "../components/TaskList";
 import { useHttp } from "@/hooks/useHttp";
 import { useState } from "react";
 import Notify from "@/pages/components/Notify";
+import { ResponseData } from "@/utils/http";
 const defaultTask: Task = {
   name: "",
   count: 0,
@@ -25,22 +26,30 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
   const onFinish = async (values: unknown) => {
     // 创建
     if (!isEditMode) {
-      await sendRequest({
+      const res: ResponseData | null = await sendRequest({
         url: "/task",
         method: "POST",
         data: values,
       });
-      Notify.show({ type: 'success', message: '创建成功' });
-      close();
+      if (res && res.code === "200") {
+        Notify.show({ type: "success", message: "创建成功" });
+        close();
+      } else {
+        Notify.show({ type: "danger", message: res?.message || "系统错误" });
+      }
     } else {
       // 编辑
-      await sendRequest({
+      const res: ResponseData | null = await sendRequest({
         url: `/task/${task.id}`,
         method: "PUT",
         data: values,
       });
-      Notify.show({ type: 'success', message: '修改成功' });
-      close();
+      if (res && res.code === "200") {
+        Notify.show({ type: "success", message: "修改成功" });
+        close();
+      } else {
+        Notify.show({ type: "danger", message: res?.message || "系统错误" });
+      }
     }
   };
   const deleteTask = async () => {
@@ -48,7 +57,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
       url: `/task/${task.id}`,
       method: "DELETE",
     });
-    Notify.show({ type: 'success', message: '删除成功' });
+    Notify.show({ type: "success", message: "删除成功" });
     close();
   };
   return (
