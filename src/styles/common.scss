@@ -1,3 +1,4 @@
+// 列表-分类tab
 .tab-card {
   padding: 4px 10px;
   border-radius: 4px 4px 0 0;
@@ -11,5 +12,12 @@
     background-color: #dd9b4d;
     color: #fff;
     border: 0;
+  }
+}
+// 列表
+.list-container {
+  height: calc(100% - 40px);
+  .list {
+    height: calc(100% - 30px);
   }
 }

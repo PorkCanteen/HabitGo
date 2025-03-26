@@ -70,7 +70,7 @@ const TodoList = forwardRef((props, ref) => {
     setTodos(filter(allTodos));
   };
   return (
-    <div className="h-full">
+    <div className="list-container">
       <div className="flex pl-2 mt-2">
         {tabs.map((tab) => (
           <div
@@ -82,7 +82,7 @@ const TodoList = forwardRef((props, ref) => {
           </div>
         ))}
       </div>
-      <div className="px-2 pb-2 h-full overflow-y-auto">
+      <div className="list px-2 pb-2 overflow-y-auto">
         <List onLoad={onListLoad} finished={finished}>
           {todos.map((todo) => (
             <TodoItem

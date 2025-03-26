@@ -20,10 +20,10 @@ const TaskList = forwardRef((props, ref) => {
   const { sendRequest } = useHttp();
   const [finished, setFinished] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [allTasks, setAllTasks] = useState<Task[]>([]);  // 新增状态保存所有数据
-  const [activeTab, setActiveTab] = useState("全部");  // 新增状态管理
+  const [allTasks, setAllTasks] = useState<Task[]>([]); // 新增状态保存所有数据
+  const [activeTab, setActiveTab] = useState("全部"); // 新增状态管理
 
-  const tabs = ["全部", "主要", "次要"];  // 新增tab列表
+  const tabs = ["全部", "主要", "次要"]; // 新增tab列表
 
   const fetchData = async () => {
     const res: any = await sendRequest({
@@ -31,16 +31,16 @@ const TaskList = forwardRef((props, ref) => {
       method: "GET",
     });
     if (res.data && res.data.length) {
-      setAllTasks(res.data);  // 保存所有数据
-      setTasks(res.data);     // 初始化显示所有数据
+      setAllTasks(res.data); // 保存所有数据
+      setTasks(res.data); // 初始化显示所有数据
     }
     setFinished(true);
   };
 
   const tabFilters = {
-    "全部": (tasks: Task[]) => tasks,
-    "主要": (tasks: Task[]) => tasks.filter(task => task.taskType === 1),
-    "次要": (tasks: Task[]) => tasks.filter(task => task.taskType === 2),
+    全部: (tasks: Task[]) => tasks,
+    主要: (tasks: Task[]) => tasks.filter((task) => task.taskType === 1),
+    次要: (tasks: Task[]) => tasks.filter((task) => task.taskType === 2),
   };
 
   const handleTabClick = (tab: string) => {
@@ -72,7 +72,7 @@ const TaskList = forwardRef((props, ref) => {
   };
 
   return (
-    <div className="h-full">
+    <div className="list-container">
       <div className="flex pl-2 mt-2">
         {tabs.map((tab) => (
           <div
@@ -84,7 +84,7 @@ const TaskList = forwardRef((props, ref) => {
           </div>
         ))}
       </div>
-      <div className="px-2 pb-2 h-full overflow-y-auto">
+      <div className="list px-2 pb-2 overflow-y-auto">
         <List onLoad={onListLoad} finished={finished}>
           {tasks.map((task) => (
             <TaskItem
