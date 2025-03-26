@@ -82,7 +82,7 @@ const TodoList = forwardRef((props, ref) => {
           </div>
         ))}
       </div>
-      <div className=" p-2 h-full overflow-y-auto">
+      <div className="px-2 pb-2 h-full overflow-y-auto">
         <List onLoad={onListLoad} finished={finished}>
           {todos.map((todo) => (
             <TodoItem
