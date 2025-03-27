@@ -13,7 +13,7 @@ const SettingBoard = () => {
         <img
           src={dogIcon}
           alt="avatar"
-          className="avatar w-60 h-60 rounded-full"
+          className="avatar w-60 h-60 rounded-full bg-white"
         />
       </div>
       <div className="username text-3xl font-medium mb-12">肥肠粉加节子</div>
