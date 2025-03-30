@@ -5,12 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "../components/Notify";
 import { ResponseData } from "@/utils/http";
+import Cookie from "js-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
-  const {sendRequest} = useHttp();
-  
-  const handleLogin = async (values: { username: string; password: string }) => {
+  const { sendRequest } = useHttp();
+
+  const handleLogin = async (values: {
+    username: string;
+    password: string;
+  }) => {
     // 预留请求接口
     const res: ResponseData | null = await sendRequest({
       url: "/user/login",
@@ -21,8 +25,12 @@ const Login = () => {
     // 添加类型检查
     if (res && res.code === "200") {
       navigate("/task");
+      // 保存登录信息到cookie
+      if (res.data) {
+        Cookie.set("user", JSON.stringify(res.data));
+      }
     } else {
-      Notify.show({ type: 'danger', message: res?.message || '系统错误' });
+      Notify.show({ type: "danger", message: res?.message || "系统错误" });
     }
   };
 
