@@ -8,6 +8,7 @@ const SettingBoard = () => {
   const nickname = useState(Cookies.get('user') ? JSON.parse(Cookies.get('user') as string).nickname : '')
   const navigate = useNavigate();
   const handleLogout = () => {
+    Cookies.remove('user');
     navigate("/login");
   };
 

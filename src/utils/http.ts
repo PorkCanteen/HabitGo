@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 export interface RequestConfig {
@@ -20,7 +22,14 @@ const globalConfig = {
 
 // 请求拦截器
 const requestInterceptor = (config: RequestConfig): RequestConfig => {
-  // 可以在这里添加token等全局处理
+  // 排除登录接口的检查
+  if (!config.url.includes('/login')) {
+    const user = Cookies.get('user');
+    if (!user) {
+      window.location.href = '/login';
+      throw new Error('用户未登录');
+    }
+  }
   return config;
 };
 
