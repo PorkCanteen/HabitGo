@@ -8,7 +8,7 @@ const defaultTodo: Todo = {
   name: "",
   description: "",
   type: 1,
-  finishDate: "",
+  finishDate: dayjs().format("YYYY-MM-DD"), // 设置默认值为当前日期
   isFinished: 0,
 };
 
