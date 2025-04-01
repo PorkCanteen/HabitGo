@@ -13,7 +13,7 @@ export interface RequestConfig {
 
 // 全局配置
 const globalConfig = {
-  baseUrl: "http://localhost:8080",
+  baseUrl: "http://localhost:8080/api",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
