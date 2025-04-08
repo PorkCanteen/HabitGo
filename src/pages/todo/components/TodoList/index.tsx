@@ -3,6 +3,7 @@ import { List } from "react-vant";
 import TodoItem from "../TodoItem";
 import { useHttp } from "@/hooks/useHttp";
 import "@/styles/common.scss";
+import Notify from "@/pages/components/Notify";
 
 // 习惯项
 export interface Todo {
@@ -40,18 +41,18 @@ const TodoList = forwardRef((props, ref) => {
   }));
 
   // 处理习惯点击
-  const handleClick = (id: number) => {
-    setTodos(
-      todos
-        .map((todo) => {
-          if (todo.id === id) {
-            const finished = todo.isFinished ? 0 : 1;
-            return { ...todo, isFinished: finished };
-          }
-          return todo;
-        })
-        .sort((a, b) => a.isFinished - b.isFinished)
-    );
+  const handleClick = async (id: number) => {
+    const res: any = await sendRequest({
+      url: `/todo/complete/${id}`,
+      method: "PUT",
+    });
+    if (res && res.code === "200") {
+      Notify.show({ type: "success", message: '操作成功' });
+      close();
+    } else {
+      Notify.show({ type: "danger", message: res?.message || "系统错误" });
+    }
+    fetchData();
   };
 
   const onListLoad = async () => {
