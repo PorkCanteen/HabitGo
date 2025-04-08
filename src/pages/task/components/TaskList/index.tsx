@@ -3,6 +3,7 @@ import { List } from "react-vant";
 import TaskItem from "../TaskItem";
 import { useHttp } from "@/hooks/useHttp";
 import "@/styles/common.scss";
+import Notify from "@/pages/components/Notify";
 
 // 习惯项
 export interface Task {
@@ -53,18 +54,28 @@ const TaskList = forwardRef((props, ref) => {
   }));
 
   // 处理习惯点击
-  const handleClick = (id: number) => {
-    setTasks(
-      tasks.map((task) => {
-        if (task.id === id) {
-          const complete = task.isCompleted === 1 ? 0 : 1;
-          // 只在标记为完成时增加次数，取消完成时保持次数不变
-          const newCount = complete ? task.count + 1 : task.count;
-          return { ...task, isCompleted: complete, count: newCount };
-        }
-        return task;
-      })
-    );
+  const handleClick = async (id: number) => {
+    const res: any = await sendRequest({
+      url: `/task/toggle/${id}`,
+      method: "PUT",
+    });
+    if (res && res.code === "200") {
+      Notify.show({ type: "success", message: '操作成功' });
+    } else {
+      Notify.show({ type: "danger", message: res?.message || "系统错误" });
+    }
+    fetchData();
+    // setTasks(
+    //   tasks.map((task) => {
+    //     if (task.id === id) {
+    //       const complete = task.isCompleted === 1 ? 0 : 1;
+    //       // 只在标记为完成时增加次数，取消完成时保持次数不变
+    //       const newCount = complete ? task.count + 1 : task.count;
+    //       return { ...task, isCompleted: complete, count: newCount };
+    //     }
+    //     return task;
+    //   })
+    // );
   };
 
   const onListLoad = async () => {

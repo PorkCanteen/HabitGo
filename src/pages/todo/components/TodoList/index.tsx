@@ -48,7 +48,6 @@ const TodoList = forwardRef((props, ref) => {
     });
     if (res && res.code === "200") {
       Notify.show({ type: "success", message: '操作成功' });
-      close();
     } else {
       Notify.show({ type: "danger", message: res?.message || "系统错误" });
     }
