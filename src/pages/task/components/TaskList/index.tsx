@@ -65,17 +65,6 @@ const TaskList = forwardRef((props, ref) => {
       Notify.show({ type: "danger", message: res?.message || "系统错误" });
     }
     fetchData();
-    // setTasks(
-    //   tasks.map((task) => {
-    //     if (task.id === id) {
-    //       const complete = task.isCompleted === 1 ? 0 : 1;
-    //       // 只在标记为完成时增加次数，取消完成时保持次数不变
-    //       const newCount = complete ? task.count + 1 : task.count;
-    //       return { ...task, isCompleted: complete, count: newCount };
-    //     }
-    //     return task;
-    //   })
-    // );
   };
 
   const onListLoad = async () => {
