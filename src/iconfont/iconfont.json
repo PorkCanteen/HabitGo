@@ -1,0 +1,114 @@
+{
+  "id": "4890283",
+  "name": "gogohabit",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "12044044",
+      "name": "003-calendar",
+      "font_class": "-calendar",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "12044048",
+      "name": "009-star",
+      "font_class": "-star",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "12044049",
+      "name": "006-settings",
+      "font_class": "-settings",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "12044050",
+      "name": "005-heart",
+      "font_class": "-heart",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "12044054",
+      "name": "015-smile",
+      "font_class": "-smile",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "12044058",
+      "name": "012-dead",
+      "font_class": "-dead",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "12044059",
+      "name": "011-bored",
+      "font_class": "-bored",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "12044061",
+      "name": "014-shy",
+      "font_class": "-shy",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "12044065",
+      "name": "013-happy",
+      "font_class": "-happy",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "12044071",
+      "name": "023-users",
+      "font_class": "-users",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "12044075",
+      "name": "028-bell",
+      "font_class": "-bell",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "12044082",
+      "name": "041-bar-chart",
+      "font_class": "-bar-chart",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "12044083",
+      "name": "048-chat-1",
+      "font_class": "-chat-",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "12044089",
+      "name": "050-home",
+      "font_class": "-home",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "12044092",
+      "name": "044-trash",
+      "font_class": "-trash",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    }
+  ]
+}
