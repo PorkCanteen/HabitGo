@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 // 图标大小
-const IconSize = "1.2em";
+const IconSize = 24;
 interface tabItem {
   name: string;
   text: string; // 显示文本
@@ -17,19 +17,46 @@ const originalTabList: Array<tabItem> = [
   {
     name: "task",
     text: "习惯",
-    icon: <SmileO fontSize={IconSize} />,
+    icon: (
+      <svg
+        className="icon"
+        aria-hidden="true"
+        width={IconSize}
+        height={IconSize}
+      >
+        <use xlinkHref="#icon--star"></use>
+      </svg>
+    ),
     path: "/task",
   },
   {
     name: "todo",
     text: "待办",
-    icon: <TodoListO fontSize={IconSize} />,
+    icon: (
+      <svg
+        className="icon"
+        aria-hidden="true"
+        width={IconSize}
+        height={IconSize}
+      >
+        <use xlinkHref="#icon--calendar"></use>
+      </svg>
+    ),
     path: "/todo",
   },
   {
     name: "setting",
     text: "设置",
-    icon: <SettingO fontSize={IconSize} />,
+    icon: (
+      <svg
+        className="icon"
+        aria-hidden="true"
+        width={IconSize}
+        height={IconSize}
+      >
+        <use xlinkHref="#icon--settings"></use>
+      </svg>
+    ),
     path: "/setting",
   },
 ];
