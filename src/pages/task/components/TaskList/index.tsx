@@ -17,7 +17,7 @@ export interface Task {
   targetCount: number;
 }
 
-const TaskList = forwardRef((props, ref) => {
+const TaskList = forwardRef((_props, ref) => {
   const { sendRequest } = useHttp();
   const [finished, setFinished] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);

@@ -15,7 +15,7 @@ export interface Todo {
   isFinished: number;
 }
 
-const TodoList = forwardRef((props, ref) => {
+const TodoList = forwardRef((_props, ref) => {
   const { sendRequest } = useHttp();
   const [finished, setFinished] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
