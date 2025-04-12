@@ -7,8 +7,8 @@ import autoprefixer from "autoprefixer";
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: "0.0.0.0", // 这个用于启动
-    port: 9090, // 指定启动端口
+    host: "0.0.0.0",
+    port: 9090,
   },
   css: {
     postcss: {
@@ -20,4 +20,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  define: {
+    'process.env': {
+      VITE_API_URL: 'http://47.109.155.8:3000'
+    }
+  }
 });

@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { API_BASE_URL } from "@/config";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -13,7 +14,7 @@ export interface RequestConfig {
 
 // 全局配置
 const globalConfig = {
-  baseUrl: "http://localhost:8080/api",
+  baseUrl: `${API_BASE_URL}/api`,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
