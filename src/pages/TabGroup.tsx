@@ -1,8 +1,8 @@
-import { SettingO, SmileO, TodoListO } from "@react-vant/icons";
 import { Tabbar } from "react-vant";
 import { map } from "lodash";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import "./TabGroup.css";  // 添加这行
 
 // 图标大小
 const IconSize = 24;
@@ -86,6 +86,7 @@ const TabGroup = () => {
             name={tab.name}
             icon={tab.icon}
             badge={tab.badge}
+            className={tab.name === tabName ? "active-tab" : ""}
           >
             {tab.text}
           </Tabbar.Item>

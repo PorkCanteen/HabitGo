@@ -1,0 +1,26 @@
+.rv-tabbar-item.active-tab {
+  position: relative;
+}
+
+.rv-tabbar-item.active-tab::before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 36px;
+  background-color: rgba(250, 223, 99, 0.5);
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: scaleUp 0.3s ease forwards;
+}
+
+@keyframes scaleUp {
+  from {
+    transform: translateX(-50%) scale(0);
+  }
+  to {
+    transform: translateX(-50%) scale(1);
+  }
+}
