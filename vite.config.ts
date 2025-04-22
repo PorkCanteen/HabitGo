@@ -9,6 +9,12 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 9090,
+    proxy: {
+      "/api": {
+        target: "http://47.109.155.8:9090/",
+        changeOrigin: true,
+      },
+    },
   },
   css: {
     postcss: {
@@ -21,8 +27,8 @@ export default defineConfig({
     },
   },
   define: {
-    'process.env': {
-      VITE_API_URL: 'http://47.109.155.8:3000'
-    }
-  }
+    "process.env": {
+      VITE_API_URL: "http://47.109.155.8:3000",
+    },
+  },
 });
