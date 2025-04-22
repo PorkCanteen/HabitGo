@@ -1,5 +1,5 @@
-import { Arrow, Star, StarO } from "@react-vant/icons";
-import { useState } from "react";
+import { Arrow } from "@react-vant/icons";
+import { useState, useEffect } from "react";
 import { Popup } from "react-vant";
 import TaskForm from "../../form/TaskForm";
 import "./index.scss";
@@ -10,6 +10,8 @@ interface TaskItemParams {
   taskClick: () => void;
   updateList: () => void;
 }
+// 图标大小
+const IconSize = 16;
 
 const taskTypeMap: Record<number, { text: string; color: string }> = {
   1: {
@@ -24,6 +26,18 @@ const taskTypeMap: Record<number, { text: string; color: string }> = {
 
 const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // 监听task.isCompleted的变化，当从false变为true时触发动画
+  useEffect(() => {
+    if (task.isCompleted) {
+      setIsAnimating(true);
+      // 动画结束后重置状态
+      const timer = setTimeout(() => setIsAnimating(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [task.isCompleted]);
+
   const handleClick = () => {
     setShowDetail(true);
   };
@@ -42,15 +56,29 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
         <div className="flex items-center icon-wrapper">
           <span className="text-2xl">
             {task.isCompleted ? (
-              <Star
-                color="orange"
-                className={`${task.isCompleted ? "icon active" : "icon"}`}
-              ></Star>
+              <div className="coin-container relative">
+                {/* 椭圆形影子 */}
+                {(isAnimating || task.isCompleted) && (
+                  <div className={isAnimating ? "coin-shadow shadow-animation" : "coin-shadow"}></div>
+                )}
+                <svg
+                  className={`icon ${isAnimating ? "coin-jump-animation" : ""}`}
+                  aria-hidden="true"
+                  width={IconSize}
+                  height={IconSize}
+                >
+                  <use xlinkHref="#icon-xiangsu_jinbi"></use>
+                </svg>
+              </div>
             ) : (
-              <StarO
-                color="#333"
-                className={`${!task.isCompleted ? "icon" : "icon leaving"}`}
-              ></StarO>
+              <svg
+                className="icon opacity-50"
+                aria-hidden="true"
+                width={IconSize}
+                height={IconSize}
+              >
+                <use xlinkHref="#icon-xiangsu_jinbi1"></use>
+              </svg>
             )}
           </span>
           <span className="text-2xl ml-2 flex items-center">
