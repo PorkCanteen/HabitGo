@@ -1,10 +1,9 @@
-import { Arrow } from "@react-vant/icons";
 import { useState, useEffect } from "react";
 import { Popup } from "react-vant";
 import TaskForm from "../../form/TaskForm";
 import "./index.scss";
 import { Task } from "../TaskList";
-import PixelBorder from "@/pages/components/PixelBox";
+import PixelBox from "@/pages/components/PixelBox";
 
 interface TaskItemParams {
   task: Task;
@@ -47,7 +46,10 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
     updateList();
   };
   return (
-    <div className="flex justify-between items-center w-full  bg-white border-b-gray-100 border-b-4 h-28 ">
+    <div
+      className="flex justify-between items-center w-full  bg-white  h-28 "
+      style={{ borderBottom: "4px solid #f7f7f6" }}
+    >
       {/* 左侧区域 */}
       <div
         className="pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
@@ -91,7 +93,7 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
           <span className="text-3xl ml-2 flex items-center ">
             {task.name}
             {taskTypeMap[task.taskType] && (
-              <PixelBorder
+              <PixelBox
                 className="ml-2"
                 borderColor={taskTypeMap[task.taskType].color}
               >
@@ -101,7 +103,7 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
                 >
                   {taskTypeMap[task.taskType].text}
                 </div>
-              </PixelBorder>
+              </PixelBox>
             )}
           </span>
         </div>

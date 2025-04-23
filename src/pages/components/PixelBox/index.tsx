@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 
-interface PixelBorderProps {
+interface PixelBoxProps {
   children?: React.ReactNode;
   borderColor?: string;
   borderWidth?: number;
@@ -10,7 +10,7 @@ interface PixelBorderProps {
   style?: CSSProperties;
 }
 
-const PixelBorder: React.FC<PixelBorderProps> = ({
+const PixelBox: React.FC<PixelBoxProps> = ({
   children,
   borderColor = "#333",
   borderWidth = 3,
@@ -93,4 +93,4 @@ const Corner: React.FC<{
   return <div style={cornerStyle} />;
 };
 
-export default PixelBorder;
+export default PixelBox;
