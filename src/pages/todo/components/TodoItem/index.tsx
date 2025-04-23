@@ -56,35 +56,33 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
           >
             {/* 名称 */}
             <span>{todo.name}</span>
-            
           </span>
         </div>
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between w-full pl-10">
           {/* 剩余/超期时间 */}
-        {!todo.isFinished && (
-          <PixelBox
-            className="ml-10"
-            borderColor={
-              calculateDayDifference(todo.finishDate).isDelay
-                ? "bg-red-500"
-                : "bg-green-500"
-            }
-          >
-            <div
-              className={`text-2xl px-3 ${
+          {!todo.isFinished && (
+            <PixelBox
+              borderColor={
                 calculateDayDifference(todo.finishDate).isDelay
                   ? "bg-red-500"
                   : "bg-green-500"
-              } text-white mt-1 w-fit`}
+              }
             >
-              {calculateDayDifference(todo.finishDate).text}
-            </div>
-          </PixelBox>
-        )}
+              <div
+                className={`text-2xl px-3 ${
+                  calculateDayDifference(todo.finishDate).isDelay
+                    ? "bg-red-500"
+                    : "bg-green-500"
+                } text-white mt-1 w-fit`}
+              >
+                {calculateDayDifference(todo.finishDate).text}
+              </div>
+            </PixelBox>
+          )}
           {/* 计划时间 */}
-          <span className="text-2xl">计划时间：{todo.finishDate}</span>
+          <span className={todo.isFinished ? "text-gray-500" : "" + " text-2xl"} >计划时间：{todo.finishDate}</span>
         </div>
-        
+
         {/* 描述 */}
         {!todo.isFinished && (
           <div className="text-2xl ml-10 text-gray-500 mt-1">
