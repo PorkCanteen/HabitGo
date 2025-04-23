@@ -1,4 +1,4 @@
-import { Form, Input, Button } from "react-vant";
+import { Form, Input } from "react-vant";
 import dogIconBold from "@/assets/dogIconBold.png";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
@@ -6,8 +6,10 @@ import { useHttp } from "@/hooks/useHttp";
 import Notify from "../components/Notify";
 import { ResponseData } from "@/utils/http";
 import Cookie from "js-cookie";
+import PixelBox from "../components/PixelBox";
 
 const Login = () => {
+  const [form] = Form.useForm();
   const navigate = useNavigate();
   const { sendRequest } = useHttp();
 
@@ -44,10 +46,10 @@ const Login = () => {
             className="w-40 mb-10 mx-auto"
           />
         </div>
-        <h1 className="text-5xl font-bold mb-15">
+        <h1 className="text-7xl font-bold mb-15">
           <span style={{ color: "#f19c34" }}>GoGo</span>Habit
         </h1>
-        <Form onFinish={handleLogin} className="w-full">
+        <Form form={form} onFinish={handleLogin} className="w-full">
           <Form.Item
             name="username"
             label={<span>账号</span>}
@@ -65,15 +67,20 @@ const Login = () => {
             <Input type="password" placeholder="密码" />
           </Form.Item>
           <div className="flex justify-center">
-            <Button
-              round
-              nativeType="submit"
-              color="#f19c34"
-              block
-              className="w-1/2 mt-6"
+            <PixelBox
+              borderColor="#f19c34"
+              borderWidth={6}
+              gapSize={6}
+              backgroundColor="#f9f2e3"
             >
-              登录
-            </Button>
+              <div
+                className="text-2xl px-28 py-4 text-white"
+                style={{ backgroundColor: "#f19c34" }}
+                onClick={() => form.submit()}
+              >
+                登录
+              </div>
+            </PixelBox>
           </div>
         </Form>
       </div>
