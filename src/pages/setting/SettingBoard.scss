@@ -4,15 +4,11 @@
   align-items: center;
   padding: 1rem;
   height: 100vh;
-  background-color: #faf3e6;
+  background-color: #ede8dc;
 
   .avatar-container {
-    margin-bottom: 1rem;
-
-    .avatar {
-      border: 2px solid #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+    background-color: #fff;
+    padding: 1rem;
   }
 
   .nickname {
@@ -38,35 +34,6 @@
       &:hover {
         transform: translateY(-1px);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-    }
-  }
-
-  @media (max-width: 480px) {
-    padding: 0.5rem;
-
-    .avatar-container {
-      margin-bottom: 0.5rem;
-
-      .avatar {
-        width: 16px;
-        height: 16px;
-      }
-    }
-
-    .username {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .button-container {
-      max-width: 100%;
-
-      .setting-button,
-      .help-button,
-      .logout-button {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.875rem;
       }
     }
   }
