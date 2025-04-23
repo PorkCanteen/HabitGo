@@ -50,17 +50,17 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
             )}
           </span>
           <span
-            className={`text-3xl ml-2 flex items-center justify-between w-full ${
+            className={`text-3xl ml-2 flex items-center justify-start w-full ${
               todo.isFinished ? "line-through text-gray-500" : ""
             }`}
           >
             {/* 名称 */}
             <span>{todo.name}</span>
-            {/* 计划时间 */}
-            <span className="text-2xl">计划时间：{todo.finishDate}</span>
+            
           </span>
         </div>
-        {/* 剩余/超期时间 */}
+        <div className="flex items-center justify-between w-full">
+          {/* 剩余/超期时间 */}
         {!todo.isFinished && (
           <PixelBox
             className="ml-10"
@@ -81,6 +81,10 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
             </div>
           </PixelBox>
         )}
+          {/* 计划时间 */}
+          <span className="text-2xl">计划时间：{todo.finishDate}</span>
+        </div>
+        
         {/* 描述 */}
         {!todo.isFinished && (
           <div className="text-2xl ml-10 text-gray-500 mt-1">

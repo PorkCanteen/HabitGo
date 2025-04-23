@@ -76,9 +76,15 @@ const TaskList = forwardRef((_props, ref) => {
     <div className="list-container">
       <div className="flex pl-2 my-2">
         {tabs.map((tab) => (
-          <PixelBox key={tab} className="mr-2" borderColor={activeTab === tab ? "#dd9b4d" : "#eee"}>
+          <PixelBox
+            key={tab}
+            className="mr-2"
+            borderColor={activeTab === tab ? "#dd9b4d" : "#eee"}
+          >
             <div
-              className={`tab-card text-2xl ${activeTab === tab ? "checked" : ""}`}
+              className={`tab-card text-2xl px-3 py-1 ${
+                activeTab === tab ? "checked" : ""
+              }`}
               onClick={() => handleTabClick(tab)}
             >
               {tab}

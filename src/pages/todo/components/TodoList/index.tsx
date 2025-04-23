@@ -21,7 +21,7 @@ const TodoList = forwardRef((_props, ref) => {
   const [finished, setFinished] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [activeTab, setActiveTab] = useState("全部"); // 新增状态管理
-  const [allTodos, setAllTodos] = useState<Todo[]>([]);  // 新增状态保存所有数据
+  const [allTodos, setAllTodos] = useState<Todo[]>([]); // 新增状态保存所有数据
 
   const tabs = ["全部", "紧急", "常规"]; // 新增tab列表
 
@@ -31,8 +31,8 @@ const TodoList = forwardRef((_props, ref) => {
       method: "GET",
     });
     if (res.data && res.data.length) {
-      setAllTodos(res.data);  // 保存所有数据
-      setTodos(res.data);     // 初始化显示所有数据
+      setAllTodos(res.data); // 保存所有数据
+      setTodos(res.data); // 初始化显示所有数据
     }
     setFinished(true);
   };
@@ -48,7 +48,7 @@ const TodoList = forwardRef((_props, ref) => {
       method: "PUT",
     });
     if (res && res.code === "200") {
-      Notify.show({ type: "success", message: '操作成功' });
+      Notify.show({ type: "success", message: "操作成功" });
     } else {
       Notify.show({ type: "danger", message: res?.message || "系统错误" });
     }
@@ -60,9 +60,9 @@ const TodoList = forwardRef((_props, ref) => {
   };
 
   const tabFilters = {
-    "全部": (todos: Todo[]) => todos,
-    "紧急": (todos: Todo[]) => todos.filter(todo => todo.type === 1),
-    "常规": (todos: Todo[]) => todos.filter(todo => todo.type === 2),
+    全部: (todos: Todo[]) => todos,
+    紧急: (todos: Todo[]) => todos.filter((todo) => todo.type === 1),
+    常规: (todos: Todo[]) => todos.filter((todo) => todo.type === 2),
   };
 
   const handleTabClick = (tab: string) => {
@@ -74,14 +74,20 @@ const TodoList = forwardRef((_props, ref) => {
     <div className="list-container">
       <div className="flex pl-2 my-2">
         {tabs.map((tab) => (
-          <PixelBox key={tab} className="mr-2" borderColor={activeTab === tab ? "#dd9b4d" : "#eee"}>
-          <div
-            className={`tab-card text-2xl ${activeTab === tab ? "checked" : ""}`}
-            onClick={() => handleTabClick(tab)}
+          <PixelBox
+            key={tab}
+            className="mr-2"
+            borderColor={activeTab === tab ? "#dd9b4d" : "#eee"}
           >
-            {tab}
-          </div>
-        </PixelBox>
+            <div
+              className={`tab-card text-2xl  px-3 py-1 ${
+                activeTab === tab ? "checked" : ""
+              }`}
+              onClick={() => handleTabClick(tab)}
+            >
+              {tab}
+            </div>
+          </PixelBox>
         ))}
       </div>
       <div className="list px-2 pb-2 overflow-y-auto">
