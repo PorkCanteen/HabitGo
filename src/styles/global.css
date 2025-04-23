@@ -11,10 +11,50 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
+@font-face {
+  font-family: "pixel-font-latin";
+  src: url("@/assets/fonts/fusion-pixel-12px-monospaced-latin.ttf")
+    format("truetype");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "pixel-font-zh-hans";
+  src: url("@/assets/fonts/fusion-pixel-12px-monospaced-zh_hans.ttf")
+    format("truetype");
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+20000-2A6DF, U+2A700-2B73F,
+    U+2B740-2B81F, U+2B820-2CEAF;
+}
+
+@font-face {
+  font-family: "pixel-font-zh-hant";
+  src: url("@/assets/fonts/fusion-pixel-12px-monospaced-zh_hant.ttf")
+    format("truetype");
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+20000-2A6DF, U+2A700-2B73F,
+    U+2B740-2B81F, U+2B820-2CEAF;
+}
+
+@font-face {
+  font-family: "pixel-font-ja";
+  src: url("@/assets/fonts/fusion-pixel-12px-monospaced-ja.ttf")
+    format("truetype");
+  unicode-range: U+3000-30FF, U+FF00-FF9F, U+4E00-9FAF;
+}
+
+@font-face {
+  font-family: "pixel-font-ko";
+  src: url("@/assets/fonts/fusion-pixel-12px-monospaced-ko.ttf")
+    format("truetype");
+  unicode-range: U+AC00-D7AF, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", SimSun, sans-serif;
+  font-family: "pixel-font-latin", "pixel-font-zh-hans", "pixel-font-zh-hant",
+    "pixel-font-ja", "pixel-font-ko", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif !important;
   font-size: 1.4rem; /* 14px */
   line-height: 1.5;
   color: #333;
