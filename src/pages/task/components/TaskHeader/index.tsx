@@ -1,5 +1,3 @@
-import dogIcon from "@/assets/dogIconBold.png";
-import pigIcon from "@/assets/pigIconBold.png";
 import "./index.scss";
 import { useState } from "react";
 
