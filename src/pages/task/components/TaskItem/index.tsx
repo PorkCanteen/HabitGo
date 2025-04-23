@@ -4,6 +4,7 @@ import { Popup } from "react-vant";
 import TaskForm from "../../form/TaskForm";
 import "./index.scss";
 import { Task } from "../TaskList";
+import PixelBorder from "@/pages/components/PixelBox";
 
 interface TaskItemParams {
   task: Task;
@@ -46,7 +47,7 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
     updateList();
   };
   return (
-    <div className="flex justify-between items-center w-full  bg-white border-b-gray-100 border-b-2 h-24 ">
+    <div className="flex justify-between items-center w-full  bg-white border-b-gray-100 border-b-4 h-28 ">
       {/* 左侧区域 */}
       <div
         className="pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
@@ -59,7 +60,13 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
               <div className="coin-container relative">
                 {/* 椭圆形影子 */}
                 {(isAnimating || task.isCompleted) && (
-                  <div className={isAnimating ? "coin-shadow shadow-animation" : "coin-shadow"}></div>
+                  <div
+                    className={
+                      isAnimating
+                        ? "coin-shadow shadow-animation"
+                        : "coin-shadow"
+                    }
+                  ></div>
                 )}
                 <svg
                   className={`icon ${isAnimating ? "coin-jump-animation" : ""}`}
@@ -81,36 +88,45 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
               </svg>
             )}
           </span>
-          <span className="text-2xl ml-2 flex items-center">
+          <span className="text-3xl ml-2 flex items-center ">
             {task.name}
             {taskTypeMap[task.taskType] && (
-              <span
-                className="px-1 rounded-md text-white text-base ml-2"
-                style={{ backgroundColor: taskTypeMap[task.taskType].color }}
+              <PixelBorder
+                className="ml-2"
+                borderColor={taskTypeMap[task.taskType].color}
               >
-                {taskTypeMap[task.taskType].text}
-              </span>
+                <div
+                  className="px-2 py-0.5  text-white text-xl"
+                  style={{ backgroundColor: taskTypeMap[task.taskType].color }}
+                >
+                  {taskTypeMap[task.taskType].text}
+                </div>
+              </PixelBorder>
             )}
           </span>
         </div>
         {/* 描述 */}
-        <div className="text-xl ml-8 text-gray-400 mt-1">
+        <div className="text-2xl ml-8 text-gray-400 mt-1">
           {task.description}
         </div>
       </div>
       {/* 右侧区域 */}
       <div className="flex items-center ">
         {/* 完成次数 */}
-        <div className="text-xl px-3 w-48 flex justify-end items-center text-gray-600">
+        <div className="text-2xl px-3 w-48 flex justify-end items-center text-gray-600">
           完成次数：
-          <span className="text-green-500 text-2xl">{task.count}</span>
+          <span className="text-green-500 text-3xl font-bold">
+            {task.count}
+          </span>
         </div>
         {/* 更多按钮 */}
         <div
           className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
           onClick={handleClick}
         >
-          <Arrow></Arrow>
+          <svg aria-hidden="true" width={IconSize} height={IconSize}>
+            <use xlinkHref="#icon-xiangsujiantou"></use>
+          </svg>
         </div>
       </div>
       <Popup

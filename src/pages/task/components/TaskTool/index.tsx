@@ -1,4 +1,3 @@
-import { Add } from "@react-vant/icons";
 import { useState } from "react";
 import { Popup } from "react-vant";
 import TaskForm from "../../form/TaskForm";
@@ -10,12 +9,9 @@ interface TaskToolParams {
 
 const TaskTool = ({ updateList }: TaskToolParams) => {
   const [showDetail, setShowDetail] = useState(false); // 是否显示详情弹框
-  const [isAnimating, setIsAnimating] = useState(false);
   const handleClick = () => {
-    setIsAnimating(true);
     // 动画结束后重置状态
     setTimeout(() => {
-      setIsAnimating(false);
       setShowDetail(true); // 显示弹框
     }, 200);
   };
@@ -26,12 +22,10 @@ const TaskTool = ({ updateList }: TaskToolParams) => {
   return (
     <div>
       <div className="absolute bottom-3 left-3">
-        <Add
-          className={isAnimating ? "scale-animation" : ""}
-          fontSize={"40px"}
-          color="#e9973a"
+        <i
           onClick={handleClick}
-        />
+          className={"text-7xl iconfont icon-create"}
+        ></i>
       </div>
       <Popup
         visible={showDetail}

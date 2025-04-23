@@ -13,16 +13,16 @@ const TaskHeader = () => {
     }, 1000);
   };
   return (
-    <div className="flex justify-between items-center h-20 px-4 bg-green-100 text-3xl">
+    <div className="header-container flex justify-between items-center h-24 px-4 text-3xl">
       <div>
         <img
           src={dogIcon}
           alt=""
-          className={(isJumping ? "logo-active" : "") + " w-14 h-14 logo"}
+          className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
           onClick={handleLogoClick}
         />
       </div>
-      <div className="text-3xl">{taskHeaderText}</div>
+      <div className="text-4xl font-bold">{taskHeaderText}</div>
       <div>
         <img
           src={pigIcon}

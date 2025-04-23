@@ -2,10 +2,10 @@ import { Tabbar } from "react-vant";
 import { map } from "lodash";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./TabGroup.css";  // 添加这行
+import "./TabGroup.scss";  // 添加这行
 
 // 图标大小
-const IconSize = 24;
+const IconSize = 28;
 interface tabItem {
   name: string;
   text: string; // 显示文本

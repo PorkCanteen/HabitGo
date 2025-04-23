@@ -4,6 +4,7 @@ import TaskItem from "../TaskItem";
 import { useHttp } from "@/hooks/useHttp";
 import "@/styles/common.scss";
 import Notify from "@/pages/components/Notify";
+import PixelBorder from "@/pages/components/PixelBox";
 
 // 习惯项
 export interface Task {
@@ -60,7 +61,7 @@ const TaskList = forwardRef((_props, ref) => {
       method: "PUT",
     });
     if (res && res.code === "200") {
-      Notify.show({ type: "success", message: '操作成功' });
+      Notify.show({ type: "success", message: "操作成功" });
     } else {
       Notify.show({ type: "danger", message: res?.message || "系统错误" });
     }
@@ -73,15 +74,16 @@ const TaskList = forwardRef((_props, ref) => {
 
   return (
     <div className="list-container">
-      <div className="flex pl-2 mt-2">
+      <div className="flex pl-2 my-2">
         {tabs.map((tab) => (
-          <div
-            key={tab}
-            className={`tab-card ${activeTab === tab ? "checked" : ""}`}
-            onClick={() => handleTabClick(tab)}
-          >
-            {tab}
-          </div>
+          <PixelBorder key={tab} className="mr-2" borderColor={activeTab === tab ? "#dd9b4d" : "#eee"}>
+            <div
+              className={`tab-card text-2xl ${activeTab === tab ? "checked" : ""}`}
+              onClick={() => handleTabClick(tab)}
+            >
+              {tab}
+            </div>
+          </PixelBorder>
         ))}
       </div>
       <div className="list px-2 pb-2 overflow-y-auto">

@@ -1,3 +1,11 @@
+/* 导航栏 */
+.rv-tabbar {
+  height: 60px;
+  .rv-tabbar-item {
+    font-size: 14px;
+  }
+}
+
 .rv-tabbar-item.active-tab {
   position: relative;
 }
@@ -5,7 +13,7 @@
 .rv-tabbar-item.active-tab::before {
   content: '';
   position: absolute;
-  top: 0px;
+  top: 5px;
   left: 50%;
   transform: translateX(-50%);
   width: 36px;
