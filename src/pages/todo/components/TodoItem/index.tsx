@@ -1,15 +1,17 @@
-import { Arrow, Checked, Passed } from "@react-vant/icons";
 import { Todo } from "../TodoList";
 import "./index.scss";
 import { Popup } from "react-vant";
 import TodoForm from "../../form/TodoForm";
 import { useState } from "react";
+import PixelBox from "@/pages/components/PixelBox";
 
 interface TodoItemParams {
   todo: Todo;
   todoClick: () => void;
   updateList: () => void;
 }
+// 图标大小
+const IconSize = 16;
 
 const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
@@ -24,7 +26,8 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
     <div
       className={`flex justify-between items-center w-full  ${
         todo.isFinished ? "bg-gray-50" : "bg-white"
-      } border-b-gray-100 border-b-2 h-fit `}
+      } h-fit `}
+      style={{ borderBottom: "4px solid #f7f7f6" }}
     >
       {/* 左侧区域 */}
       <div
@@ -35,43 +38,54 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
         <div className="flex items-center icon-wrapper">
           <span className="text-2xl">
             {todo.isFinished ? (
-              <Checked
-                color="orange"
-                className={`${todo.isFinished ? "icon active" : "icon"}`}
-              ></Checked>
+              <svg aria-hidden="true" width={20} height={20}>
+                <use xlinkHref="#icon-xiangsu_jiangbei"></use>
+              </svg>
+            ) : calculateDayDifference(todo.finishDate).isDelay ? (
+              <svg aria-hidden="true" width={20} height={20}>
+                <use xlinkHref="#icon--shy"></use>
+              </svg>
             ) : (
-              <Passed
-                color="#333"
-                className={`${!todo.isFinished ? "icon" : "icon leaving"}`}
-              ></Passed>
+              <svg aria-hidden="true" width={20} height={20}>
+                <use xlinkHref="#icon--happy"></use>
+              </svg>
             )}
           </span>
           <span
-            className={`text-2xl ml-2 flex items-center justify-between w-full ${
+            className={`text-3xl ml-2 flex items-center justify-between w-full ${
               todo.isFinished ? "line-through text-gray-500" : ""
             }`}
           >
             {/* 名称 */}
             <span>{todo.name}</span>
             {/* 计划时间 */}
-            <span className="text-xl">计划时间：{todo.finishDate}</span>
+            <span className="text-2xl">计划时间：{todo.finishDate}</span>
           </span>
         </div>
         {/* 剩余/超期时间 */}
         {!todo.isFinished && (
-          <div
-            className={`text-xl ml-8 px-2 ${
+          <PixelBox
+            className="ml-8"
+            borderColor={
               calculateDayDifference(todo.finishDate).isDelay
                 ? "bg-red-500"
                 : "bg-green-500"
-            } text-white rounded-md mt-1 w-fit`}
+            }
           >
-            {calculateDayDifference(todo.finishDate).text}
-          </div>
+            <div
+              className={`text-2xl px-3 ${
+                calculateDayDifference(todo.finishDate).isDelay
+                  ? "bg-red-500"
+                  : "bg-green-500"
+              } text-white mt-1 w-fit`}
+            >
+              {calculateDayDifference(todo.finishDate).text}
+            </div>
+          </PixelBox>
         )}
         {/* 描述 */}
         {!todo.isFinished && (
-          <div className="text-xl ml-8 text-gray-500 mt-1">
+          <div className="text-2xl ml-8 text-gray-500 mt-1">
             {todo.description &&
               todo.description
                 .split("\n")
@@ -86,7 +100,9 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
           className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
           onClick={handleClick}
         >
-          <Arrow></Arrow>
+          <svg aria-hidden="true" width={IconSize} height={IconSize}>
+            <use xlinkHref="#icon-xiangsujiantou"></use>
+          </svg>
         </div>
       </div>
       <Popup

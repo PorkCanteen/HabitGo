@@ -4,6 +4,7 @@ import { useHttp } from "@/hooks/useHttp";
 import dayjs from "dayjs";
 import Notify from "@/pages/components/Notify";
 import { ResponseData } from "@/utils/http";
+import PixelBox from "@/pages/components/PixelBox";
 const defaultTodo: Todo = {
   name: "",
   description: "",
@@ -65,20 +66,39 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
         form={form}
         onFinish={onFinish}
         footer={
-          <div style={{ margin: "16px 16px 0" }}>
-            <Button round nativeType="submit" color="#f19c34" block>
-              确定
-            </Button>
-            {isEditMode && (
-              <Button
-                className="mt-3"
-                round
-                color="#e15241"
-                block
-                onClick={deleteTodo}
+          <div
+            className="w-full flex justify-center gap-4"
+            style={{ margin: "16px 16px 0" }}
+          >
+            <PixelBox
+              borderColor="#f19c34"
+              borderWidth={6}
+              gapSize={6}
+              backgroundColor="#fff"
+            >
+              <div
+                className="text-2xl px-16 py-4 text-white"
+                style={{ backgroundColor: "#f19c34" }}
+                onClick={() => form.submit()}
               >
-                删除
-              </Button>
+                确定
+              </div>
+            </PixelBox>
+            {isEditMode && (
+              <PixelBox
+                borderColor="#d4543c"
+                borderWidth={6}
+                gapSize={6}
+                backgroundColor="#fff"
+              >
+                <div
+                  className="text-2xl px-16 py-4 text-white"
+                  style={{ backgroundColor: "#d4543c" }}
+                  onClick={deleteTodo}
+                >
+                  删除
+                </div>
+              </PixelBox>
             )}
           </div>
         }

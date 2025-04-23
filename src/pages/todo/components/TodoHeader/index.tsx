@@ -12,7 +12,7 @@ const TodoHeader = () => {
     }, 1000);
   };
   return (
-    <div className="flex justify-between items-center h-20 px-4 bg-green-100 text-3xl">
+    <div className="header-container flex justify-between items-center h-24 px-4 text-3xl">
       <div>
         <img
           src={pigIcon}
@@ -21,7 +21,7 @@ const TodoHeader = () => {
           onClick={handleLogoClick}
         />
       </div>
-      <div className="text-3xl">{todoHeaderText}</div>
+      <div className="text-4xl font-bold">{todoHeaderText}</div>
       <div>
         <img
           src={dogIcon}
