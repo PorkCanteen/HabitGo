@@ -5,7 +5,7 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import PixelBox from "../components/PixelBox";
 
-const bgColor = "#ede8dc";
+const bgColor = "var(--color-tertiary)";
 
 const SettingBoard = () => {
   const nickname = useState(

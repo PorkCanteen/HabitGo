@@ -1,5 +1,3 @@
-import dogIcon from "@/assets/dogIconBold.png";
-import pigIcon from "@/assets/pigIconBold.png";
 import { useState } from "react";
 import "./index.scss";
 const todoHeaderText = "我的待办";
@@ -14,21 +12,27 @@ const TodoHeader = () => {
   return (
     <div className="header-container flex justify-between items-center h-24 px-4 text-3xl">
       <div>
-        <img
-          src={pigIcon}
-          alt=""
-          className={(isJumping ? "logo-active" : "") + " w-16 h-16 logo"}
+        <svg
           onClick={handleLogoClick}
-        />
+          aria-hidden="true"
+          width={18}
+          height={18}
+          className={(isJumping ? "logo-active" : "") + " w-14 h-14 logo"}
+        >
+          <use xlinkHref="#icon-xiangsu_caomei"></use>
+        </svg>
       </div>
       <div className="text-4xl font-bold">{todoHeaderText}</div>
       <div>
-        <img
-          src={dogIcon}
-          alt=""
-          className={(isJumping ? "logo-active" : "") + " w-14 h-14 logo"}
+        <svg
           onClick={handleLogoClick}
-        />
+          aria-hidden="true"
+          width={18}
+          height={18}
+          className={(isJumping ? "logo-active" : "") + " w-14 h-14 logo"}
+        >
+          <use xlinkHref="#icon-xiangsu_caomei"></use>
+        </svg>
       </div>
     </div>
   );

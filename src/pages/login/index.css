@@ -13,5 +13,5 @@
 }
 
 .login-body {
-  background-color: #faf3e6;
+  background-color: var(--color-tertiary);
 }

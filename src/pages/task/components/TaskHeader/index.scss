@@ -22,8 +22,8 @@
   }
 }
 .header-container {
-  background-color: rgba(208, 178, 122, 0.4);
-  border-bottom: 3px solid rgba(208, 178, 122, 0.7);
+  background-color: var(--color-secondary);
+  border-bottom: 3px solid var(--color-primary);
 }
 .logo-active {
   animation: jump 1s;

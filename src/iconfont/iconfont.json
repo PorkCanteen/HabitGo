@@ -6,6 +6,69 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "24470264",
+      "name": "像素_小鸭",
+      "font_class": "xiangsu_xiaoya",
+      "unicode": "ed1a",
+      "unicode_decimal": 60698
+    },
+    {
+      "icon_id": "24470269",
+      "name": "像素_草莓",
+      "font_class": "xiangsu_caomei",
+      "unicode": "ed1f",
+      "unicode_decimal": 60703
+    },
+    {
+      "icon_id": "24470270",
+      "name": "像素_兔子",
+      "font_class": "xiangsu_tuzi",
+      "unicode": "ed20",
+      "unicode_decimal": 60704
+    },
+    {
+      "icon_id": "24470273",
+      "name": "像素_西瓜",
+      "font_class": "xiangsu_xigua",
+      "unicode": "ed23",
+      "unicode_decimal": 60707
+    },
+    {
+      "icon_id": "24470280",
+      "name": "像素_猫",
+      "font_class": "xiangsu_mao",
+      "unicode": "ed2a",
+      "unicode_decimal": 60714
+    },
+    {
+      "icon_id": "24754597",
+      "name": "lamb-eye-disabled",
+      "font_class": "eye-disabled",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "42850161",
+      "name": "像素-汉堡",
+      "font_class": "xiangsu-hanbao",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "42853372",
+      "name": "像素-水滴",
+      "font_class": "xiangsu-shuidi",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "42853373",
+      "name": "像素-火苗",
+      "font_class": "xiangsu-huomiao",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
       "icon_id": "302912",
       "name": "像素箭头",
       "font_class": "xiangsujiantou",

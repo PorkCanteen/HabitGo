@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4890283 */
-  src: url('iconfont.woff2?t=1745324081627') format('woff2'),
-       url('iconfont.woff?t=1745324081627') format('woff'),
-       url('iconfont.ttf?t=1745324081627') format('truetype');
+  src: url('iconfont.woff2?t=1745398920324') format('woff2'),
+       url('iconfont.woff?t=1745398920324') format('woff'),
+       url('iconfont.ttf?t=1745398920324') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,42 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xiangsu_xiaoya:before {
+  content: "\ed1a";
+}
+
+.icon-xiangsu_caomei:before {
+  content: "\ed1f";
+}
+
+.icon-xiangsu_tuzi:before {
+  content: "\ed20";
+}
+
+.icon-xiangsu_xigua:before {
+  content: "\ed23";
+}
+
+.icon-xiangsu_mao:before {
+  content: "\ed2a";
+}
+
+.icon-eye-disabled:before {
+  content: "\e617";
+}
+
+.icon-xiangsu-hanbao:before {
+  content: "\e618";
+}
+
+.icon-xiangsu-shuidi:before {
+  content: "\e619";
+}
+
+.icon-xiangsu-huomiao:before {
+  content: "\e61a";
 }
 
 .icon-xiangsujiantou:before {

@@ -10,8 +10,6 @@ interface TodoItemParams {
   todoClick: () => void;
   updateList: () => void;
 }
-// 图标大小
-const IconSize = 16;
 
 const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
@@ -65,7 +63,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
         {/* 剩余/超期时间 */}
         {!todo.isFinished && (
           <PixelBox
-            className="ml-8"
+            className="ml-10"
             borderColor={
               calculateDayDifference(todo.finishDate).isDelay
                 ? "bg-red-500"
@@ -85,7 +83,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
         )}
         {/* 描述 */}
         {!todo.isFinished && (
-          <div className="text-2xl ml-8 text-gray-500 mt-1">
+          <div className="text-2xl ml-10 text-gray-500 mt-1">
             {todo.description &&
               todo.description
                 .split("\n")
@@ -100,7 +98,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
           className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
           onClick={handleClick}
         >
-          <svg aria-hidden="true" width={IconSize} height={IconSize}>
+          <svg aria-hidden="true" width={18} height={18}>
             <use xlinkHref="#icon-xiangsujiantou"></use>
           </svg>
         </div>
