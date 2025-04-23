@@ -10,7 +10,7 @@ const TodoHeader = () => {
     }, 1000);
   };
   return (
-    <div className="header-container flex justify-between items-center h-24 px-4 text-3xl">
+    <div className="header-container flex justify-between items-center h-24 px-4 text-3xl shrink-0">
       <div>
         <svg
           onClick={handleLogoClick}

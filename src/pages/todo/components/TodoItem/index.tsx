@@ -13,13 +13,47 @@ interface TodoItemParams {
 
 const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
   const handleClick = () => {
-    setShowDetail(true);
+    if (!todo.isFinished) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setIsAnimating(false);
+        todoClick();
+      }, 500);
+    } else {
+      todoClick();
+    }
   };
+
   const onFormClose = () => {
     setShowDetail(false);
     updateList();
   };
+
+  const renderIcon = () => {
+    if (isAnimating) {
+      return (
+        <svg aria-hidden="true" width={20} height={20} className="animate-icon">
+          <use xlinkHref="#icon-xiangsu_jiangbei"></use>
+        </svg>
+      );
+    }
+    if (todo.isFinished) {
+      return (
+        <svg aria-hidden="true" width={20} height={20}>
+          <use xlinkHref="#icon-xiangsu_jiangbei"></use>
+        </svg>
+      );
+    }
+    return (
+      <svg aria-hidden="true" width={20} height={20}>
+        <use xlinkHref={calculateDayDifference(todo.finishDate).isDelay ? "#icon--shy" : "#icon--happy"}></use>
+      </svg>
+    );
+  };
+
   return (
     <div
       className={`flex justify-between items-center w-full  ${
@@ -30,24 +64,12 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
       {/* 左侧区域 */}
       <div
         className="pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
-        onClick={todoClick}
+        onClick={handleClick}
       >
         {/* 标题 */}
         <div className="flex items-center icon-wrapper">
           <span className="text-2xl">
-            {todo.isFinished ? (
-              <svg aria-hidden="true" width={20} height={20}>
-                <use xlinkHref="#icon-xiangsu_jiangbei"></use>
-              </svg>
-            ) : calculateDayDifference(todo.finishDate).isDelay ? (
-              <svg aria-hidden="true" width={20} height={20}>
-                <use xlinkHref="#icon--shy"></use>
-              </svg>
-            ) : (
-              <svg aria-hidden="true" width={20} height={20}>
-                <use xlinkHref="#icon--happy"></use>
-              </svg>
-            )}
+            {renderIcon()}
           </span>
           <span
             className={`text-3xl ml-2 flex items-center justify-start w-full ${
