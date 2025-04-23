@@ -26,12 +26,10 @@ const TodoTool = ({ updateList }: TodoToolParams) => {
   return (
     <div>
       <div className="absolute bottom-3 left-3">
-        <Add
-          className={isAnimating ? "scale-animation" : ""}
-          fontSize={"40px"}
-          color="#e9973a"
+        <i
           onClick={handleClick}
-        />
+          className={"text-7xl iconfont icon-create"}
+        ></i>
       </div>
       <Popup
         visible={showDetail}
