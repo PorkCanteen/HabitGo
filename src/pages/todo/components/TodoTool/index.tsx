@@ -9,12 +9,11 @@ interface TodoToolParams {
 
 const TodoTool = ({ updateList }: TodoToolParams) => {
   const [showDetail, setShowDetail] = useState(false); // 是否显示详情弹框
-  // const [isAnimating, setIsAnimating] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const handleClick = () => {
-    // setIsAnimating(true);
-    // 动画结束后重置状态
+    setIsAnimating(true);
     setTimeout(() => {
-      // setIsAnimating(false);
+      setIsAnimating(false);
       setShowDetail(true); // 显示弹框
     }, 200);
   };
@@ -27,7 +26,7 @@ const TodoTool = ({ updateList }: TodoToolParams) => {
       <div className="absolute bottom-3 left-3">
         <i
           onClick={handleClick}
-          className={"text-7xl iconfont icon-create"}
+          className={`text-7xl iconfont icon-create ${isAnimating ? 'click-shrink-animate' : ''}`}
         ></i>
       </div>
       <Popup

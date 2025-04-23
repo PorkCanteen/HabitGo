@@ -24,6 +24,7 @@ const TaskList = forwardRef((_props, ref) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [allTasks, setAllTasks] = useState<Task[]>([]); // 新增状态保存所有数据
   const [activeTab, setActiveTab] = useState("全部"); // 新增状态管理
+  const [animatingTab, setAnimatingTab] = useState<string | null>(null);
 
   const tabs = ["全部", "主要", "次要"]; // 新增tab列表
 
@@ -46,10 +47,15 @@ const TaskList = forwardRef((_props, ref) => {
   };
 
   const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-    const filter = tabFilters[tab as keyof typeof tabFilters];
-    setTasks(filter(allTasks));
+    setAnimatingTab(tab);
+    setTimeout(() => {
+      setAnimatingTab(null);
+      setActiveTab(tab);
+      const filter = tabFilters[tab as keyof typeof tabFilters];
+      setTasks(filter(allTasks));
+    }, 200);
   };
+
   useImperativeHandle(ref, () => ({
     fetchData,
   }));
@@ -78,7 +84,7 @@ const TaskList = forwardRef((_props, ref) => {
         {tabs.map((tab) => (
           <PixelBox
             key={tab}
-            className="mr-2"
+            className={`mr-2 ${animatingTab === tab ? 'click-shrink-animate' : ''}`}
             borderColor={activeTab === tab ? "#dd9b4d" : "#eee"}
           >
             <div

@@ -22,3 +22,21 @@
   --color-secondary: #e4d8c2;
   --color-tertiary: #ede8dc;
 }
+
+/* 全局点击缩小动画 */
+.click-shrink-animate {
+  animation: clickShrink 0.2s ease-in-out;
+  display: inline-block;
+}
+
+@keyframes clickShrink {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.7);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

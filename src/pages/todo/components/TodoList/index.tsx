@@ -20,10 +20,11 @@ const TodoList = forwardRef((_props, ref) => {
   const { sendRequest } = useHttp();
   const [finished, setFinished] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [activeTab, setActiveTab] = useState("全部"); // 新增状态管理
-  const [allTodos, setAllTodos] = useState<Todo[]>([]); // 新增状态保存所有数据
+  const [activeTab, setActiveTab] = useState("全部");
+  const [allTodos, setAllTodos] = useState<Todo[]>([]);
+  const [animatingTab, setAnimatingTab] = useState<string | null>(null);
 
-  const tabs = ["全部", "紧急", "常规"]; // 新增tab列表
+  const tabs = ["全部", "待完成", "已完成"];
 
   const fetchData = async () => {
     const res: any = await sendRequest({
@@ -61,26 +62,31 @@ const TodoList = forwardRef((_props, ref) => {
 
   const tabFilters = {
     全部: (todos: Todo[]) => todos,
-    紧急: (todos: Todo[]) => todos.filter((todo) => todo.type === 1),
-    常规: (todos: Todo[]) => todos.filter((todo) => todo.type === 2),
+    待完成: (todos: Todo[]) => todos.filter((todo) => todo.type === 1),
+    已完成: (todos: Todo[]) => todos.filter((todo) => todo.type === 2),
   };
 
   const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-    const filter = tabFilters[tab as keyof typeof tabFilters];
-    setTodos(filter(allTodos));
+    setAnimatingTab(tab);
+    setTimeout(() => {
+      setAnimatingTab(null);
+      setActiveTab(tab);
+      const filter = tabFilters[tab as keyof typeof tabFilters];
+      setTodos(filter(allTodos));
+    }, 200);
   };
+
   return (
     <div className="list-container">
       <div className="flex pl-2 my-2">
         {tabs.map((tab) => (
           <PixelBox
             key={tab}
-            className="mr-2"
+            className={`mr-2 ${animatingTab === tab ? 'click-shrink-animate' : ''}`}
             borderColor={activeTab === tab ? "#dd9b4d" : "#eee"}
           >
             <div
-              className={`tab-card text-2xl  px-3 py-1 ${
+              className={`tab-card text-2xl px-3 py-1 ${
                 activeTab === tab ? "checked" : ""
               }`}
               onClick={() => handleTabClick(tab)}

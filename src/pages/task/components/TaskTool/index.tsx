@@ -9,9 +9,12 @@ interface TaskToolParams {
 
 const TaskTool = ({ updateList }: TaskToolParams) => {
   const [showDetail, setShowDetail] = useState(false); // 是否显示详情弹框
+  const [isAnimating, setIsAnimating] = useState(false);
+
   const handleClick = () => {
-    // 动画结束后重置状态
+    setIsAnimating(true);
     setTimeout(() => {
+      setIsAnimating(false);
       setShowDetail(true); // 显示弹框
     }, 200);
   };
@@ -24,7 +27,7 @@ const TaskTool = ({ updateList }: TaskToolParams) => {
       <div className="absolute bottom-3 left-3">
         <i
           onClick={handleClick}
-          className={"text-7xl iconfont icon-create"}
+          className={`text-7xl iconfont icon-create ${isAnimating ? 'click-shrink-animate' : ''}`}
         ></i>
       </div>
       <Popup

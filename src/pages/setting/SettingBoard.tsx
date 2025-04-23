@@ -21,25 +21,18 @@ const SettingBoard = () => {
 
   return (
     <div className="setting-board p-4 flex flex-col items-center justify-center">
-      <PixelBox
-        className="mb-8"
-        borderColor="#fff"
-        borderWidth={12}
-        gapSize={12}
-        backgroundColor={bgColor}
-      >
+
         <div className="avatar-container">
           <img
             src={dogIcon}
             alt="avatar"
-            className="avatar w-52 h-52 bg-white"
+            className="avatar w-52 h-52"
           />
         </div>
-      </PixelBox>
       <div className="nickname text-3xl font-medium mb-12">{nickname}</div>
       <div className="button-container flex flex-col gap-3 w-full max-w-xs items-center">
         <PixelBox
-          borderColor="#444"
+          borderColor="#fff"
           borderWidth={6}
           gapSize={6}
           backgroundColor={bgColor}
