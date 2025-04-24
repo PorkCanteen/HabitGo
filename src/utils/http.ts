@@ -27,7 +27,7 @@ const requestInterceptor = (config: RequestConfig): RequestConfig => {
   if (!config.url.includes('/login')) {
     const user = Cookies.get('user');
     if (!user) {
-      // window.location.href = '/login';
+      window.location.href = '/login';
       throw new Error('用户未登录');
     }
   }
