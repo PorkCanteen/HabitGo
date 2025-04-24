@@ -47,7 +47,7 @@ const Login = () => {
           />
         </div>
         <h1 className="text-7xl font-bold mb-15">
-          <span style={{ color: "#f19c34" }}>GoGo</span>Habit
+          <span style={{ color: "var(--color-button-primary)" }}>GoGo</span>Habit
         </h1>
         <Form form={form} onFinish={handleLogin} className="w-full">
           <Form.Item
@@ -68,14 +68,14 @@ const Login = () => {
           </Form.Item>
           <div className="flex justify-center">
             <PixelBox
-              borderColor="#f19c34"
+              borderColor="var(--color-button-primary)"
               borderWidth={6}
               gapSize={6}
-              backgroundColor="#f9f2e3"
+              backgroundColor="var(--color-tertiary)"
             >
               <div
                 className="text-2xl px-28 py-4 text-white"
-                style={{ backgroundColor: "#f19c34" }}
+                style={{ backgroundColor: "var(--color-button-primary)" }}
                 onClick={() => form.submit()}
               >
                 登录

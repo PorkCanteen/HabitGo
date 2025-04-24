@@ -1,3 +1,4 @@
+/* --------------- 公共组件样式 --------------- */
 // 列表-分类tab
 .tab-card {
   padding: 2px 6px;
@@ -15,14 +16,31 @@
     height: calc(100% - 30px);
   }
 }
-
+/* --------------- 颜色变量 --------------- */
 // 定义颜色变量
 :root {
+  // 主题色
   --color-primary: #d0b279;
   --color-secondary: #e4d8c2;
   --color-tertiary: #ede8dc;
+  // 文字颜色
+  --color-text-primary: #000;
+  --color-text-secondary: #333;
+  --color-text-tertiary: #666;
+  // 背景颜色
+  --color-background-primary: #fff;
+  --color-background-secondary: #f5f5f5;
+  // 按钮颜色
+  --color-button-primary: #d3954d;
+  --color-button-secondary: #eee;
+  // 边框颜色
+  --color-border-primary: #333;
+  --color-border-secondary: #eee;
+  // 自定义颜色
+  --color-red: #e36f61;
+  --color-orange: #d3954d;
 }
-
+/* --------------- 全局动画 --------------- */
 /* 全局点击缩小动画 */
 .click-shrink-animate {
   animation: clickShrink 0.2s ease-in-out;

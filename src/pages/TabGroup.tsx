@@ -78,7 +78,7 @@ const TabGroup = () => {
     setTabList(originalTabList);
   }, []);
   return (
-    <Tabbar value={tabName} activeColor="#f26d2c" onChange={(name: string | number) => onTabChange(name.toString())}>
+    <Tabbar value={tabName} activeColor="var(--color-primary)" onChange={(name: string | number) => onTabChange(name.toString())}>
       {map(tabList, (tab) => {
         return (
           <Tabbar.Item

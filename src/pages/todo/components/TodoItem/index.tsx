@@ -15,7 +15,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const handleClick = () => {
+  const handleTodoClick = () => {
     if (!todo.isFinished) {
       setIsAnimating(true);
       setTimeout(() => {
@@ -25,6 +25,10 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
     } else {
       todoClick();
     }
+  };
+
+  const handleClick = () => {
+    setShowDetail(true);
   };
 
   const onFormClose = () => {
@@ -64,7 +68,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
       {/* 左侧区域 */}
       <div
         className="pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
-        onClick={handleClick}
+        onClick={handleTodoClick}
       >
         {/* 标题 */}
         <div className="flex items-center icon-wrapper">

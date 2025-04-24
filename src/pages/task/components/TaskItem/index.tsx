@@ -16,11 +16,11 @@ const IconSize = 16;
 const taskTypeMap: Record<number, { text: string; color: string }> = {
   1: {
     text: "主要",
-    color: "#ee7068",
+    color: "var(--color-red)",
   },
   2: {
     text: "次要",
-    color: "#f8a128",
+    color: "var(--color-orange)",
   },
 };
 

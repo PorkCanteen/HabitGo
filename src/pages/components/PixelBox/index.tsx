@@ -12,10 +12,10 @@ interface PixelBoxProps {
 
 const PixelBox: React.FC<PixelBoxProps> = ({
   children,
-  borderColor = "#333",
+  borderColor = "var(--color-border-primary)",
   borderWidth = 3,
   gapSize = 3,
-  backgroundColor = "#fff",
+  backgroundColor = "var(--color-background-primary)",
   className = "",
   style = {},
 }) => {

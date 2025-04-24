@@ -71,14 +71,14 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
             style={{ margin: "16px 16px 0" }}
           >
             <PixelBox
-              borderColor="#f19c34"
+              borderColor="var(--color-button-primary)"
               borderWidth={6}
               gapSize={6}
-              backgroundColor="#fff"
+              backgroundColor="var(--color-background-primary)"
             >
               <div
                 className="text-2xl px-16 py-4 text-white"
-                style={{ backgroundColor: "#f19c34" }}
+                style={{ backgroundColor: "var(--color-button-primary)" }}
                 onClick={() => form.submit()}
               >
                 确定
@@ -86,14 +86,14 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
             </PixelBox>
             {isEditMode && (
               <PixelBox
-                borderColor="#d4543c"
+                borderColor="var(--color-red)"
                 borderWidth={6}
                 gapSize={6}
-                backgroundColor="#fff"
+                backgroundColor="var(--color-background-primary)"
               >
                 <div
                   className="text-2xl px-16 py-4 text-white"
-                  style={{ backgroundColor: "#d4543c" }}
+                  style={{ backgroundColor: "var(--color-red)" }}
                   onClick={deleteTodo}
                 >
                   删除
@@ -130,10 +130,10 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
           label="待办类型"
         >
           <Radio.Group defaultValue={1} direction="horizontal">
-            <Radio name={1} checkedColor="#f8a128">
+            <Radio name={1} checkedColor="var(--color-orange)">
               紧急
             </Radio>
-            <Radio name={2} checkedColor="#f8a128">
+            <Radio name={2} checkedColor="var(--color-orange)">
               常规
             </Radio>
           </Radio.Group>

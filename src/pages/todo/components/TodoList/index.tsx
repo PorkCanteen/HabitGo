@@ -2,7 +2,6 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import { List } from "react-vant";
 import TodoItem from "../TodoItem";
 import { useHttp } from "@/hooks/useHttp";
-import "@/styles/common.scss";
 import Notify from "@/pages/components/Notify";
 import PixelBox from "@/pages/components/PixelBox";
 
@@ -83,7 +82,7 @@ const TodoList = forwardRef((_props, ref) => {
           <PixelBox
             key={tab}
             className={`mr-2 ${animatingTab === tab ? 'click-shrink-animate' : ''}`}
-            borderColor={activeTab === tab ? "#dd9b4d" : "#eee"}
+            borderColor={activeTab === tab ? "var(--color-button-primary)" : "var(--color-button-secondary)"}
           >
             <div
               className={`tab-card text-2xl px-3 py-1 ${
