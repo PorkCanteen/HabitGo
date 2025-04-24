@@ -61,8 +61,8 @@ const TodoList = forwardRef((_props, ref) => {
 
   const tabFilters = {
     全部: (todos: Todo[]) => todos,
-    待完成: (todos: Todo[]) => todos.filter((todo) => todo.type === 1),
-    已完成: (todos: Todo[]) => todos.filter((todo) => todo.type === 2),
+    待完成: (todos: Todo[]) => todos.filter((todo) => !todo.isFinished),
+    已完成: (todos: Todo[]) => todos.filter((todo) => todo.isFinished),
   };
 
   const handleTabClick = (tab: string) => {
