@@ -30,6 +30,22 @@ const requestInterceptor = (config: RequestConfig): RequestConfig => {
       window.location.href = '/login';
       throw new Error('用户未登录');
     }
+    // 从cookie中获取用户信息并添加到请求中
+    const userData = JSON.parse(user);
+    console.log(user, '用户信息')
+    if (userData.id) {
+      // 如果是GET请求，将userId添加到URL中
+      if (config.method === 'GET' || !config.method) {
+        const separator = config.url.includes('?') ? '&' : '?';
+        config.url = `${config.url}${separator}userId=${userData.id}`;
+      } else {
+        // 如果是其他请求，将userId添加到请求体中
+        if (!config.data) {
+          config.data = {};
+        }
+        (config.data as any).userId = userData.id;
+      }
+    }
   }
   return config;
 };
