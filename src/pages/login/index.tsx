@@ -1,6 +1,6 @@
 import { Form, Input } from "react-vant";
-import dogIcon from "@/assets/dogIconBold.png";
-import pigIcon from "@/assets/pigIconBold.png";
+import dogIcon from "@/assets/dogPixel.png";
+import pigIcon from "@/assets/pigPixel.png";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
@@ -42,10 +42,10 @@ const Login = () => {
       <div className="flex flex-col items-center w-full px-12">
         <div className="animate-container">
           <div className="rotate-container">
-            <img src={dogIcon} alt="Dog Icon" className="w-44 mb-10 mx-auto" />
+            <img src={dogIcon} alt="Dog Icon" className="w-48 mb-10 mx-auto" />
           </div>
           <div className="rotate-container later-animation">
-            <img src={pigIcon} alt="Pig Icon" className="w-48 mb-10 mx-auto" />
+            <img src={pigIcon} alt="Pig Icon" className="w-52 mb-10 mx-auto" />
           </div>
         </div>
         <h1 className="text-7xl font-bold mb-15">

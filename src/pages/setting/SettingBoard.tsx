@@ -1,4 +1,4 @@
-import dogIcon from "@/assets/dogIconBold.png";
+import dogIcon from "@/assets/dogPixel.png";
 import "./SettingBoard.scss";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
