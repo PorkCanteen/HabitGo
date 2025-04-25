@@ -34,8 +34,8 @@ const requestInterceptor = (config: RequestConfig): RequestConfig => {
     const userData = JSON.parse(user);
     console.log(user, '用户信息')
     if (userData.id) {
-      // 如果是GET请求，将userId添加到URL中
-      if (config.method === 'GET' || !config.method) {
+      // 对于GET和DELETE请求，将userId添加到URL中
+      if (config.method === 'GET' || config.method === 'DELETE' || !config.method) {
         const separator = config.url.includes('?') ? '&' : '?';
         config.url = `${config.url}${separator}userId=${userData.id}`;
       } else {
