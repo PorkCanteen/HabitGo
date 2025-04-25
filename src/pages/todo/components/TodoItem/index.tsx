@@ -53,7 +53,13 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
     }
     return (
       <svg aria-hidden="true" width={20} height={20}>
-        <use xlinkHref={calculateDayDifference(todo.finishDate).isDelay ? "#icon--shy" : "#icon--happy"}></use>
+        <use
+          xlinkHref={
+            calculateDayDifference(todo.finishDate).isDelay
+              ? "#icon--shy"
+              : "#icon--happy"
+          }
+        ></use>
       </svg>
     );
   };
@@ -72,9 +78,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
       >
         {/* 标题 */}
         <div className="flex items-center icon-wrapper">
-          <span className="text-2xl">
-            {renderIcon()}
-          </span>
+          <span className="text-2xl">{renderIcon()}</span>
           <span
             className={`text-3xl ml-2 flex items-center justify-start w-full ${
               todo.isFinished ? "line-through text-gray-500" : ""
@@ -88,6 +92,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
           {/* 剩余/超期时间 */}
           {!todo.isFinished && (
             <PixelBox
+              className="mt-1"
               borderColor={
                 calculateDayDifference(todo.finishDate).isDelay
                   ? "bg-red-500"
@@ -99,14 +104,18 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
                   calculateDayDifference(todo.finishDate).isDelay
                     ? "bg-red-500"
                     : "bg-green-500"
-                } text-white mt-1 w-fit`}
+                } text-white w-fit`}
               >
                 {calculateDayDifference(todo.finishDate).text}
               </div>
             </PixelBox>
           )}
           {/* 计划时间 */}
-          <span className={todo.isFinished ? "text-gray-500" : "" + " text-2xl"} >计划时间：{todo.finishDate}</span>
+          <span
+            className={todo.isFinished ? "text-gray-500" : "" + " text-2xl"}
+          >
+            计划时间：{todo.finishDate}
+          </span>
         </div>
 
         {/* 描述 */}
