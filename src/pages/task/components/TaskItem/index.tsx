@@ -117,7 +117,7 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
         {/* 完成次数 */}
         <div className="text-2xl px-3 w-48 flex justify-end items-center text-gray-600">
           完成次数：
-          <span className="text-green-500 text-3xl font-bold">
+          <span className="text-green-500 text-4xl font-bold ml-2">
             {task.count}
           </span>
         </div>
