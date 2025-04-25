@@ -59,3 +59,7 @@
     transform: scale(1);
   }
 }
+/* --------------- 覆盖vant组件样式 --------------- */
+.rv-popup--right.rv-popup--round {
+  border-radius: 0 !important;
+}

@@ -3,6 +3,7 @@ import { Task } from "../components/TaskList";
 import { useHttp } from "@/hooks/useHttp";
 import { useState } from "react";
 import Notify from "@/pages/components/Notify";
+import { Dialog } from "@/pages/components/Dialog";
 import { ResponseData } from "@/utils/http";
 import PixelBox from "@/pages/components/PixelBox";
 const defaultTask: Task = {
@@ -54,6 +55,10 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
     }
   };
   const deleteTask = async () => {
+    await Dialog.confirm({
+      title: "确认删除",
+      message: "删除后无法恢复，是否继续？",
+    });
     await sendRequest({
       url: `/task/${task.id}`,
       method: "DELETE",
@@ -153,7 +158,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
             </Radio>
           </Radio.Group>
         </Form.Item>
-        {targetType !== 1 && ( // 仅在目标类型不是“按日”时显示
+        {targetType !== 1 && ( // 仅在目标类型不是"按日"时显示
           <Form.Item
             rules={[{ required: true, message: "请输入目标次数" }]}
             name="targetCount"

@@ -1,8 +1,9 @@
-import {  Input, Form, DatetimePicker, Radio } from "react-vant";
+import { Input, Form, DatetimePicker, Radio } from "react-vant";
 import { Todo } from "../components/TodoList";
 import { useHttp } from "@/hooks/useHttp";
 import dayjs from "dayjs";
 import Notify from "@/pages/components/Notify";
+import { Dialog } from "@/pages/components/Dialog";
 import { ResponseData } from "@/utils/http";
 import PixelBox from "@/pages/components/PixelBox";
 const defaultTodo: Todo = {
@@ -53,6 +54,10 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
     }
   };
   const deleteTodo = async () => {
+    await Dialog.confirm({
+      title: "确认删除",
+      message: "删除后无法恢复，是否继续？",
+    });
     await sendRequest({
       url: `/todo/${todo.id}`,
       method: "DELETE",
