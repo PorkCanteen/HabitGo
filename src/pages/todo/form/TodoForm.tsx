@@ -135,10 +135,28 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
           label="待办类型"
         >
           <Radio.Group defaultValue={1} direction="horizontal">
-            <Radio name={1} checkedColor="var(--color-orange)">
+            <Radio
+              name={1}
+              iconRender={({ checked }) => (
+                <i 
+                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
+                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
+                />
+              )}
+              checkedColor="var(--color-orange)"
+            >
               紧急
             </Radio>
-            <Radio name={2} checkedColor="var(--color-orange)">
+            <Radio
+              name={2}
+              iconRender={({ checked }) => (
+                <i 
+                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
+                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
+                />
+              )}
+              checkedColor="var(--color-orange)"
+            >
               常规
             </Radio>
           </Radio.Group>

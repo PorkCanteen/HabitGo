@@ -133,10 +133,28 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
           label="分类"
         >
           <Radio.Group direction="horizontal">
-            <Radio name={1} iconSize={15} checkedColor="#f8a128">
+            <Radio
+              name={1}
+              iconRender={({ checked }) => (
+                <i 
+                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
+                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
+                />
+              )}
+              checkedColor="#f8a128"
+            >
               主要
             </Radio>
-            <Radio name={2} iconSize={15} checkedColor="#f8a128">
+            <Radio
+              name={2}
+              iconRender={({ checked }) => (
+                <i 
+                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
+                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
+                />
+              )}
+              checkedColor="#f8a128"
+            >
               次要
             </Radio>
           </Radio.Group>
@@ -147,13 +165,40 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
           label="目标类型"
         >
           <Radio.Group onChange={handleTargetTypeChange} direction="horizontal">
-            <Radio name={1} iconSize={15} checkedColor="#f8a128">
+            <Radio
+              name={1}
+              iconRender={({ checked }) => (
+                <i 
+                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
+                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
+                />
+              )}
+              checkedColor="#f8a128"
+            >
               按日
             </Radio>
-            <Radio name={2} iconSize={15} checkedColor="#f8a128">
+            <Radio
+              name={2}
+              iconRender={({ checked }) => (
+                <i 
+                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
+                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
+                />
+              )}
+              checkedColor="#f8a128"
+            >
               按周
             </Radio>
-            <Radio name={3} iconSize={15} checkedColor="#f8a128">
+            <Radio
+              name={3}
+              iconRender={({ checked }) => (
+                <i 
+                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
+                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
+                />
+              )}
+              checkedColor="#f8a128"
+            >
               按月
             </Radio>
           </Radio.Group>
