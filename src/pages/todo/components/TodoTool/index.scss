@@ -14,3 +14,8 @@
   animation: scaleAnimation 0.2s ease-in-out;
   transition: transform ease-in-out 0.2s;
 }
+
+.icon-color {
+  color: var(--color-button-hard);
+  opacity: 0.8;
+}

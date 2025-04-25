@@ -23,10 +23,12 @@ const TodoTool = ({ updateList }: TodoToolParams) => {
   };
   return (
     <div>
-      <div className="absolute bottom-3 left-3">
+      <div className="absolute bottom-5 left-5">
         <i
           onClick={handleClick}
-          className={`text-7xl iconfont icon-create ${isAnimating ? 'click-shrink-animate' : ''}`}
+          className={`icon-color text-6xl iconfont icon-x_jiaru ${
+            isAnimating ? "click-shrink-animate" : ""
+          } `}
         ></i>
       </div>
       <Popup
