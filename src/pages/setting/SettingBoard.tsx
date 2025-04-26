@@ -3,22 +3,26 @@ import pigIcon from "@/assets/pigPixel.png";
 import otherIcon from "@/assets/other.svg";
 import "./SettingBoard.scss";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 import PixelBox from "../components/PixelBox";
+import { clearAuth, getUserInfo } from "@/utils/tokenUtils";
 
 const bgColor = "var(--color-tertiary)";
 
 const SettingBoard = () => {
-  const [user] = useState(
-    Cookies.get("user")
-      ? JSON.parse(Cookies.get("user") as string)
-      : { nickname: "", id: 0 }
-  );
+  const [user, setUser] = useState({ nickname: "", id: 0 });
+  
+  useEffect(() => {
+    const userInfo = getUserInfo();
+    if (userInfo) {
+      setUser(userInfo);
+    }
+  }, []);
+
   const navigate = useNavigate();
   const handleLogout = () => {
-    Cookies.remove("user");
-    navigate("/login");
+    clearAuth();
+    window.location.href = '/login';
   };
 
   // Select avatar based on user.id

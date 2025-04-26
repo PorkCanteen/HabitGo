@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "../components/Notify";
 import { ResponseData } from "@/utils/http";
-import Cookie from "js-cookie";
 import PixelBox from "../components/PixelBox";
+import { setToken, setUserInfo } from "@/utils/tokenUtils";
 
 const Login = () => {
   const [form] = Form.useForm();
@@ -27,10 +27,12 @@ const Login = () => {
 
     // 添加类型检查
     if (res && res.code === "200") {
-      navigate("/task");
-      // 保存登录信息到cookie
+      // 保存token和用户信息到本地存储
       if (res.data) {
-        Cookie.set("user", JSON.stringify(res.data));
+        const { token, ...userInfo } = res.data;
+        setToken(token);
+        setUserInfo(userInfo);
+        navigate("/task");
       }
     } else {
       Notify.show({ type: "danger", message: res?.message || "系统错误" });

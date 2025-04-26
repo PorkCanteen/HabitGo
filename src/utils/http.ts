@@ -1,5 +1,5 @@
-import Cookies from "js-cookie";
 import { API_BASE_URL } from "@/config";
+import { getToken, getUserInfo, clearAuth } from "./tokenUtils";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -10,6 +10,13 @@ export interface RequestConfig {
   headers?: Record<string, string>;
   timeout?: number;
   baseUrl?: string;
+}
+
+// 定义响应数据类型
+export interface ResponseData {
+  code: string;
+  message: string;
+  data?: any;
 }
 
 // 全局配置
@@ -25,15 +32,21 @@ const globalConfig = {
 const requestInterceptor = (config: RequestConfig): RequestConfig => {
   // 排除登录接口的检查
   if (!config.url.includes('/login')) {
-    const user = Cookies.get('user');
-    if (!user) {
+    const token = getToken();
+    if (!token) {
       window.location.href = '/login';
       throw new Error('用户未登录');
     }
-    // 从cookie中获取用户信息并添加到请求中
-    const userData = JSON.parse(user);
-    console.log(user, '用户信息')
-    if (userData.id) {
+    
+    // 添加token到请求头
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${token}`
+    };
+    
+    // 从本地存储获取用户信息
+    const userData = getUserInfo();
+    if (userData && userData.id) {
       // 对于GET和DELETE请求，将userId添加到URL中
       if (config.method === 'GET' || config.method === 'DELETE' || !config.method) {
         const separator = config.url.includes('?') ? '&' : '?';
@@ -53,6 +66,12 @@ const requestInterceptor = (config: RequestConfig): RequestConfig => {
 // 响应拦截器
 const responseInterceptor = <T>(response: Response): Promise<T> => {
   if (!response.ok) {
+    // 如果是401未授权错误，则清除token并跳转到登录页
+    if (response.status === 401) {
+      clearAuth();
+      window.location.href = '/login';
+      throw new Error('认证失败，请重新登录');
+    }
     throw new Error(`请求错误! status: ${response.status}`);
   }
   return response.json();
@@ -95,10 +114,3 @@ export const http = {
   put: <T>(url: string, data?: unknown) => request<T>({ url, method: "PUT", data }),
   delete: <T>(url: string) => request<T>({ url, method: "DELETE" }),
 };
-
-export interface ResponseData {
-  code: string;
-  message: string;
-  data?: unknown;
-  // 其他可能的字段
-}
