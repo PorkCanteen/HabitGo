@@ -43,22 +43,6 @@ const requestInterceptor = (config: RequestConfig): RequestConfig => {
       ...config.headers,
       Authorization: `Bearer ${token}`
     };
-    
-    // 从本地存储获取用户信息
-    const userData = getUserInfo();
-    if (userData && userData.id) {
-      // 对于GET和DELETE请求，将userId添加到URL中
-      if (config.method === 'GET' || config.method === 'DELETE' || !config.method) {
-        const separator = config.url.includes('?') ? '&' : '?';
-        config.url = `${config.url}${separator}userId=${userData.id}`;
-      } else {
-        // 如果是其他请求，将userId添加到请求体中
-        if (!config.data) {
-          config.data = {};
-        }
-        (config.data as any).userId = userData.id;
-      }
-    }
   }
   return config;
 };
