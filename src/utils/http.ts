@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "@/config";
-import { getToken, getUserInfo, clearAuth } from "./tokenUtils";
+import { getToken, clearAuth } from "./tokenUtils";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
