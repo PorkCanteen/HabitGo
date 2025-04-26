@@ -2,7 +2,6 @@ import dogIcon from "@/assets/dogPixel.png";
 import pigIcon from "@/assets/pigPixel.png";
 import otherIcon from "@/assets/other.svg";
 import "./SettingBoard.scss";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import PixelBox from "../components/PixelBox";
 import { clearAuth, getUserInfo } from "@/utils/tokenUtils";
@@ -19,7 +18,6 @@ const SettingBoard = () => {
     }
   }, []);
 
-  const navigate = useNavigate();
   const handleLogout = () => {
     clearAuth();
     window.location.href = '/login';
