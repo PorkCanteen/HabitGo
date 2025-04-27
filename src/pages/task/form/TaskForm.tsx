@@ -118,7 +118,7 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
           name="name"
           label="习惯名"
         >
-          <Input placeholder="请输入习惯名" />
+          <Input placeholder="请输入习惯名" maxLength={10} />
         </Form.Item>
         <Form.Item
           rules={[{ required: true, message: "请填写习惯描述" }]}

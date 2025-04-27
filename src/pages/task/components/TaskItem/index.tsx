@@ -52,7 +52,7 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
     >
       {/* 左侧区域 */}
       <div
-        className="pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
+        className="left-wrapper pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
         onClick={taskClick}
       >
         {/* 标题 */}
@@ -108,12 +108,12 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
           </span>
         </div>
         {/* 描述 */}
-        <div className="text-2xl ml-8 text-gray-400 mt-1">
+        <div className="text-2xl ml-8 text-gray-400 mt-1 text-ellipsis overflow-hidden whitespace-nowrap">
           {task.description}
         </div>
       </div>
       {/* 右侧区域 */}
-      <div className="flex items-center ">
+      <div className="right-wrapper flex items-center">
         {/* 完成次数 */}
         <div className="text-2xl px-3 w-48 flex justify-end items-center text-gray-600">
           完成次数：

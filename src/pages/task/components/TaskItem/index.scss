@@ -50,3 +50,11 @@
 .shadow-animation {
   animation: shadowChange 0.3s ease-out;
 }
+// 左侧区域
+.left-wrapper {
+  width: calc(100% - 160px);
+}
+// 右侧区域
+.right-wrapper {
+  width: 160px;
+}
