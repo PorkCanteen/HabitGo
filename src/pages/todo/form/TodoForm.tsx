@@ -117,7 +117,7 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
           name="name"
           label="待办名称"
         >
-          <Input placeholder="请输入待办名称" />
+          <Input placeholder="请输入待办名称" maxLength={15} />
         </Form.Item>
         <Form.Item
           rules={[{ required: true, message: "请填写待办详情" }]}

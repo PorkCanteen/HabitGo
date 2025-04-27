@@ -11,8 +11,8 @@ export default defineConfig({
     port: 9090,
     proxy: {
       "/api": {
-        // target: "http://47.109.155.8:9090/",
-        target: "http://localhost:8080",
+        target: "http://47.109.155.8:9090/",
+        // target: "http://localhost:8080",
         changeOrigin: true,
       },
     },

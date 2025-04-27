@@ -86,6 +86,11 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
           >
             {/* 名称 */}
             <span>{todo.name}</span>
+            {todo.type === 1 && (
+              <svg aria-hidden="true" width={16} height={16}>
+                <use xlinkHref={"#icon-xiangsu-huomiao"}></use>
+              </svg>
+            )}
           </span>
         </div>
         <div className="flex items-center justify-between w-full pl-10">
