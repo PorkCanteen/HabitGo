@@ -13,7 +13,19 @@ export interface Todo {
   description?: string;
   finishDate: string;
   isFinished: number;
+  updateTime?: string; // 添加更新时间字段
+  createTime?: string; // 添加创建时间字段
 }
+
+// API响应类型
+interface ApiResponse {
+  data: Todo[];
+  code: string;
+  message?: string;
+}
+
+// 排序类型
+type SortType = 'updateTime' | 'finishDate';
 
 const TodoList = forwardRef((_props, ref) => {
   const { sendRequest } = useHttp();
@@ -22,37 +34,86 @@ const TodoList = forwardRef((_props, ref) => {
   const [activeTab, setActiveTab] = useState("全部");
   const [allTodos, setAllTodos] = useState<Todo[]>([]);
   const [animatingTab, setAnimatingTab] = useState<string | null>(null);
+  // 排序状态管理
+  const [sortType, setSortType] = useState<SortType>('updateTime');
+  const [animatingSortType, setAnimatingSortType] = useState<boolean>(false);
 
   const tabs = ["全部", "待完成", "已完成"];
 
+  // 排序类型对应的显示文本
+  const sortTypeText: Record<SortType, string> = {
+    'updateTime': '更新时间',
+    'finishDate': '完成时间',
+  };
+
   const fetchData = async () => {
-    const res: any = await sendRequest({
+    const res = await sendRequest<ApiResponse>({
       url: "/todo/list",
       method: "GET",
     });
-    if (res.data) {
+    if (res && res.data) {
       setAllTodos(res.data); // 保存所有数据
-      setTodos(res.data); // 初始化显示所有数据
+      // 应用排序和过滤
+      const filteredTodos = applySortAndFilter(res.data, sortType, activeTab);
+      setTodos(filteredTodos);
     }
     setFinished(true);
+  };
+
+  // 应用排序和过滤
+  const applySortAndFilter = (
+    data: Todo[],
+    currentSortType: SortType,
+    currentTab: string
+  ): Todo[] => {
+    // 先应用过滤
+    const filteredData = tabFilters[currentTab as keyof typeof tabFilters](data);
+    
+    // 再应用排序
+    return sortData(filteredData, currentSortType);
+  };
+
+  // 排序数据
+  const sortData = (data: Todo[], currentSortType: SortType): Todo[] => {
+    return [...data].sort((a, b) => {
+      // 首先按是否完成排序：未完成的排在前面
+      if (a.isFinished !== b.isFinished) {
+        return a.isFinished - b.isFinished;
+      }
+      
+      // 然后按选定的排序类型排序
+      if (currentSortType === 'updateTime') {
+        // 按更新时间降序
+        return (b.updateTime || '').localeCompare(a.updateTime || '');
+      } else if (currentSortType === 'finishDate') {
+        // 按完成时间降序
+        return (b.finishDate || '').localeCompare(a.finishDate || '');
+      }
+      return 0;
+    });
   };
 
   useImperativeHandle(ref, () => ({
     fetchData,
   }));
 
-  // 处理习惯点击
+  // 处理待办点击
   const handleClick = async (id: number) => {
-    const res: any = await sendRequest({
-      url: `/todo/complete/${id}`,
-      method: "PUT",
-    });
-    if (res && res.code === "200") {
-      Notify.show({ type: "success", message: "操作成功" });
-    } else {
-      Notify.show({ type: "danger", message: res?.message || "系统错误" });
+    try {
+      const res = await sendRequest<ApiResponse>({
+        url: `/todo/complete/${id}`,
+        method: "PUT",
+      });
+      if (res && res.code === "200") {
+        Notify.show({ type: "success", message: "操作成功" });
+      } else {
+        Notify.show({ type: "danger", message: res?.message || "系统错误" });
+      }
+    } catch {
+      Notify.show({ type: "danger", message: "系统错误，请稍后再试" });
+    } finally {
+      fetchData();
     }
-    fetchData();
   };
 
   const onListLoad = async () => {
@@ -70,36 +131,68 @@ const TodoList = forwardRef((_props, ref) => {
     setTimeout(() => {
       setAnimatingTab(null);
       setActiveTab(tab);
-      const filter = tabFilters[tab as keyof typeof tabFilters];
-      setTodos(filter(allTodos));
+      // 应用排序和过滤
+      const sortedAndFilteredTodos = applySortAndFilter(allTodos, sortType, tab);
+      setTodos(sortedAndFilteredTodos);
     }, 200);
+  };
+
+  // 处理排序点击
+  const handleSortClick = () => {
+    setAnimatingSortType(true);
+    setTimeout(() => {
+      setAnimatingSortType(false);
+      // 切换下一个排序方式
+      const nextSortType = getNextSortType(sortType);
+      setSortType(nextSortType);
+      // 应用新的排序
+      const sortedAndFilteredTodos = applySortAndFilter(allTodos, nextSortType, activeTab);
+      setTodos(sortedAndFilteredTodos);
+    }, 200);
+  };
+
+  // 获取下一个排序类型
+  const getNextSortType = (current: SortType): SortType => {
+    const sortTypes: SortType[] = ['updateTime', 'finishDate'];
+    const currentIndex = sortTypes.indexOf(current);
+    return sortTypes[(currentIndex + 1) % sortTypes.length];
   };
 
   return (
     <div className="list-container">
-      <div className="flex pl-2 my-2">
-        {tabs.map((tab) => (
-          <PixelBox
-            key={tab}
-            className={`mr-2 ${
-              animatingTab === tab ? "click-shrink-animate" : ""
-            }`}
-            borderColor={
-              activeTab === tab
-                ? "var(--color-button-primary)"
-                : "var(--color-button-secondary)"
-            }
-          >
-            <div
-              className={`tab-card text-2xl px-3 py-1 ${
-                activeTab === tab ? "checked" : ""
+      <div className="flex pl-2 my-2 justify-between">
+        <div className="flex">
+          {tabs.map((tab) => (
+            <PixelBox
+              key={tab}
+              className={`mr-2 ${
+                animatingTab === tab ? "click-shrink-animate" : ""
               }`}
-              onClick={() => handleTabClick(tab)}
+              borderColor={
+                activeTab === tab
+                  ? "var(--color-button-primary)"
+                  : "var(--color-button-secondary)"
+              }
             >
-              {tab}
-            </div>
-          </PixelBox>
-        ))}
+              <div
+                className={`tab-card text-2xl px-3 py-1 ${
+                  activeTab === tab ? "checked" : ""
+                }`}
+                onClick={() => handleTabClick(tab)}
+              >
+                {tab}
+              </div>
+            </PixelBox>
+          ))}
+        </div>
+        <div 
+          style={{ color: "var(--color-text-secondary)" }}
+          onClick={handleSortClick}
+          className={`flex items-center cursor-pointer ${animatingSortType ? "click-shrink-animate" : ""}`}
+        >
+          {sortTypeText[sortType]}
+          <i className="iconfont icon-x_paixu ml-2 text-xl"></i>
+        </div>
       </div>
       <div className="list px-2 pb-2 overflow-y-auto">
         <List onLoad={onListLoad} finished={finished}>
