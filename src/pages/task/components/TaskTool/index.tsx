@@ -10,11 +10,13 @@ interface TaskToolParams {
 const TaskTool = ({ updateList }: TaskToolParams) => {
   const [showDetail, setShowDetail] = useState(false); // 是否显示详情弹框
   const [isAnimating, setIsAnimating] = useState(false);
+  const [formKey, setFormKey] = useState(0); // 添加一个key状态用于重置表单
 
   const handleClick = () => {
     setIsAnimating(true);
     setTimeout(() => {
       setIsAnimating(false);
+      setFormKey(prev => prev + 1); // 增加key值使React重新创建组件
       setShowDetail(true); // 显示弹框
     }, 200);
   };
@@ -43,7 +45,7 @@ const TaskTool = ({ updateList }: TaskToolParams) => {
         position="right"
         onClose={() => setShowDetail(false)}
       >
-        <TaskForm close={handleFormClose}></TaskForm>
+        <TaskForm key={formKey} close={handleFormClose}></TaskForm>
       </Popup>
     </div>
   );
