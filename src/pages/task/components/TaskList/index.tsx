@@ -189,7 +189,7 @@ const TaskList = forwardRef((_props, ref) => {
         <div 
           style={{ color: "var(--color-text-secondary)" }}
           onClick={handleSortClick}
-          className={`flex items-center cursor-pointer ${animatingSortType ? "click-shrink-animate" : ""}`}
+          className={`flex items-center cursor-pointer pr-2 ${animatingSortType ? "click-shrink-animate" : ""}`}
         >
           {sortTypeText[sortType]}
           <i className="iconfont icon-x_paixu ml-2 text-xl"></i>
