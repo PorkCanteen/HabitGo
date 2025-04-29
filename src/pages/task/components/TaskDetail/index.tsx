@@ -1,6 +1,11 @@
 import Calendar from "@/pages/components/Calendar";
 import dayjs from "dayjs";
 import { useState } from "react";
+import "./index.scss";
+import { PixelBox } from "@/pages/components";
+
+const borderWidth = 16;
+
 const TaskDetail = () => {
   // 模拟一些打卡记录
   const [completedDates] = useState<string[]>([
@@ -18,17 +23,47 @@ const TaskDetail = () => {
     dayjs().subtract(1, "month").date(20).format("YYYY-MM-DD"),
   ]);
   return (
-    <div>
+    <div className="task-detail-container">
       {/* 标题 */}
-      <div className="header-container"></div>
-      {/* 目标 */}
-      <div className="target-container"></div>
+      <div className="header-container">待办名称</div>
       {/* 日历 */}
-      <div className="calendar-container">
-        <Calendar highlightDates={completedDates} />
+      <div className="calendar-container mb-6">
+        <PixelBox
+          className="w-full"
+          borderColor="var(--color-background-primary)"
+          borderWidth={borderWidth}
+          gapSize={borderWidth}
+          backgroundColor="var(--color-primary)"
+        >
+          <div className="section-container">
+            <Calendar highlightDates={completedDates} />
+          </div>
+        </PixelBox>
+      </div>
+      {/* 目标 */}
+      <div className="target-container mb-6">
+        <PixelBox
+          className="w-full"
+          borderColor="var(--color-background-primary)"
+          borderWidth={borderWidth}
+          gapSize={borderWidth}
+          backgroundColor="var(--color-primary)"
+        >
+          <div className="section-container">目标</div>
+        </PixelBox>
       </div>
       {/* 统计 */}
-      <div className="statics-container"></div>
+      <div className="statics-container mb-4">
+        <PixelBox
+          className="w-full"
+          borderColor="var(--color-background-primary)"
+          borderWidth={borderWidth}
+          gapSize={borderWidth}
+          backgroundColor="var(--color-primary)"
+        >
+          <div className="section-container">打卡数据</div>
+        </PixelBox>
+      </div>
     </div>
   );
 };
