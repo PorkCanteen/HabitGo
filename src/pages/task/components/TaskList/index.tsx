@@ -27,7 +27,7 @@ interface ApiResponse {
 }
 
 // 排序类型
-type SortType = 'updateTime' | 'taskType' | 'count';
+type SortType = "updateTime" | "taskType" | "count";
 
 const TaskList = forwardRef((_props, ref) => {
   const { sendRequest } = useHttp();
@@ -37,16 +37,16 @@ const TaskList = forwardRef((_props, ref) => {
   const [activeTab, setActiveTab] = useState("全部"); // 新增状态管理
   const [animatingTab, setAnimatingTab] = useState<string | null>(null);
   // 排序状态管理
-  const [sortType, setSortType] = useState<SortType>('updateTime');
+  const [sortType, setSortType] = useState<SortType>("updateTime");
   const [animatingSortType, setAnimatingSortType] = useState<boolean>(false);
 
   const tabs = ["全部", "主要", "次要"]; // 新增tab列表
 
   // 排序类型对应的显示文本
   const sortTypeText: Record<SortType, string> = {
-    'updateTime': '更新时间',
-    'taskType': '分类',
-    'count': '完成次数'
+    updateTime: "更新时间",
+    taskType: "分类",
+    count: "完成次数",
   };
 
   const fetchData = async () => {
@@ -66,13 +66,14 @@ const TaskList = forwardRef((_props, ref) => {
 
   // 应用排序和过滤
   const applySortAndFilter = (
-    data: Task[], 
-    currentSortType: SortType, 
+    data: Task[],
+    currentSortType: SortType,
     currentTab: string
   ): Task[] => {
     // 先应用过滤
-    const filteredData = tabFilters[currentTab as keyof typeof tabFilters](data);
-    
+    const filteredData =
+      tabFilters[currentTab as keyof typeof tabFilters](data);
+
     // 再应用排序
     return sortData(filteredData, currentSortType);
   };
@@ -80,13 +81,13 @@ const TaskList = forwardRef((_props, ref) => {
   // 排序数据
   const sortData = (data: Task[], currentSortType: SortType): Task[] => {
     return [...data].sort((a, b) => {
-      if (currentSortType === 'updateTime') {
+      if (currentSortType === "updateTime") {
         // 按更新时间降序
-        return (b.updateTime || '').localeCompare(a.updateTime || '');
-      } else if (currentSortType === 'taskType') {
+        return (b.updateTime || "").localeCompare(a.updateTime || "");
+      } else if (currentSortType === "taskType") {
         // 按任务类型降序
         return a.taskType - b.taskType;
-      } else if (currentSortType === 'count') {
+      } else if (currentSortType === "count") {
         // 按完成次数降序
         return b.count - a.count;
       }
@@ -106,7 +107,11 @@ const TaskList = forwardRef((_props, ref) => {
       setAnimatingTab(null);
       setActiveTab(tab);
       // 应用排序和过滤
-      const sortedAndFilteredTasks = applySortAndFilter(allTasks, sortType, tab);
+      const sortedAndFilteredTasks = applySortAndFilter(
+        allTasks,
+        sortType,
+        tab
+      );
       setTasks(sortedAndFilteredTasks);
     }, 200);
   };
@@ -120,14 +125,18 @@ const TaskList = forwardRef((_props, ref) => {
       const nextSortType = getNextSortType(sortType);
       setSortType(nextSortType);
       // 应用新的排序
-      const sortedAndFilteredTasks = applySortAndFilter(allTasks, nextSortType, activeTab);
+      const sortedAndFilteredTasks = applySortAndFilter(
+        allTasks,
+        nextSortType,
+        activeTab
+      );
       setTasks(sortedAndFilteredTasks);
     }, 200);
   };
 
   // 获取下一个排序类型
   const getNextSortType = (current: SortType): SortType => {
-    const sortTypes: SortType[] = ['updateTime', 'taskType', 'count'];
+    const sortTypes: SortType[] = ["updateTime", "taskType", "count"];
     const currentIndex = sortTypes.indexOf(current);
     return sortTypes[(currentIndex + 1) % sortTypes.length];
   };
@@ -144,7 +153,7 @@ const TaskList = forwardRef((_props, ref) => {
         method: "PUT",
       });
       if (res && res.code === "200") {
-        Notify.show({ type: "success", message: "操作成功" });
+        console.log("操作成功", res.data);
       } else {
         Notify.show({ type: "danger", message: res?.message || "系统错误" });
       }
@@ -163,33 +172,35 @@ const TaskList = forwardRef((_props, ref) => {
     <div className="list-container">
       <div className="flex pl-2 my-2 justify-between">
         <div className="flex">
-        {tabs.map((tab) => (
-          <PixelBox
-            key={tab}
-            className={`mr-2 ${
-              animatingTab === tab ? "click-shrink-animate" : ""
-            }`}
-            borderColor={
-              activeTab === tab
-                ? "var(--color-button-primary)"
-                : "var(--color-button-secondary)"
-            }
-          >
-            <div
-              className={`tab-card text-2xl px-3 py-1 ${
-                activeTab === tab ? "checked" : ""
+          {tabs.map((tab) => (
+            <PixelBox
+              key={tab}
+              className={`mr-2 ${
+                animatingTab === tab ? "click-shrink-animate" : ""
               }`}
-              onClick={() => handleTabClick(tab)}
+              borderColor={
+                activeTab === tab
+                  ? "var(--color-button-primary)"
+                  : "var(--color-button-secondary)"
+              }
             >
-              {tab}
-            </div>
+              <div
+                className={`tab-card text-2xl px-3 py-1 ${
+                  activeTab === tab ? "checked" : ""
+                }`}
+                onClick={() => handleTabClick(tab)}
+              >
+                {tab}
+              </div>
             </PixelBox>
           ))}
         </div>
-        <div 
+        <div
           style={{ color: "var(--color-text-secondary)" }}
           onClick={handleSortClick}
-          className={`flex items-center cursor-pointer pr-2 ${animatingSortType ? "click-shrink-animate" : ""}`}
+          className={`flex items-center cursor-pointer pr-2 ${
+            animatingSortType ? "click-shrink-animate" : ""
+          }`}
         >
           {sortTypeText[sortType]}
           <i className="iconfont icon-x_paixu ml-2 text-xl"></i>
