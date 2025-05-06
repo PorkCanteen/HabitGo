@@ -13,10 +13,10 @@ export interface RequestConfig {
 }
 
 // 定义响应数据类型
-export interface ResponseData {
+export interface ResponseData<T = unknown> {
   code: string;
   message: string;
-  data?: any;
+  data?: T;
 }
 
 // 全局配置
@@ -47,18 +47,37 @@ const requestInterceptor = (config: RequestConfig): RequestConfig => {
   return config;
 };
 
+// 处理认证失败的情况
+const handleAuthFailure = (message: string = '认证失败，请重新登录') => {
+  clearAuth();
+  window.location.href = '/login';
+  throw new Error(message);
+};
+
 // 响应拦截器
-const responseInterceptor = <T>(response: Response): Promise<T> => {
+const responseInterceptor = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
     // 如果是401未授权错误，则清除token并跳转到登录页
     if (response.status === 401) {
-      clearAuth();
-      window.location.href = '/login';
-      throw new Error('认证失败，请重新登录');
+      handleAuthFailure();
     }
     throw new Error(`请求错误! status: ${response.status}`);
   }
-  return response.json();
+  
+  // 解析响应数据
+  const data = await response.json();
+  
+  // 检查后端返回的特定错误码
+  if (data && typeof data === 'object') {
+    const responseData = data as ResponseData;
+    
+    // 检查是否是认证失败的错误码
+    if (responseData.code === '500' && responseData.message?.includes('无效的认证Token')) {
+      handleAuthFailure(responseData.message);
+    }
+  }
+  
+  return data as T;
 };
 
 // 核心请求方法
