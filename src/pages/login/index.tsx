@@ -9,6 +9,17 @@ import { ResponseData } from "@/utils/http";
 import PixelBox from "../components/PixelBox";
 import { setToken, setUserInfo } from "@/utils/tokenUtils";
 
+// 定义登录响应数据类型
+interface LoginResponseData {
+  token: string;
+  username?: string;
+  nickname?: string;
+  avatar?: string;
+  email?: string;
+  id?: string | number;
+  [key: string]: string | number | undefined; // 其他可能的用户信息字段
+}
+
 const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -19,7 +30,7 @@ const Login = () => {
     password: string;
   }) => {
     // 预留请求接口
-    const res: ResponseData | null = await sendRequest({
+    const res: ResponseData<LoginResponseData> | null = await sendRequest({
       url: "/user/login",
       method: "POST",
       data: values,
