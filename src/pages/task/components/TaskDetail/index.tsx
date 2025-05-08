@@ -22,10 +22,19 @@ const TaskDetail = () => {
     dayjs().subtract(1, "month").date(15).format("YYYY-MM-DD"),
     dayjs().subtract(1, "month").date(20).format("YYYY-MM-DD"),
   ]);
+  const goBack = () => {
+    // navigate(-1);
+  };
   return (
     <div className="task-detail-container">
       {/* 标题 */}
-      <div className="header-container">待办名称</div>
+      <div className="header-container">
+        <div className="back-btn" onClick={goBack}>
+          <i className="iconfont icon-arrow-pixel-copy"></i>
+        </div>
+        <div className="title">学习</div>
+        <div className="description">学习+开发个人项目</div>
+      </div>
       {/* 日历 */}
       <div className="calendar-container mb-6">
         <PixelBox
