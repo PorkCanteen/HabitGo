@@ -34,6 +34,9 @@ const TaskDetail = () => {
         </div>
         <div className="title">学习</div>
         <div className="description">学习+开发个人项目</div>
+        <div className="edit-btn">
+          <i className="iconfont icon-x_peizhi"></i>
+        </div>
       </div>
       {/* 日历 */}
       <div className="calendar-container mb-6">
