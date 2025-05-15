@@ -59,6 +59,10 @@ const TaskDetail = () => {
           backgroundColor="var(--color-primary)"
         >
           <div className="section-container">目标</div>
+          <div className="target-card-container">
+            <div className="target">每周3次</div>
+            <div className="result">已完成!</div>
+          </div>
         </PixelBox>
       </div>
       {/* 统计 */}
@@ -71,6 +75,24 @@ const TaskDetail = () => {
           backgroundColor="var(--color-primary)"
         >
           <div className="section-container">打卡数据</div>
+          <div className="statics-card-container">
+            <div className="statics-card">
+              <div className="statics-card-title">本周打卡次数</div>
+              <div className="statics-card-value">10</div>
+            </div>
+            <div className="statics-card">
+              <div className="statics-card-title">本月打卡次数</div>
+              <div className="statics-card-value">10</div>
+            </div>
+            <div className="statics-card">
+              <div className="statics-card-title">总打卡次数</div>
+              <div className="statics-card-value">10</div>
+            </div>
+            <div className="statics-card">
+              <div className="statics-card-title">连续打卡天数</div>
+              <div className="statics-card-value">10</div>
+            </div>
+          </div>
         </PixelBox>
       </div>
     </div>
