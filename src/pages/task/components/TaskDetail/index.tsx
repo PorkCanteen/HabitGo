@@ -64,7 +64,12 @@ const TaskDetail = () => {
           <div className="section-container">目标</div>
           <div className="target-card-container">
             <div className="target">每周3次</div>
-            <div className="result">已完成!</div>
+            <div className="result flex items-center">
+              已完成!
+              <svg aria-hidden="true" width={24} height={24}>
+                <use xlinkHref="#icon--trophy"></use>
+              </svg>
+            </div>
           </div>
         </PixelBox>
       </div>

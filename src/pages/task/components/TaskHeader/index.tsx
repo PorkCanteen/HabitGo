@@ -13,7 +13,7 @@ const TaskHeader = () => {
   return (
     <div className="header-container flex justify-between items-center h-24 px-4 text-3xl shrink-0">
       <div>
-      <svg
+        <svg
           onClick={handleLogoClick}
           aria-hidden="true"
           width={18}
@@ -25,7 +25,7 @@ const TaskHeader = () => {
       </div>
       <div className="text-4xl font-bold">{taskHeaderText}</div>
       <div>
-      <svg
+        <svg
           onClick={handleLogoClick}
           aria-hidden="true"
           width={18}

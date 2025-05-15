@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "12044052",
+      "name": "007-trophy",
+      "font_class": "-trophy",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "12044053",
+      "name": "010-like",
+      "font_class": "-like",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "24470271",
+      "name": "像素_旗帜",
+      "font_class": "xiangsu_qizhi1",
+      "unicode": "ed21",
+      "unicode_decimal": 60705
+    },
+    {
       "icon_id": "7163146",
       "name": "x_垃圾桶",
       "font_class": "x_lajitong",
