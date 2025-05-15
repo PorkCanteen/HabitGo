@@ -3,14 +3,13 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import "./index.scss";
 import { PixelBox } from "@/pages/components";
-
+import { useNavigate } from "react-router-dom";
 const borderWidth = 16;
 
 const TaskDetail = () => {
   // 模拟一些打卡记录
   const [completedDates] = useState<string[]>([
     // 过去几天的随机打卡记录
-    dayjs().format("YYYY-MM-DD"),
     dayjs().subtract(1, "day").format("YYYY-MM-DD"),
     dayjs().subtract(3, "day").format("YYYY-MM-DD"),
     dayjs().subtract(5, "day").format("YYYY-MM-DD"),
@@ -22,8 +21,9 @@ const TaskDetail = () => {
     dayjs().subtract(1, "month").date(15).format("YYYY-MM-DD"),
     dayjs().subtract(1, "month").date(20).format("YYYY-MM-DD"),
   ]);
+  const navigate = useNavigate();
   const goBack = () => {
-    // navigate(-1);
+    navigate("/task");
   };
   return (
     <div className="task-detail-container">
