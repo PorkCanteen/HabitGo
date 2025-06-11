@@ -1,8 +1,10 @@
 .task-detail-container {
   background-color: var(--color-primary);
   width: 100%;
-  height: fit-content;
+  min-height: 100vh;
   padding: 0 16px;
+  display: flex;
+  flex-direction: column;
   .header-container {
     position: relative;
     height: 70px;
@@ -11,6 +13,7 @@
     line-height: 40px;
     flex-direction: column;
     align-items: center;
+    flex-shrink: 0;
     .title {
       font-size: 18px;
       font-weight: 600;
