@@ -1,30 +1,109 @@
 import Calendar from "@/pages/components/Calendar";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./index.scss";
 import { PixelBox } from "@/pages/components";
 import { useNavigate } from "react-router-dom";
+import { useHttp } from "@/hooks/useHttp";
+
+// 定义任务详情数据类型
+interface TaskDetailData {
+  id: number;
+  userId: number;
+  name: string;
+  description: string;
+  count: number;
+  isCompleted: number;
+  taskType: number;
+  targetType: number; // 按日1 按周2 按月3
+  targetCount: number;
+  completedDates: string;
+  createTime: string;
+  updateTime: string;
+  weeklyCompletedCount: number;
+  monthlyCompletedCount: number;
+  totalCompletedCount: number;
+  continuities: number;
+}
+
+// 定义API响应包装类型
+interface ApiResponse<T> {
+  code: string;
+  message: string | null;
+  data: T;
+}
+
 const borderWidth = 16;
 
 const TaskDetail = () => {
-  // 模拟一些打卡记录
-  const [completedDates] = useState<string[]>([
-    // 过去几天的随机打卡记录
-    dayjs().subtract(1, "day").format("YYYY-MM-DD"),
-    dayjs().subtract(3, "day").format("YYYY-MM-DD"),
-    dayjs().subtract(5, "day").format("YYYY-MM-DD"),
-    dayjs().subtract(7, "day").format("YYYY-MM-DD"),
-    dayjs().subtract(10, "day").format("YYYY-MM-DD"),
-    // 上个月的一些日期
-    dayjs().subtract(1, "month").date(5).format("YYYY-MM-DD"),
-    dayjs().subtract(1, "month").date(10).format("YYYY-MM-DD"),
-    dayjs().subtract(1, "month").date(15).format("YYYY-MM-DD"),
-    dayjs().subtract(1, "month").date(20).format("YYYY-MM-DD"),
-  ]);
+  const [taskDetail, setTaskDetail] = useState<TaskDetailData | null>(null);
   const navigate = useNavigate();
+  const { sendRequest } = useHttp();
+
+  // 获取目标类型文本
+  const getTargetTypeText = (targetType: number) => {
+    switch (targetType) {
+      case 1:
+        return "每日";
+      case 2:
+        return "每周";
+      case 3:
+        return "每月";
+      default:
+        return "";
+    }
+  };
+
+  // 判断是否完成目标
+  const getIsTargetCompleted = (targetType: number, targetCount: number, completedCount: number) => {
+    if (targetCount === 0) return false;
+    
+    switch (targetType) {
+      case 1: {// 按日
+        // 这里需要根据具体需求判断，暂时用今日是否完成
+        const today = dayjs().format("YYYY-MM-DD");
+        const completedDatesArray = taskDetail?.completedDates?.split(",") || [];
+        return completedDatesArray.includes(today);
+      }
+      case 2: // 按周
+        return completedCount >= targetCount;
+      case 3: // 按月
+        return completedCount >= targetCount;
+      default:
+        return false;
+    }
+  };
+
+  useEffect(() => {
+    const fetchTaskDetail = async () => {
+      const res = await sendRequest<ApiResponse<TaskDetailData>>({
+        url: "/task/32",
+        method: "GET",
+      });
+      console.log('习惯详情接口返回值:', res);
+      if (res && res.code === "200" && res.data) {
+        setTaskDetail(res.data);
+      }
+    };
+    
+    fetchTaskDetail();
+  }, [sendRequest]);
+
   const goBack = () => {
     navigate("/task");
   };
+
+  // 处理完成日期数据
+  const completedDates = taskDetail?.completedDates 
+    ? taskDetail.completedDates.split(",").filter(date => date.trim() !== "")
+    : [];
+
+  // 获取当前目标完成情况
+  const isTargetCompleted = taskDetail 
+    ? getIsTargetCompleted(taskDetail.targetType, taskDetail.targetCount, 
+        taskDetail.targetType === 2 ? taskDetail.weeklyCompletedCount : taskDetail.monthlyCompletedCount)
+    : false;
+
   return (
     <div className="task-detail-container">
       {/* 标题 */}
@@ -32,8 +111,8 @@ const TaskDetail = () => {
         <div className="back-btn" onClick={goBack}>
           <i className="iconfont icon-arrow-pixel-copy"></i>
         </div>
-        <div className="title">学习</div>
-        <div className="description">学习+开发个人项目</div>
+        <div className="title">{taskDetail?.name || "加载中..."}</div>
+        <div className="description">{taskDetail?.description || ""}</div>
         <div className="edit-btn">
           <i className="iconfont icon-x_peizhi"></i>
         </div>
@@ -63,12 +142,20 @@ const TaskDetail = () => {
         >
           <div className="section-container">目标</div>
           <div className="target-card-container">
-            <div className="target">每周3次</div>
+            <div className="target">
+              {taskDetail ? `${getTargetTypeText(taskDetail.targetType)}${taskDetail.targetCount}次` : "加载中..."}
+            </div>
             <div className="result flex items-center">
-              已完成!
-              <svg aria-hidden="true" width={24} height={24}>
-                <use xlinkHref="#icon--trophy"></use>
-              </svg>
+              {isTargetCompleted ? (
+                <>
+                  已完成!
+                  <svg aria-hidden="true" width={24} height={24}>
+                    <use xlinkHref="#icon--trophy"></use>
+                  </svg>
+                </>
+              ) : (
+                "未完成"
+              )}
             </div>
           </div>
         </PixelBox>
@@ -86,19 +173,19 @@ const TaskDetail = () => {
           <div className="statics-card-container">
             <div className="statics-card">
               <div className="statics-card-title">本周打卡次数</div>
-              <div className="statics-card-value">10</div>
+              <div className="statics-card-value">{taskDetail?.weeklyCompletedCount || 0}</div>
             </div>
             <div className="statics-card">
               <div className="statics-card-title">本月打卡次数</div>
-              <div className="statics-card-value">10</div>
+              <div className="statics-card-value">{taskDetail?.monthlyCompletedCount || 0}</div>
             </div>
             <div className="statics-card">
               <div className="statics-card-title">总打卡次数</div>
-              <div className="statics-card-value">10</div>
+              <div className="statics-card-value">{taskDetail?.totalCompletedCount || 0}</div>
             </div>
             <div className="statics-card">
               <div className="statics-card-title">连续打卡天数</div>
-              <div className="statics-card-value">10</div>
+              <div className="statics-card-value">{taskDetail?.continuities || 0}</div>
             </div>
           </div>
         </PixelBox>
