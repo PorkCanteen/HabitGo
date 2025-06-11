@@ -5,6 +5,13 @@
   padding: 0 16px;
   display: flex;
   flex-direction: column;
+  animation: slideInFromRight 0.3s ease-out;
+  position: relative;
+  overflow-x: hidden;
+  
+  &.exiting {
+    animation: slideOutToRight 0.3s ease-in forwards;
+  }
   .header-container {
     position: relative;
     height: 70px;
@@ -40,6 +47,35 @@
       }
     }
   }
+}
+
+// 从右到左滑动进入动画
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// 从左到右滑动退出动画
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+// 确保动画期间不会有横向滚动条
+body {
+  overflow-x: hidden;
 }
 .section-container {
   font-size: 16px;

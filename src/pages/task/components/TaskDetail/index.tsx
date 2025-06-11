@@ -39,6 +39,7 @@ const borderWidth = 16;
 const TaskDetail = () => {
   const [taskDetail, setTaskDetail] = useState<TaskDetailData | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { sendRequest } = useHttp();
@@ -93,7 +94,11 @@ const TaskDetail = () => {
   }, [sendRequest, id]);
 
   const goBack = () => {
-    navigate("/task");
+    setIsExiting(true);
+    // 延迟导航，等待退出动画完成
+    setTimeout(() => {
+      navigate("/task");
+    }, 300); // 动画时长300ms
   };
 
   const handleEdit = () => {
@@ -115,8 +120,11 @@ const TaskDetail = () => {
       };
       fetchTaskDetail();
     }
-    // 返回列表页
-    navigate("/task");
+    // 返回列表页，使用退出动画
+    setIsExiting(true);
+    setTimeout(() => {
+      navigate("/task");
+    }, 300);
   };
 
   // 处理完成日期数据
@@ -131,7 +139,7 @@ const TaskDetail = () => {
     : false;
 
   return (
-    <div className="task-detail-container">
+    <div className={`task-detail-container ${isExiting ? 'exiting' : ''}`}>
       {/* 标题 */}
       <div className="header-container">
         <div className="back-btn" onClick={goBack}>
