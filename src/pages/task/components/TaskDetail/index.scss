@@ -1,11 +1,13 @@
 .task-detail-container {
   background-color: var(--color-primary);
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   animation: slideInFromRight 0.3s ease-out;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   overflow: hidden;
   
   &.exiting {
@@ -86,6 +88,8 @@ body {
   overflow-x: hidden;
   padding: 0 16px 20px;
   -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
+  background-color: var(--color-primary); /* 确保背景色一致 */
+  min-height: calc(100vh - 70px); /* 确保至少填满除header外的所有空间 */
 }
 
 // 内容区域样式
