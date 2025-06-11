@@ -21,7 +21,7 @@ const routes: RouteConfig[] = [
         ],
       },
       {
-        path: "/task/detail",
+        path: "/task/detail/:id",
         element: lazy(() => import("@/pages/task/components/TaskDetail")),
         children: [
           //

@@ -4,6 +4,7 @@ import TaskForm from "../../form/TaskForm";
 import "./index.scss";
 import { Task } from "../TaskList";
 import PixelBox from "@/pages/components/PixelBox";
+import { useNavigate } from "react-router-dom";
 
 interface TaskItemParams {
   task: Task;
@@ -27,6 +28,7 @@ const taskTypeMap: Record<number, { text: string; color: string }> = {
 const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const navigate = useNavigate();
 
   // 监听task.isCompleted的变化，当从false变为true时触发动画
   useEffect(() => {
@@ -39,7 +41,8 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
   }, [task.isCompleted]);
 
   const handleClick = () => {
-    setShowDetail(true);
+    // 携带id跳转到详情页
+    navigate(`/task/detail/${task.id}`);
   };
   const onFormClose = () => {
     setShowDetail(false);

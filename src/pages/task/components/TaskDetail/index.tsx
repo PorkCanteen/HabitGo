@@ -3,8 +3,10 @@ import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import "./index.scss";
 import { PixelBox } from "@/pages/components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
+import { Popup } from "react-vant";
+import TaskForm from "../../form/TaskForm";
 
 // 定义任务详情数据类型
 interface TaskDetailData {
@@ -37,7 +39,9 @@ const borderWidth = 16;
 
 const TaskDetail = () => {
   const [taskDetail, setTaskDetail] = useState<TaskDetailData | null>(null);
+  const [showEditForm, setShowEditForm] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
   const { sendRequest } = useHttp();
 
   // 获取目标类型文本
@@ -76,8 +80,10 @@ const TaskDetail = () => {
 
   useEffect(() => {
     const fetchTaskDetail = async () => {
+      if (!id) return;
+      
       const res = await sendRequest<ApiResponse<TaskDetailData>>({
-        url: "/task/32",
+        url: `/task/${id}`,
         method: "GET",
       });
       console.log('习惯详情接口返回值:', res);
@@ -87,9 +93,32 @@ const TaskDetail = () => {
     };
     
     fetchTaskDetail();
-  }, [sendRequest]);
+  }, [sendRequest, id]);
 
   const goBack = () => {
+    navigate("/task");
+  };
+
+  const handleEdit = () => {
+    setShowEditForm(true);
+  };
+
+  const onFormClose = () => {
+    setShowEditForm(false);
+    // 重新查询数据
+    if (id) {
+      const fetchTaskDetail = async () => {
+        const res = await sendRequest<ApiResponse<TaskDetailData>>({
+          url: `/task/${id}`,
+          method: "GET",
+        });
+        if (res && res.code === "200" && res.data) {
+          setTaskDetail(res.data);
+        }
+      };
+      fetchTaskDetail();
+    }
+    // 返回列表页
     navigate("/task");
   };
 
@@ -113,7 +142,7 @@ const TaskDetail = () => {
         </div>
         <div className="title">{taskDetail?.name || "加载中..."}</div>
         <div className="description">{taskDetail?.description || ""}</div>
-        <div className="edit-btn">
+        <div className="edit-btn" onClick={handleEdit}>
           <i className="iconfont icon-x_peizhi"></i>
         </div>
       </div>
@@ -190,6 +219,21 @@ const TaskDetail = () => {
           </div>
         </PixelBox>
       </div>
+      
+      {/* 编辑表单弹框 */}
+      <Popup
+        visible={showEditForm}
+        overlay={true}
+        round={true}
+        closeOnClickOverlay={true}
+        closeable={true}
+        title="编辑习惯"
+        style={{ width: "85%", height: "100%" }}
+        position="right"
+        onClose={() => setShowEditForm(false)}
+      >
+        {taskDetail && <TaskForm task={taskDetail} close={onFormClose} />}
+      </Popup>
     </div>
   );
 };
