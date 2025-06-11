@@ -1,5 +1,4 @@
 import Calendar from "@/pages/components/Calendar";
-import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import "./index.scss";
 import { PixelBox } from "@/pages/components";
@@ -60,18 +59,16 @@ const TaskDetail = () => {
 
   // 判断是否完成目标
   const getIsTargetCompleted = (targetType: number, targetCount: number, completedCount: number) => {
-    if (targetCount === 0) return false;
-    
     switch (targetType) {
       case 1: {// 按日
-        // 这里需要根据具体需求判断，暂时用今日是否完成
-        const today = dayjs().format("YYYY-MM-DD");
-        const completedDatesArray = taskDetail?.completedDates?.split(",") || [];
-        return completedDatesArray.includes(today);
+        // 按日的完成状态根据isCompleted字段判断
+        return taskDetail?.isCompleted === 1;
       }
       case 2: // 按周
+        if (targetCount === 0) return false;
         return completedCount >= targetCount;
       case 3: // 按月
+        if (targetCount === 0) return false;
         return completedCount >= targetCount;
       default:
         return false;
@@ -172,7 +169,7 @@ const TaskDetail = () => {
           <div className="section-container">目标</div>
           <div className="target-card-container">
             <div className="target">
-              {taskDetail ? `${getTargetTypeText(taskDetail.targetType)}${taskDetail.targetCount}次` : "加载中..."}
+              {taskDetail ? `${getTargetTypeText(taskDetail.targetType)}${taskDetail.targetType === 1 ? 1 : taskDetail.targetCount}次` : "加载中..."}
             </div>
             <div className="result flex items-center">
               {isTargetCompleted ? (
