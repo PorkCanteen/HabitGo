@@ -14,6 +14,7 @@
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
+    background: transparent !important; /* 覆盖全局header-container样式 */
     .title {
       font-size: 18px;
       font-weight: 600;
