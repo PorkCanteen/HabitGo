@@ -1,13 +1,12 @@
 .task-detail-container {
   background-color: var(--color-primary);
   width: 100%;
-  min-height: 100vh;
-  padding: 0 16px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   animation: slideInFromRight 0.3s ease-out;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   
   &.exiting {
     animation: slideOutToRight 0.3s ease-in forwards;
@@ -22,6 +21,8 @@
     align-items: center;
     flex-shrink: 0;
     background: transparent !important; /* 覆盖全局header-container样式 */
+    padding: 0 16px;
+    z-index: 10;
     .title {
       font-size: 18px;
       font-weight: 600;
@@ -76,6 +77,28 @@
 // 确保动画期间不会有横向滚动条
 body {
   overflow-x: hidden;
+}
+
+// 可滚动的内容区域
+.content-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 16px 20px;
+  -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
+}
+
+// 内容区域样式
+.calendar-container {
+  flex-shrink: 0;
+  min-height: 300px; /* 确保日历有足够的最小高度 */
+  margin-bottom: 24px;
+}
+
+.target-container,
+.statics-container {
+  flex-shrink: 0;
+  margin-bottom: 24px;
 }
 .section-container {
   font-size: 16px;

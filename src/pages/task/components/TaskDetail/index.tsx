@@ -151,8 +151,11 @@ const TaskDetail = () => {
           <i className="iconfont icon-x_peizhi"></i>
         </div>
       </div>
-      {/* 日历 */}
-      <div className="calendar-container mb-6">
+      
+      {/* 可滚动的内容区域 */}
+      <div className="content-scroll-area">
+        {/* 日历 */}
+        <div className="calendar-container">
         <PixelBox
           className="w-full"
           borderColor="var(--color-background-primary)"
@@ -165,64 +168,66 @@ const TaskDetail = () => {
           </div>
         </PixelBox>
       </div>
-      {/* 目标 */}
-      <div className="target-container mb-6">
-        <PixelBox
-          className="w-full"
-          borderColor="var(--color-background-primary)"
-          borderWidth={borderWidth}
-          gapSize={borderWidth}
-          backgroundColor="var(--color-primary)"
-        >
-          <div className="section-container">目标</div>
-          <div className="target-card-container">
-            <div className="target">
-              {taskDetail ? `${getTargetTypeText(taskDetail.targetType)}${taskDetail.targetType === 1 ? 1 : taskDetail.targetCount}次` : "加载中..."}
+              {/* 目标 */}
+        <div className="target-container">
+          <PixelBox
+            className="w-full"
+            borderColor="var(--color-background-primary)"
+            borderWidth={borderWidth}
+            gapSize={borderWidth}
+            backgroundColor="var(--color-primary)"
+          >
+            <div className="section-container">目标</div>
+            <div className="target-card-container">
+              <div className="target">
+                {taskDetail ? `${getTargetTypeText(taskDetail.targetType)}${taskDetail.targetType === 1 ? 1 : taskDetail.targetCount}次` : "加载中..."}
+              </div>
+              <div className="result flex items-center">
+                {isTargetCompleted ? (
+                  <>
+                    已完成!
+                    <svg aria-hidden="true" width={24} height={24}>
+                      <use xlinkHref="#icon--trophy"></use>
+                    </svg>
+                  </>
+                ) : (
+                  "未完成"
+                )}
+              </div>
             </div>
-            <div className="result flex items-center">
-              {isTargetCompleted ? (
-                <>
-                  已完成!
-                  <svg aria-hidden="true" width={24} height={24}>
-                    <use xlinkHref="#icon--trophy"></use>
-                  </svg>
-                </>
-              ) : (
-                "未完成"
-              )}
+          </PixelBox>
+        </div>
+        
+        {/* 统计 */}
+        <div className="statics-container">
+          <PixelBox
+            className="w-full"
+            borderColor="var(--color-background-primary)"
+            borderWidth={borderWidth}
+            gapSize={borderWidth}
+            backgroundColor="var(--color-primary)"
+          >
+            <div className="section-container">打卡数据</div>
+            <div className="statics-card-container">
+              <div className="statics-card">
+                <div className="statics-card-title">本周打卡次数</div>
+                <div className="statics-card-value">{taskDetail?.weeklyCompletedCount || 0}</div>
+              </div>
+              <div className="statics-card">
+                <div className="statics-card-title">本月打卡次数</div>
+                <div className="statics-card-value">{taskDetail?.monthlyCompletedCount || 0}</div>
+              </div>
+              <div className="statics-card">
+                <div className="statics-card-title">总打卡次数</div>
+                <div className="statics-card-value">{taskDetail?.totalCompletedCount || 0}</div>
+              </div>
+              <div className="statics-card">
+                <div className="statics-card-title">连续打卡天数</div>
+                <div className="statics-card-value">{taskDetail?.continuities || 0}</div>
+              </div>
             </div>
-          </div>
-        </PixelBox>
-      </div>
-      {/* 统计 */}
-      <div className="statics-container mb-4">
-        <PixelBox
-          className="w-full"
-          borderColor="var(--color-background-primary)"
-          borderWidth={borderWidth}
-          gapSize={borderWidth}
-          backgroundColor="var(--color-primary)"
-        >
-          <div className="section-container">打卡数据</div>
-          <div className="statics-card-container">
-            <div className="statics-card">
-              <div className="statics-card-title">本周打卡次数</div>
-              <div className="statics-card-value">{taskDetail?.weeklyCompletedCount || 0}</div>
-            </div>
-            <div className="statics-card">
-              <div className="statics-card-title">本月打卡次数</div>
-              <div className="statics-card-value">{taskDetail?.monthlyCompletedCount || 0}</div>
-            </div>
-            <div className="statics-card">
-              <div className="statics-card-title">总打卡次数</div>
-              <div className="statics-card-value">{taskDetail?.totalCompletedCount || 0}</div>
-            </div>
-            <div className="statics-card">
-              <div className="statics-card-title">连续打卡天数</div>
-              <div className="statics-card-value">{taskDetail?.continuities || 0}</div>
-            </div>
-          </div>
-        </PixelBox>
+          </PixelBox>
+        </div>
       </div>
       
       {/* 编辑表单弹框 */}
