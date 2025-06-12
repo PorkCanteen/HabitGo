@@ -44,6 +44,32 @@ const TaskDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { sendRequest } = useHttp();
 
+  // 获取今天的日期字符串 (YYYY-MM-DD)
+  const getTodayString = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+
+  // 获取本周开始时间
+  const getWeekStart = () => {
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const diff = now.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1); // 周一作为一周开始
+    return new Date(now.setDate(diff));
+  };
+
+  // 获取本月开始时间
+  const getMonthStart = () => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  };
+
+  // 检查日期是否在指定范围内
+  const isDateInRange = (dateStr: string, startDate: Date) => {
+    const date = new Date(dateStr);
+    return date >= startDate && date <= new Date();
+  };
+
   // 获取目标类型文本
   const getTargetTypeText = (targetType: number) => {
     switch (targetType) {
@@ -74,6 +100,75 @@ const TaskDetail = () => {
       default:
         return false;
     }
+  };
+
+  // 处理完成日期数据，包含当天完成情况
+  const getProcessedData = () => {
+    if (!taskDetail) return {
+      completedDates: [],
+      weeklyCompletedCount: 0,
+      monthlyCompletedCount: 0,
+      totalCompletedCount: 0,
+      continuities: 0
+    };
+
+    const todayStr = getTodayString();
+    const originalCompletedDates = taskDetail.completedDates 
+      ? taskDetail.completedDates.split(",").filter(date => date.trim() !== "")
+      : [];
+    
+    // 检查今天是否已经在完成日期列表中
+    const isTodayInList = originalCompletedDates.includes(todayStr);
+    
+    // 如果今天完成了但不在列表中，需要补充
+    const shouldAddToday = taskDetail.isCompleted === 1 && !isTodayInList;
+    
+    const processedCompletedDates = shouldAddToday 
+      ? [...originalCompletedDates, todayStr]
+      : [...originalCompletedDates];
+    let weeklyCount = taskDetail.weeklyCompletedCount;
+    let monthlyCount = taskDetail.monthlyCompletedCount;
+    let totalCount = taskDetail.totalCompletedCount;
+    let continuities = taskDetail.continuities;
+
+    if (shouldAddToday) {
+      
+      // 更新统计数据
+      const weekStart = getWeekStart();
+      const monthStart = getMonthStart();
+      
+      // 如果今天在本周内，本周打卡次数+1
+      if (isDateInRange(todayStr, weekStart)) {
+        weeklyCount += 1;
+      }
+      
+      // 如果今天在本月内，本月打卡次数+1
+      if (isDateInRange(todayStr, monthStart)) {
+        monthlyCount += 1;
+      }
+      
+      // 总打卡次数+1
+      totalCount += 1;
+      
+      // 连续打卡天数逻辑：如果昨天也完成了，则+1，否则重置为1
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split('T')[0];
+      
+      if (originalCompletedDates.includes(yesterdayStr)) {
+        continuities += 1;
+      } else {
+        continuities = 1;
+      }
+    }
+
+    return {
+      completedDates: processedCompletedDates,
+      weeklyCompletedCount: weeklyCount,
+      monthlyCompletedCount: monthlyCount,
+      totalCompletedCount: totalCount,
+      continuities: continuities
+    };
   };
 
   useEffect(() => {
@@ -127,15 +222,13 @@ const TaskDetail = () => {
     }, 300);
   };
 
-  // 处理完成日期数据
-  const completedDates = taskDetail?.completedDates 
-    ? taskDetail.completedDates.split(",").filter(date => date.trim() !== "")
-    : [];
+  // 获取处理后的数据
+  const processedData = getProcessedData();
 
   // 获取当前目标完成情况
   const isTargetCompleted = taskDetail 
     ? getIsTargetCompleted(taskDetail.targetType, taskDetail.targetCount, 
-        taskDetail.targetType === 2 ? taskDetail.weeklyCompletedCount : taskDetail.monthlyCompletedCount)
+        taskDetail.targetType === 2 ? processedData.weeklyCompletedCount : processedData.monthlyCompletedCount)
     : false;
 
   return (
@@ -164,7 +257,7 @@ const TaskDetail = () => {
           backgroundColor="var(--color-primary)"
         >
           <div className="section-container">
-            <Calendar highlightDates={completedDates} />
+            <Calendar highlightDates={processedData.completedDates} />
           </div>
         </PixelBox>
       </div>
@@ -211,19 +304,19 @@ const TaskDetail = () => {
             <div className="statics-card-container">
               <div className="statics-card">
                 <div className="statics-card-title">本周打卡次数</div>
-                <div className="statics-card-value">{taskDetail?.weeklyCompletedCount || 0}</div>
+                <div className="statics-card-value">{processedData.weeklyCompletedCount}</div>
               </div>
               <div className="statics-card">
                 <div className="statics-card-title">本月打卡次数</div>
-                <div className="statics-card-value">{taskDetail?.monthlyCompletedCount || 0}</div>
+                <div className="statics-card-value">{processedData.monthlyCompletedCount}</div>
               </div>
               <div className="statics-card">
                 <div className="statics-card-title">总打卡次数</div>
-                <div className="statics-card-value">{taskDetail?.totalCompletedCount || 0}</div>
+                <div className="statics-card-value">{processedData.totalCompletedCount}</div>
               </div>
               <div className="statics-card">
                 <div className="statics-card-title">连续打卡天数</div>
-                <div className="statics-card-value">{taskDetail?.continuities || 0}</div>
+                <div className="statics-card-value">{processedData.continuities}</div>
               </div>
             </div>
           </PixelBox>
