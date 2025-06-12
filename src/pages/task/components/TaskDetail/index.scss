@@ -127,6 +127,10 @@ body {
     font-size: 24px;
     color: var(--color-button-primary);
     margin-left: 40px;
+    
+    .uncompleted {
+      color: #999; /* 灰色 */
+    }
   }
   
 }

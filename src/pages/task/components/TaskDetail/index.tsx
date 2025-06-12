@@ -191,7 +191,7 @@ const TaskDetail = () => {
                     </svg>
                   </>
                 ) : (
-                  "未完成"
+                  <span className="uncompleted">未完成</span>
                 )}
               </div>
             </div>
