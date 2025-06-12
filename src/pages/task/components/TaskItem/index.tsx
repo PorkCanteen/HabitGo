@@ -116,19 +116,19 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
         </div>
       </div>
       {/* 右侧区域 */}
-      <div className="right-wrapper flex items-center">
+      <div
+        className="right-wrapper flex items-center active:bg-gray-100 transition-all duration-200"
+        onClick={handleClick}
+      >
         {/* 完成次数 */}
-        <div className="text-2xl px-3 w-48 flex justify-end items-center text-gray-600">
+        <div className="text-2xl px-3 w-52 flex justify-end items-center text-gray-600">
           完成次数：
           <span className="text-green-500 text-4xl font-bold ml-2">
             {task.count}
           </span>
         </div>
         {/* 更多按钮 */}
-        <div
-          className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
-          onClick={handleClick}
-        >
+        <div className="w-12 h-24 justify-center items-center flex text-4xl text-gray-300 ">
           <svg aria-hidden="true" width={IconSize} height={IconSize}>
             <use xlinkHref="#icon-xiangsujiantou"></use>
           </svg>
