@@ -3,6 +3,8 @@ import "./index.scss";
 import { PixelBox } from "@/pages/components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
+import { Popup } from "react-vant";
+import TodoForm from "../../form/TodoForm";
 import Notify from "@/pages/components/Notify";
 
 // 定义子待办数据类型
@@ -40,6 +42,7 @@ const TodoDetail = () => {
   const [todoDetail, setTodoDetail] = useState<TodoDetailData | null>(null);
   const [isExiting, setIsExiting] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const [isEditingSubTodos, setIsEditingSubTodos] = useState(false);
   const [editingSubTodos, setEditingSubTodos] = useState<SubTodoItem[]>([]);
   const navigate = useNavigate();
@@ -118,9 +121,22 @@ const TodoDetail = () => {
     }, 300); // 动画时长300ms
   };
 
-  const handleEdit = () => {
-    // 编辑逻辑预留
-    console.log('编辑待办事项');
+    const handleEdit = () => {
+    setShowEditForm(true);
+  };
+
+  const onFormClose = () => {
+    setShowEditForm(false);
+    // 重新查询数据逻辑预留
+    // 返回列表页，使用退出动画
+    setIsExiting(true);
+    setTimeout(() => {
+      navigate("/todo");
+    }, 300);
+  };
+
+  const toggleDescription = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
   const handleEditSubTodos = () => {
@@ -138,10 +154,10 @@ const TodoDetail = () => {
     // 校验是否有空的子任务
     const hasEmptyTask = editingSubTodos.some(task => task.content.trim() === '');
     if (hasEmptyTask) {
-              Notify.show({
-          type: 'danger',
-          message: '请完善所有待办项内容或删除空项'
-        });
+      Notify.show({
+        type: 'danger',
+        message: '请完善所有待办项内容或删除空项'
+      });
       return;
     }
 
@@ -157,10 +173,6 @@ const TodoDetail = () => {
     }
     setIsEditingSubTodos(false);
     setEditingSubTodos([]);
-  };
-
-  const toggleDescription = () => {
-    setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
   const handleSubTodoContentChange = (index: number, content: string) => {
@@ -267,7 +279,7 @@ const TodoDetail = () => {
           </PixelBox>
         </div>
 
-        {/* 子待办列表 */}
+        {/* 待办项列表 */}
         <div className="subtodos-container">
           <PixelBox
             className="w-full"
@@ -287,23 +299,30 @@ const TodoDetail = () => {
               {isEditingSubTodos ? (
                 // 编辑模式
                 <>
-                  {editingSubTodos.map((subTodo, index) => (
-                    <div key={subTodo.id} className="subtodo-item editing">
-                      <input
-                        type="text"
-                        className="subtodo-input"
-                        value={subTodo.content}
-                        onChange={(e) => handleSubTodoContentChange(index, e.target.value)}
-                        placeholder="请输入待办项内容"
-                      />
-                      <button 
-                        className="delete-btn"
-                        onClick={() => handleDeleteSubTodo(index)}
-                      >
-                        <i className="iconfont icon-x_lajitong"></i>
-                      </button>
+                  {editingSubTodos.length > 0 ? (
+                    editingSubTodos.map((subTodo, index) => (
+                      <div key={subTodo.id} className="subtodo-item editing">
+                        <input
+                          type="text"
+                          className="subtodo-input"
+                          value={subTodo.content}
+                          onChange={(e) => handleSubTodoContentChange(index, e.target.value)}
+                          placeholder="请输入待办项内容"
+                        />
+                        <button 
+                          className="delete-btn"
+                          onClick={() => handleDeleteSubTodo(index)}
+                        >
+                          <i className="iconfont icon-x_lajitong"></i>
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="empty-edit-state">
+                      <div className="empty-edit-text">暂无待办项</div>
+                      <div className="empty-edit-tip">点击下方按钮添加第一个待办项</div>
                     </div>
-                  ))}
+                  )}
                   
                   <div className="add-subtodo-btn" onClick={handleAddSubTodo}>
                     <i className="iconfont icon-x_jiaru"></i>
@@ -341,6 +360,35 @@ const TodoDetail = () => {
           </PixelBox>
         </div>
       </div>
+      
+      {/* 编辑表单弹框 */}
+      <Popup
+        visible={showEditForm}
+        overlay={true}
+        round={true}
+        closeOnClickOverlay={true}
+        closeable={true}
+        title="编辑待办"
+        style={{ width: "85%", height: "100%" }}
+        position="right"
+        onClose={() => setShowEditForm(false)}
+      >
+        {todoDetail && (
+          <TodoForm 
+            todo={{
+              id: todoDetail.id,
+              name: todoDetail.title,
+              description: todoDetail.description,
+              finishDate: new Date().toISOString().split('T')[0], // 临时设置，实际应该从todoDetail获取
+              isFinished: todoDetail.isCompleted,
+              type: 1, // 临时设置，实际应该从todoDetail获取
+              createTime: todoDetail.createTime,
+              updateTime: todoDetail.updateTime
+            }} 
+            close={onFormClose} 
+          />
+        )}
+      </Popup>
     </div>
   );
 };

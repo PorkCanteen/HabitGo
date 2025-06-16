@@ -4,6 +4,7 @@ import { Popup } from "react-vant";
 import TodoForm from "../../form/TodoForm";
 import { useState } from "react";
 import PixelBox from "@/pages/components/PixelBox";
+import { useNavigate } from "react-router-dom";
 
 interface TodoItemParams {
   todo: Todo;
@@ -14,6 +15,7 @@ interface TodoItemParams {
 const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
   const [showDetail, setShowDetail] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const navigate = useNavigate();
 
   const handleTodoClick = () => {
     if (!todo.isFinished) {
@@ -27,8 +29,10 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
     }
   };
 
-  const handleClick = () => {
-    setShowDetail(true);
+  const handleDetailClick = () => {
+    if (todo.id) {
+      navigate(`/todo/detail/${todo.id}`);
+    }
   };
 
   const onFormClose = () => {
@@ -138,7 +142,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
         {/* 更多按钮 */}
         <div
           className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
-          onClick={handleClick}
+          onClick={handleDetailClick}
         >
           <svg aria-hidden="true" width={18} height={18}>
             <use xlinkHref="#icon-xiangsujiantou"></use>
