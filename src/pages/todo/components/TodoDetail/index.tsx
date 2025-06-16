@@ -17,24 +17,26 @@ interface SubTodoItem {
   updateTime: string;
 }
 
-// 定义待办详情数据类型
+// 定义待办详情数据类型 - 更新以匹配实际API返回结构
 interface TodoDetailData {
   id: number;
   userId: number;
-  title: string;
+  name: string; // API返回的是name，不是title
   description: string;
-  isCompleted: number;
+  finishDate: string; // 新增字段
+  isFinished: number; // API返回的是isFinished，不是isCompleted
+  type: number; // 新增字段
   createTime: string;
   updateTime: string;
-  subTodos: SubTodoItem[];
+  children: SubTodoItem[]; // API返回的是children，不是subTodos
 }
 
 // 定义API响应包装类型（预留给后续API调用使用）
-// interface ApiResponse<T> {
-//   code: string;
-//   message: string | null;
-//   data: T;
-// }
+interface ApiResponse<T> {
+  code: string;
+  message: string | null;
+  data: T;
+}
 
 const borderWidth = 16;
 
@@ -53,61 +55,14 @@ const TodoDetail = () => {
     const fetchTodoDetail = async () => {
       if (!id) return;
       
-      // 这里是预留的API调用逻辑
-      // const res = await sendRequest<ApiResponse<TodoDetailData>>({
-      //   url: `/todo/${id}`,
-      //   method: "GET",
-      // });
-      // console.log('待办详情接口返回值:', res);
-      // if (res && res.code === "200" && res.data) {
-      //   setTodoDetail(res.data);
-      // }
-
-      // 模拟数据
-      const mockData: TodoDetailData = {
-        id: Number(id),
-        userId: 1,
-        title: "学习前端开发",
-        description: "1. 系统性学习前端开发技术栈\n2. 学习React基础\n3. 学习TypeScript\n4. 学习状态管理\n5. 学习CSS预处理器",
-        isCompleted: 0,
-        createTime: "2024-01-01 10:00:00",
-        updateTime: "2024-01-15 14:30:00",
-        subTodos: [
-          {
-            id: 1,
-            todoId: Number(id),
-            content: "学习React基础",
-            isCompleted: 1,
-            createTime: "2024-01-01 10:00:00",
-            updateTime: "2024-01-05 16:00:00"
-          },
-          {
-            id: 2,
-            todoId: Number(id),
-            content: "学习TypeScript",
-            isCompleted: 1,
-            createTime: "2024-01-05 10:00:00",
-            updateTime: "2024-01-10 18:00:00"
-          },
-          {
-            id: 3,
-            todoId: Number(id),
-            content: "学习CSS预处理器",
-            isCompleted: 0,
-            createTime: "2024-01-10 10:00:00",
-            updateTime: "2024-01-10 10:00:00"
-          },
-          {
-            id: 4,
-            todoId: Number(id),
-            content: "学习状态管理",
-            isCompleted: 0,
-            createTime: "2024-01-12 10:00:00",
-            updateTime: "2024-01-12 10:00:00"
-          }
-        ]
-      };
-      setTodoDetail(mockData);
+      // API调用逻辑
+      const res = await sendRequest<ApiResponse<TodoDetailData>>({
+        url: `/todo/${id}`,
+        method: "GET",
+      });
+      if (res && res.code === "200" && res.data) {
+        setTodoDetail(res.data);
+      }
     };
     
     fetchTodoDetail();
@@ -146,11 +101,11 @@ const TodoDetail = () => {
     } else {
       // 进入编辑模式
       setIsEditingSubTodos(true);
-      setEditingSubTodos([...(todoDetail?.subTodos || [])]);
+      setEditingSubTodos([...(todoDetail?.children || [])]);
     }
   };
 
-  const handleSaveSubTodos = () => {
+  const handleSaveSubTodos = async () => {
     // 校验是否有空的子任务
     const hasEmptyTask = editingSubTodos.some(task => task.content.trim() === '');
     if (hasEmptyTask) {
@@ -161,18 +116,50 @@ const TodoDetail = () => {
       return;
     }
 
-    // 保存逻辑预留
-    console.log('保存待办项:', editingSubTodos);
-    
-    // 更新原数据并退出编辑模式
-    if (todoDetail) {
-      setTodoDetail({
-        ...todoDetail,
-        subTodos: editingSubTodos
+    try {
+      // 保存子待办项到服务器
+      const childrenData = editingSubTodos.map(task => ({
+        id: task.id,
+        content: task.content,
+        isCompleted: task.isCompleted
+      }));
+
+      const res = await sendRequest<ApiResponse<any>>({
+        url: `/todo/${id}/children`,
+        method: "PUT",
+        data: childrenData
+      });
+
+      console.log('保存子待办项结果:', res);
+      
+      if (res && res.code === "200") {
+        // 保存成功，更新本地数据并退出编辑模式
+        if (todoDetail) {
+          setTodoDetail({
+            ...todoDetail,
+            children: editingSubTodos
+          });
+        }
+        setIsEditingSubTodos(false);
+        setEditingSubTodos([]);
+        
+        Notify.show({
+          type: 'success',
+          message: '保存成功'
+        });
+      } else {
+        Notify.show({
+          type: 'danger',
+          message: res?.message || '保存失败'
+        });
+      }
+    } catch (error) {
+      console.error('保存子待办项失败:', error);
+      Notify.show({
+        type: 'danger',
+        message: '保存失败，请重试'
       });
     }
-    setIsEditingSubTodos(false);
-    setEditingSubTodos([]);
   };
 
   const handleSubTodoContentChange = (index: number, content: string) => {
@@ -187,8 +174,13 @@ const TodoDetail = () => {
   };
 
   const handleAddSubTodo = () => {
+    // 计算当前最大ID
+    const maxId = editingSubTodos.length > 0 
+      ? Math.max(...editingSubTodos.map(item => item.id))
+      : 0;
+    
     const newSubTodo: SubTodoItem = {
-      id: Date.now(), // 临时ID
+      id: maxId + 1, // 使用最大ID+1
       todoId: Number(id),
       content: '',
       isCompleted: 0,
@@ -198,20 +190,45 @@ const TodoDetail = () => {
     setEditingSubTodos([...editingSubTodos, newSubTodo]);
   };
 
-  const handleSubTodoToggle = (subTodoId: number) => {
-    // 切换子待办完成状态逻辑预留
-    console.log('切换子待办完成状态:', subTodoId);
-    
-    // 更新本地状态
-    if (todoDetail) {
-      const updatedSubTodos = todoDetail.subTodos.map(item => 
-        item.id === subTodoId 
-          ? { ...item, isCompleted: item.isCompleted === 1 ? 0 : 1 }
-          : item
-      );
-      setTodoDetail({
-        ...todoDetail,
-        subTodos: updatedSubTodos
+  const handleSubTodoToggle = async (subTodoId: number) => {
+    try {
+      // 调用切换状态接口
+      const res = await sendRequest<ApiResponse<any>>({
+        url: `/todo/${id}/children/${subTodoId}/toggle`,
+        method: "PUT"
+      });
+
+      console.log('切换子待办状态结果:', res);
+      
+      if (res && res.code === "200") {
+        // 切换成功，更新本地状态
+        if (todoDetail) {
+          const updatedSubTodos = todoDetail.children.map(item => 
+            item.id === subTodoId 
+              ? { ...item, isCompleted: item.isCompleted === 1 ? 0 : 1 }
+              : item
+          );
+          setTodoDetail({
+            ...todoDetail,
+            children: updatedSubTodos
+          });
+        }
+        
+        Notify.show({
+          type: 'success',
+          message: '状态更新成功'
+        });
+      } else {
+        Notify.show({
+          type: 'danger',
+          message: res?.message || '状态更新失败'
+        });
+      }
+    } catch (error) {
+      console.error('切换子待办状态失败:', error);
+      Notify.show({
+        type: 'danger',
+        message: '状态更新失败，请重试'
       });
     }
   };
@@ -220,8 +237,8 @@ const TodoDetail = () => {
   const getCompletionStats = () => {
     if (!todoDetail) return { completed: 0, total: 0 };
     
-    const completed = todoDetail.subTodos.filter(item => item.isCompleted === 1).length;
-    const total = todoDetail.subTodos.length;
+    const completed = todoDetail.children.filter(item => item.isCompleted === 1).length;
+    const total = todoDetail.children.length;
     
     return { completed, total };
   };
@@ -235,7 +252,7 @@ const TodoDetail = () => {
         <div className="back-btn" onClick={goBack}>
           <i className="iconfont icon-arrow-pixel-copy"></i>
         </div>
-        <div className="title">{todoDetail?.title || "加载中..."}</div>
+        <div className="title">{todoDetail?.name || "加载中..."}</div>
         {todoDetail?.description && (
           <div className="description-wrapper">
             {isDescriptionExpanded && (
@@ -332,7 +349,7 @@ const TodoDetail = () => {
               ) : (
                 // 查看模式
                 <>
-                  {todoDetail?.subTodos.map((subTodo) => (
+                  {todoDetail?.children.map((subTodo) => (
                     <div key={subTodo.id} className="subtodo-item">
                       <div 
                         className={`checkbox ${subTodo.isCompleted === 1 ? 'checked' : ''}`}
@@ -348,7 +365,7 @@ const TodoDetail = () => {
                     </div>
                   ))}
                   
-                  {(!todoDetail?.subTodos || todoDetail.subTodos.length === 0) && (
+                  {(!todoDetail?.children || todoDetail.children.length === 0) && (
                     <div className="empty-state">
                       <div className="empty-text">暂无待办项</div>
                       <div className="empty-tip">点击右上角管理按钮添加待办项</div>
@@ -377,11 +394,11 @@ const TodoDetail = () => {
           <TodoForm 
             todo={{
               id: todoDetail.id,
-              name: todoDetail.title,
+              name: todoDetail.name,
               description: todoDetail.description,
-              finishDate: new Date().toISOString().split('T')[0], // 临时设置，实际应该从todoDetail获取
-              isFinished: todoDetail.isCompleted,
-              type: 1, // 临时设置，实际应该从todoDetail获取
+              finishDate: todoDetail.finishDate,
+              isFinished: todoDetail.isFinished,
+              type: todoDetail.type,
               createTime: todoDetail.createTime,
               updateTime: todoDetail.updateTime
             }} 
