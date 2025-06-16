@@ -3,6 +3,7 @@ import "./index.scss";
 import { PixelBox } from "@/pages/components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
+import Notify from "@/pages/components/Notify";
 
 // 定义子待办数据类型
 interface SubTodoItem {
@@ -39,6 +40,8 @@ const TodoDetail = () => {
   const [todoDetail, setTodoDetail] = useState<TodoDetailData | null>(null);
   const [isExiting, setIsExiting] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isEditingSubTodos, setIsEditingSubTodos] = useState(false);
+  const [editingSubTodos, setEditingSubTodos] = useState<SubTodoItem[]>([]);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { sendRequest } = useHttp();
@@ -121,12 +124,66 @@ const TodoDetail = () => {
   };
 
   const handleEditSubTodos = () => {
-    // 编辑子待办任务逻辑预留
-    console.log('编辑子待办任务');
+    if (isEditingSubTodos) {
+      // 完成编辑 - 校验并保存
+      handleSaveSubTodos();
+    } else {
+      // 进入编辑模式
+      setIsEditingSubTodos(true);
+      setEditingSubTodos([...(todoDetail?.subTodos || [])]);
+    }
+  };
+
+  const handleSaveSubTodos = () => {
+    // 校验是否有空的子任务
+    const hasEmptyTask = editingSubTodos.some(task => task.content.trim() === '');
+    if (hasEmptyTask) {
+              Notify.show({
+          type: 'danger',
+          message: '请完善所有待办项内容或删除空项'
+        });
+      return;
+    }
+
+    // 保存逻辑预留
+    console.log('保存待办项:', editingSubTodos);
+    
+    // 更新原数据并退出编辑模式
+    if (todoDetail) {
+      setTodoDetail({
+        ...todoDetail,
+        subTodos: editingSubTodos
+      });
+    }
+    setIsEditingSubTodos(false);
+    setEditingSubTodos([]);
   };
 
   const toggleDescription = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
+
+  const handleSubTodoContentChange = (index: number, content: string) => {
+    const updatedTodos = [...editingSubTodos];
+    updatedTodos[index] = { ...updatedTodos[index], content };
+    setEditingSubTodos(updatedTodos);
+  };
+
+  const handleDeleteSubTodo = (index: number) => {
+    const updatedTodos = editingSubTodos.filter((_, i) => i !== index);
+    setEditingSubTodos(updatedTodos);
+  };
+
+  const handleAddSubTodo = () => {
+    const newSubTodo: SubTodoItem = {
+      id: Date.now(), // 临时ID
+      todoId: Number(id),
+      content: '',
+      isCompleted: 0,
+      createTime: new Date().toISOString(),
+      updateTime: new Date().toISOString()
+    };
+    setEditingSubTodos([...editingSubTodos, newSubTodo]);
   };
 
   const handleSubTodoToggle = (subTodoId: number) => {
@@ -220,34 +277,65 @@ const TodoDetail = () => {
             backgroundColor="var(--color-primary)"
           >
             <div className="section-container">
-              子待办任务
+              待办项
               <button className="edit-subtodos-btn" onClick={handleEditSubTodos}>
-                <i className="iconfont icon-x_peizhi"></i>
-                管理
+                <i className={`iconfont ${isEditingSubTodos ? 'icon-check' : 'icon-x_peizhi'}`}></i>
+                {isEditingSubTodos ? '完成' : '管理'}
               </button>
             </div>
             <div className="subtodos-list">
-              {todoDetail?.subTodos.map((subTodo) => (
-                <div key={subTodo.id} className="subtodo-item">
-                  <div 
-                    className={`checkbox ${subTodo.isCompleted === 1 ? 'checked' : ''}`}
-                    onClick={() => handleSubTodoToggle(subTodo.id)}
-                  >
-                    {subTodo.isCompleted === 1 && (
-                      <i className="iconfont icon-duihao-copy"></i>
-                    )}
+              {isEditingSubTodos ? (
+                // 编辑模式
+                <>
+                  {editingSubTodos.map((subTodo, index) => (
+                    <div key={subTodo.id} className="subtodo-item editing">
+                      <input
+                        type="text"
+                        className="subtodo-input"
+                        value={subTodo.content}
+                        onChange={(e) => handleSubTodoContentChange(index, e.target.value)}
+                        placeholder="请输入待办项内容"
+                      />
+                      <button 
+                        className="delete-btn"
+                        onClick={() => handleDeleteSubTodo(index)}
+                      >
+                        <i className="iconfont icon-x_lajitong"></i>
+                      </button>
+                    </div>
+                  ))}
+                  
+                  <div className="add-subtodo-btn" onClick={handleAddSubTodo}>
+                    <i className="iconfont icon-x_jiaru"></i>
+                    <span>添加待办项</span>
                   </div>
-                  <div className={`subtodo-content ${subTodo.isCompleted === 1 ? 'completed' : ''}`}>
-                    {subTodo.content}
-                  </div>
-                </div>
-              ))}
-              
-              {(!todoDetail?.subTodos || todoDetail.subTodos.length === 0) && (
-                <div className="empty-state">
-                  <div className="empty-text">暂无子待办任务</div>
-                  <div className="empty-tip">点击右上角管理按钮添加子任务</div>
-                </div>
+                </>
+              ) : (
+                // 查看模式
+                <>
+                  {todoDetail?.subTodos.map((subTodo) => (
+                    <div key={subTodo.id} className="subtodo-item">
+                      <div 
+                        className={`checkbox ${subTodo.isCompleted === 1 ? 'checked' : ''}`}
+                        onClick={() => handleSubTodoToggle(subTodo.id)}
+                      >
+                        {subTodo.isCompleted === 1 && (
+                          <i className="iconfont icon-duihao-copy"></i>
+                        )}
+                      </div>
+                      <div className={`subtodo-content ${subTodo.isCompleted === 1 ? 'completed' : ''}`}>
+                        {subTodo.content}
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {(!todoDetail?.subTodos || todoDetail.subTodos.length === 0) && (
+                    <div className="empty-state">
+                      <div className="empty-text">暂无待办项</div>
+                      <div className="empty-tip">点击右上角管理按钮添加待办项</div>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </PixelBox>
