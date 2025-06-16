@@ -35,6 +35,13 @@ const routes: RouteConfig[] = [
         ],
       },
       {
+        path: "/todo/detail/:id",
+        element: lazy(() => import("@/pages/todo/components/TodoDetail")),
+        children: [
+          //
+        ],
+      },
+      {
         path: '/setting',
         element: lazy(() => import("@/pages/setting/SettingBoard")),
       }

@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "24754620",
+      "name": "lamb-bottom",
+      "font_class": "bottom",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
       "icon_id": "12044052",
       "name": "007-trophy",
       "font_class": "-trophy",

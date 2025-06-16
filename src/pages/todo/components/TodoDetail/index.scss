@@ -1,0 +1,283 @@
+.todo-detail-container {
+  background-color: var(--color-primary);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideInFromRight 0.3s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  
+  &.exiting {
+    animation: slideOutToRight 0.3s ease-in forwards;
+  }
+  
+  .header-container {
+    position: relative;
+    min-height: 70px;
+    color: var(--color-background-primary);
+    display: flex;
+    line-height: 40px;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    background: transparent !important; /* 覆盖全局header-container样式 */
+    padding: 0 48px 12px 48px; /* 增加左右padding避免与按钮重叠，增加底部padding */
+    z-index: 10;
+    
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    
+    .description-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      
+      .description {
+        line-height: 1.4;
+        font-size: 12px;
+        text-align: center;
+        max-width: 100%;
+        word-wrap: break-word;
+        white-space: pre-wrap; /* 保持换行符 */
+        opacity: 0.8;
+        margin-bottom: 4px;
+        animation: fadeIn 0.3s ease;
+      }
+      
+      .expand-btn {
+        cursor: pointer;
+        opacity: 0.6;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          opacity: 1;
+        }
+        
+        i {
+          font-size: 14px;
+        }
+      }
+    }
+
+    // 淡入动画
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 0.8;
+        transform: translateY(0);
+      }
+    }
+    
+    .back-btn {
+      position: absolute;
+      left: 10px;
+      top: 12px;
+      
+      i {
+        font-size: 18px;
+      }
+    }
+    
+    .edit-btn {
+      position: absolute;
+      right: 10px;
+      top: 12px;
+      
+      i {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+// 从右到左滑动进入动画
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// 从左到右滑动退出动画
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+// 确保动画期间不会有横向滚动条
+body {
+  overflow-x: hidden;
+}
+
+// 可滚动的内容区域
+.content-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 16px 20px;
+  -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
+  background-color: var(--color-primary); /* 确保背景色一致 */
+}
+
+// 内容区域样式
+.progress-container,
+.subtodos-container {
+  flex-shrink: 0;
+  margin-bottom: 24px;
+}
+
+.section-container {
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  color: var(--color-primary);
+  background-color: var(--color-background-primary);
+  position: relative;
+  
+  .edit-subtodos-btn {
+    position: absolute;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--color-button-primary);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    i {
+      margin-right: 4px;
+      font-size: 14px;
+    }
+  }
+}
+
+// 进度条样式
+.progress-content {
+  background-color: var(--color-background-primary);
+  padding: 16px 20px 16px; /* 减少上下padding */
+  
+  .progress-text {
+    font-size: 14px; /* 稍微减小字体 */
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: 12px; /* 减少底部间距 */
+  }
+  
+  .progress-bar {
+    width: 100%;
+    height: 6px; /* 稍微减小高度 */
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--color-button-primary);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+  }
+}
+
+// 子待办列表样式
+.subtodos-list {
+  background-color: var(--color-background-primary);
+  padding: 0 20px 20px;
+  
+  .subtodo-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        border-color: var(--color-button-primary);
+      }
+      
+      &.checked {
+        background-color: var(--color-button-primary);
+        border-color: var(--color-button-primary);
+        
+        i {
+          color: white;
+          font-size: 12px;
+        }
+      }
+    }
+    
+    .subtodo-content {
+      flex: 1;
+      font-size: 14px;
+      color: var(--color-text-primary);
+      line-height: 1.4;
+      transition: all 0.2s ease;
+      
+      &.completed {
+        color: #999;
+        text-decoration: line-through;
+      }
+    }
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+    
+    .empty-text {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    
+    .empty-tip {
+      font-size: 12px;
+    }
+  }
+} 
