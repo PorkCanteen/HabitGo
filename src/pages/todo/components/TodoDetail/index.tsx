@@ -396,7 +396,7 @@ const TodoDetail = () => {
               id: todoDetail.id,
               name: todoDetail.name,
               description: todoDetail.description,
-              finishDate: todoDetail.finishDate,
+              finishDate: new Date(todoDetail.finishDate),
               isFinished: todoDetail.isFinished,
               type: todoDetail.type,
               createTime: todoDetail.createTime,
