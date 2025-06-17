@@ -5,6 +5,7 @@ import TodoForm from "../../form/TodoForm";
 import { useState } from "react";
 import PixelBox from "@/pages/components/PixelBox";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 interface TodoItemParams {
   todo: Todo;
@@ -76,13 +77,18 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
       style={{ borderBottom: "4px solid #f7f7f6" }}
     >
       {/* 左侧区域 */}
-      <div
-        className="pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
-        onClick={handleTodoClick}
-      >
+      <div className="pl-6 py-4 flex-1 " onClick={handleDetailClick}>
         {/* 标题 */}
         <div className="flex items-center icon-wrapper">
-          <span className="text-2xl">{renderIcon()}</span>
+          <span
+            className="text-2xl cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleTodoClick();
+            }}
+          >
+            {renderIcon()}
+          </span>
           <span
             className={`text-3xl ml-2 flex items-center justify-start w-full ${
               todo.isFinished ? "line-through text-gray-500" : ""
@@ -123,7 +129,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
           <span
             className={todo.isFinished ? "text-gray-500" : "" + " text-2xl"}
           >
-            计划时间：{todo.finishDate}
+            计划时间：{dayjs(todo.finishDate).format("YYYY-MM-DD")}
           </span>
         </div>
 
@@ -141,7 +147,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
       <div className="flex items-center ">
         {/* 更多按钮 */}
         <div
-          className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 active:bg-gray-100 transition-all duration-200"
+          className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 "
           onClick={handleDetailClick}
         >
           <svg aria-hidden="true" width={18} height={18}>
@@ -168,7 +174,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
 
 export default TodoItem;
 
-const calculateDayDifference = (finishDate: string) => {
+const calculateDayDifference = (finishDate: string | Date) => {
   const today = new Date();
   const targetDate = new Date(finishDate);
   const timeDiff = targetDate.getTime() - today.getTime();
