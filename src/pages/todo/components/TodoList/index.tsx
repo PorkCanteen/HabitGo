@@ -86,8 +86,10 @@ const TodoList = forwardRef((_props, ref) => {
         // 按更新时间降序
         return (b.updateTime || '').localeCompare(a.updateTime || '');
       } else if (currentSortType === 'finishDate') {
-        // 按完成时间降序
-        return (b.finishDate || '').localeCompare(a.finishDate || '');
+        // 按完成时间降序 - 处理 string | Date 类型
+        const aDate = new Date(a.finishDate || 0);
+        const bDate = new Date(b.finishDate || 0);
+        return bDate.getTime() - aDate.getTime();
       }
       return 0;
     });
