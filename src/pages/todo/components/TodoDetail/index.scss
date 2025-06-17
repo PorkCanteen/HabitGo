@@ -214,7 +214,7 @@ body {
 // 子待办列表样式
 .subtodos-list {
   background-color: var(--color-background-primary);
-  padding: 0 20px 20px;
+  padding: 0 16px 20px; // 在移动端减少左右padding，给删除按钮更多空间
   
   .subtodo-item {
     display: flex;
@@ -235,6 +235,8 @@ body {
         font-size: 14px;
         outline: none;
         transition: border-color 0.2s;
+        margin-right: 8px; // 确保与删除按钮有间距
+        min-width: 0; // 允许收缩，防止挤压删除按钮
         
         &:focus {
           border-color: var(--color-button-primary);
@@ -246,12 +248,13 @@ body {
       }
       
       .delete-btn {
-        margin-left: 6px;
+        flex-shrink: 0; // 防止被压缩
+        width: 20px; // 固定宽度
+        height: 20px; // 固定高度
         background: none;
         border: none;
         color: #999;
         cursor: pointer;
-        padding: 6px;
         border-radius: 4px;
         transition: all 0.2s;
         display: flex;
@@ -264,7 +267,7 @@ body {
         }
         
         i {
-          font-size: 18px;
+          font-size: 16px; // 稍微减小图标以确保在按钮内显示完整
         }
       }
     }
@@ -370,4 +373,4 @@ body {
       color: #999;
     }
   }
-} 
+}
