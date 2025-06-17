@@ -23,7 +23,7 @@ interface TodoDetailData {
   userId: number;
   name: string; // API返回的是name，不是title
   description: string;
-  finishDate: string; // 新增字段
+  finishDate: string | Date; // 新增字段
   isFinished: number; // API返回的是isFinished，不是isCompleted
   type: number; // 新增字段
   createTime: string;
@@ -198,7 +198,6 @@ const TodoDetail = () => {
         method: "PUT"
       });
 
-      console.log('切换子待办状态结果:', res);
       
       if (res && res.code === "200") {
         // 切换成功，更新本地状态
@@ -213,11 +212,6 @@ const TodoDetail = () => {
             children: updatedSubTodos
           });
         }
-        
-        Notify.show({
-          type: 'success',
-          message: '状态更新成功'
-        });
       } else {
         Notify.show({
           type: 'danger',

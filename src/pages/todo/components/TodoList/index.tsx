@@ -11,7 +11,7 @@ export interface Todo {
   name: string;
   type?: number;
   description?: string;
-  finishDate: string;
+  finishDate: string | Date;
   isFinished: number;
   updateTime?: string; // 添加更新时间字段
   createTime?: string; // 添加创建时间字段
