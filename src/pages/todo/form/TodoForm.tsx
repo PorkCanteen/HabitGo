@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import Notify from "@/pages/components/Notify";
 import { Dialog } from "@/pages/components/Dialog";
 import { ResponseData } from "@/utils/http";
-import PixelBox from "@/pages/components/PixelBox";
 const defaultTodo: Todo = {
   name: "",
   description: "",
@@ -75,35 +74,27 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
             className="w-full flex justify-center gap-4"
             style={{ margin: "16px 16px 0" }}
           >
-            <PixelBox
-              borderColor="var(--color-button-primary)"
-              borderWidth={6}
-              gapSize={6}
-              backgroundColor="var(--color-background-primary)"
+            <button
+              className="text-2xl px-16 py-4 text-white border-4 rounded cursor-pointer hover:opacity-80 transition-opacity"
+              style={{ 
+                backgroundColor: "var(--color-button-primary)",
+                borderColor: "var(--color-button-primary)"
+              }}
+              onClick={() => form.submit()}
             >
-              <div
-                className="text-2xl px-16 py-4 text-white"
-                style={{ backgroundColor: "var(--color-button-primary)" }}
-                onClick={() => form.submit()}
-              >
-                确定
-              </div>
-            </PixelBox>
+              确定
+            </button>
             {isEditMode && (
-              <PixelBox
-                borderColor="var(--color-red)"
-                borderWidth={6}
-                gapSize={6}
-                backgroundColor="var(--color-background-primary)"
+              <button
+                className="text-2xl px-16 py-4 text-white border-4 rounded cursor-pointer hover:opacity-80 transition-opacity"
+                style={{ 
+                  backgroundColor: "var(--color-red)",
+                  borderColor: "var(--color-red)"
+                }}
+                onClick={deleteTodo}
               >
-                <div
-                  className="text-2xl px-16 py-4 text-white"
-                  style={{ backgroundColor: "var(--color-red)" }}
-                  onClick={deleteTodo}
-                >
-                  删除
-                </div>
-              </PixelBox>
+                删除
+              </button>
             )}
           </div>
         }

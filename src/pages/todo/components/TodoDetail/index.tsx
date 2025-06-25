@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./index.scss";
-import { PixelBox } from "@/pages/components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
 import { Popup } from "react-vant";
@@ -38,7 +37,7 @@ interface ApiResponse<T> {
   data: T;
 }
 
-const borderWidth = 16;
+
 
 const TodoDetail = () => {
   const [todoDetail, setTodoDetail] = useState<TodoDetailData | null>(null);
@@ -314,13 +313,10 @@ const TodoDetail = () => {
       <div className="content-scroll-area">
         {/* 完成进度 */}
         <div className="progress-container">
-          <PixelBox
-            className="w-full"
-            borderColor="var(--color-background-primary)"
-            borderWidth={borderWidth}
-            gapSize={borderWidth}
-            backgroundColor="var(--color-primary)"
-          >
+          <div className="w-full border-4 rounded" style={{ 
+            borderColor: "var(--color-background-primary)", 
+            backgroundColor: "var(--color-primary)" 
+          }}>
             <div className="section-container">完成进度</div>
             <div className="progress-content">
               <div className="progress-text">
@@ -333,18 +329,15 @@ const TodoDetail = () => {
                 ></div>
               </div>
             </div>
-          </PixelBox>
+          </div>
         </div>
 
         {/* 待办项列表 */}
         <div className="subtodos-container">
-          <PixelBox
-            className="w-full"
-            borderColor="var(--color-background-primary)"
-            borderWidth={borderWidth}
-            gapSize={borderWidth}
-            backgroundColor="var(--color-primary)"
-          >
+          <div className="w-full border-4 rounded" style={{ 
+            borderColor: "var(--color-background-primary)", 
+            backgroundColor: "var(--color-primary)" 
+          }}>
             <div className="section-container">
               待办项
               <button className="edit-subtodos-btn" onClick={handleEditSubTodos}>
@@ -426,7 +419,7 @@ const TodoDetail = () => {
                 </>
               )}
             </div>
-          </PixelBox>
+          </div>
         </div>
       </div>
       

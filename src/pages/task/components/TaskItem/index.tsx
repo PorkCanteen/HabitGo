@@ -3,7 +3,6 @@ import { Popup } from "react-vant";
 import TaskForm from "../../form/TaskForm";
 import "./index.scss";
 import { Task } from "../TaskList";
-import PixelBox from "@/pages/components/PixelBox";
 import { useNavigate } from "react-router-dom";
 
 interface TaskItemParams {
@@ -96,17 +95,15 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
           <span className="text-3xl ml-2 flex items-center ">
             {task.name}
             {taskTypeMap[task.taskType] && (
-              <PixelBox
-                className="ml-2"
-                borderColor={taskTypeMap[task.taskType].color}
+              <span
+                className="ml-2 px-2 py-0.5 text-white text-xl border-2 rounded inline-block"
+                style={{ 
+                  backgroundColor: taskTypeMap[task.taskType].color,
+                  borderColor: taskTypeMap[task.taskType].color
+                }}
               >
-                <div
-                  className="px-2 py-0.5  text-white text-xl"
-                  style={{ backgroundColor: taskTypeMap[task.taskType].color }}
-                >
-                  {taskTypeMap[task.taskType].text}
-                </div>
-              </PixelBox>
+                {taskTypeMap[task.taskType].text}
+              </span>
             )}
           </span>
         </div>

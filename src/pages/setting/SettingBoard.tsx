@@ -3,7 +3,6 @@ import pigIcon from "@/assets/pigPixel.png";
 import otherIcon from "@/assets/other.svg";
 import "./SettingBoard.scss";
 import { useState, useEffect } from "react";
-import PixelBox from "../components/PixelBox";
 import { clearAuth, getUserInfo } from "@/utils/tokenUtils";
 
 const bgColor = "var(--color-tertiary)";
@@ -38,20 +37,13 @@ const SettingBoard = () => {
         </div>
       <div className="nickname text-3xl font-medium mb-12">{user.nickname}</div>
       <div className="button-container flex flex-col gap-3 w-full max-w-xs items-center">
-        <PixelBox
-          borderColor="#fff"
-          borderWidth={6}
-          gapSize={6}
-          backgroundColor={bgColor}
+        <button
+          className="text-2xl px-16 py-4 bg-white border-4 border-white rounded cursor-pointer hover:opacity-80 transition-opacity"
+          style={{ backgroundColor: bgColor }}
+          onClick={handleLogout}
         >
-          <div
-            className="text-2xl px-16 py-4 "
-            style={{ backgroundColor: "#fff" }}
-            onClick={handleLogout}
-          >
-            退出登录
-          </div>
-        </PixelBox>
+          退出登录
+        </button>
       </div>
     </div>
   );

@@ -3,7 +3,6 @@ import "./index.scss";
 import { Popup } from "react-vant";
 import TodoForm from "../../form/TodoForm";
 import { useState } from "react";
-import PixelBox from "@/pages/components/PixelBox";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -106,24 +105,15 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
         <div className="flex items-center justify-between w-full pl-10">
           {/* 剩余/超期时间 */}
           {!todo.isFinished && (
-            <PixelBox
-              className="mt-1"
-              borderColor={
+            <span
+              className={`mt-1 text-2xl px-3 text-white w-fit border-2 rounded inline-block ${
                 calculateDayDifference(todo.finishDate).isDelay
-                  ? "bg-red-500"
-                  : "bg-green-500"
-              }
+                  ? "bg-red-500 border-red-500"
+                  : "bg-green-500 border-green-500"
+              }`}
             >
-              <div
-                className={`text-2xl px-3 ${
-                  calculateDayDifference(todo.finishDate).isDelay
-                    ? "bg-red-500"
-                    : "bg-green-500"
-                } text-white w-fit`}
-              >
-                {calculateDayDifference(todo.finishDate).text}
-              </div>
-            </PixelBox>
+              {calculateDayDifference(todo.finishDate).text}
+            </span>
           )}
           {/* 计划时间 */}
           <span

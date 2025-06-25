@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "../components/Notify";
 import { ResponseData } from "@/utils/http";
-import PixelBox from "../components/PixelBox";
 import { setToken, setUserInfo } from "@/utils/tokenUtils";
 
 // 定义登录响应数据类型
@@ -83,20 +82,16 @@ const Login = () => {
             <Input type="password" placeholder="密码" />
           </Form.Item>
           <div className="flex justify-center">
-            <PixelBox
-              borderColor="var(--color-button-primary)"
-              borderWidth={6}
-              gapSize={6}
-              backgroundColor="var(--color-tertiary)"
+            <button
+              className="text-2xl px-28 py-4 text-white border-4 rounded cursor-pointer hover:opacity-80 transition-opacity"
+              style={{ 
+                backgroundColor: "var(--color-button-primary)",
+                borderColor: "var(--color-button-primary)"
+              }}
+              onClick={() => form.submit()}
             >
-              <div
-                className="text-2xl px-28 py-4 text-white"
-                style={{ backgroundColor: "var(--color-button-primary)" }}
-                onClick={() => form.submit()}
-              >
-                登录
-              </div>
-            </PixelBox>
+              登录
+            </button>
           </div>
         </Form>
       </div>

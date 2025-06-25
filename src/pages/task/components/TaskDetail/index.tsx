@@ -1,7 +1,6 @@
 import Calendar from "@/pages/components/Calendar";
 import { useState, useEffect } from "react";
 import "./index.scss";
-import { PixelBox } from "@/pages/components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
 import { Popup } from "react-vant";
@@ -34,7 +33,7 @@ interface ApiResponse<T> {
   data: T;
 }
 
-const borderWidth = 16;
+
 
 const TaskDetail = () => {
   const [taskDetail, setTaskDetail] = useState<TaskDetailData | null>(null);
@@ -249,27 +248,21 @@ const TaskDetail = () => {
       <div className="content-scroll-area">
         {/* 日历 */}
         <div className="calendar-container">
-        <PixelBox
-          className="w-full"
-          borderColor="var(--color-background-primary)"
-          borderWidth={borderWidth}
-          gapSize={borderWidth}
-          backgroundColor="var(--color-primary)"
-        >
+        <div className="w-full border-4 rounded" style={{ 
+          borderColor: "var(--color-background-primary)", 
+          backgroundColor: "var(--color-primary)" 
+        }}>
           <div className="section-container">
             <Calendar highlightDates={processedData.completedDates} />
           </div>
-        </PixelBox>
+        </div>
       </div>
               {/* 目标 */}
         <div className="target-container">
-          <PixelBox
-            className="w-full"
-            borderColor="var(--color-background-primary)"
-            borderWidth={borderWidth}
-            gapSize={borderWidth}
-            backgroundColor="var(--color-primary)"
-          >
+          <div className="w-full border-4 rounded" style={{ 
+            borderColor: "var(--color-background-primary)", 
+            backgroundColor: "var(--color-primary)" 
+          }}>
             <div className="section-container">目标</div>
             <div className="target-card-container">
               <div className="target">
@@ -288,18 +281,15 @@ const TaskDetail = () => {
                 )}
               </div>
             </div>
-          </PixelBox>
+          </div>
         </div>
         
         {/* 统计 */}
         <div className="statics-container">
-          <PixelBox
-            className="w-full"
-            borderColor="var(--color-background-primary)"
-            borderWidth={borderWidth}
-            gapSize={borderWidth}
-            backgroundColor="var(--color-primary)"
-          >
+          <div className="w-full border-4 rounded" style={{ 
+            borderColor: "var(--color-background-primary)", 
+            backgroundColor: "var(--color-primary)" 
+          }}>
             <div className="section-container">打卡数据</div>
             <div className="statics-card-container">
               <div className="statics-card">
@@ -319,7 +309,7 @@ const TaskDetail = () => {
                 <div className="statics-card-value">{processedData.continuities}</div>
               </div>
             </div>
-          </PixelBox>
+          </div>
         </div>
       </div>
       

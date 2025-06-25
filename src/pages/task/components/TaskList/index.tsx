@@ -3,7 +3,6 @@ import { List } from "react-vant";
 import TaskItem from "../TaskItem";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "@/pages/components/Notify";
-import PixelBox from "@/pages/components/PixelBox";
 
 // 习惯项
 export interface Task {
@@ -173,26 +172,24 @@ const TaskList = forwardRef((_props, ref) => {
       <div className="flex pl-2 my-2 justify-between">
         <div className="flex">
           {tabs.map((tab) => (
-            <PixelBox
+            <button
               key={tab}
-              className={`mr-2 ${
+              className={`mr-2 tab-card text-2xl px-3 py-1 border-2 rounded cursor-pointer hover:opacity-80 transition-opacity ${
                 animatingTab === tab ? "click-shrink-animate" : ""
+              } ${
+                activeTab === tab ? "checked" : ""
               }`}
-              borderColor={
-                activeTab === tab
+              style={{
+                borderColor: activeTab === tab
                   ? "var(--color-button-primary)"
-                  : "var(--color-button-secondary)"
-              }
+                  : "var(--color-button-secondary)",
+                backgroundColor: activeTab === tab ? "var(--color-button-primary)" : "transparent",
+                color: activeTab === tab ? "white" : "inherit"
+              }}
+              onClick={() => handleTabClick(tab)}
             >
-              <div
-                className={`tab-card text-2xl px-3 py-1 ${
-                  activeTab === tab ? "checked" : ""
-                }`}
-                onClick={() => handleTabClick(tab)}
-              >
-                {tab}
-              </div>
-            </PixelBox>
+              {tab}
+            </button>
           ))}
         </div>
         <div

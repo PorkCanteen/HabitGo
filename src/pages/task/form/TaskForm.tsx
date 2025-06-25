@@ -5,7 +5,6 @@ import { useState } from "react";
 import Notify from "@/pages/components/Notify";
 import { Dialog } from "@/pages/components/Dialog";
 import { ResponseData } from "@/utils/http";
-import PixelBox from "@/pages/components/PixelBox";
 const defaultTask: Task = {
   name: "",
   count: 0,
@@ -76,35 +75,27 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
             className="w-full flex justify-center gap-4"
             style={{ margin: "16px 16px 0" }}
           >
-            <PixelBox
-              borderColor="#f19c34"
-              borderWidth={6}
-              gapSize={6}
-              backgroundColor="#fff"
+            <button
+              className="text-2xl px-16 py-4 text-white border-4 rounded cursor-pointer hover:opacity-80 transition-opacity"
+              style={{ 
+                backgroundColor: "#f19c34",
+                borderColor: "#f19c34"
+              }}
+              onClick={() => form.submit()}
             >
-              <div
-                className="text-2xl px-16 py-4 text-white"
-                style={{ backgroundColor: "#f19c34" }}
-                onClick={() => form.submit()}
-              >
-                确定
-              </div>
-            </PixelBox>
+              确定
+            </button>
             {isEditMode && (
-              <PixelBox
-                borderColor="#d4543c"
-                borderWidth={6}
-                gapSize={6}
-                backgroundColor="#fff"
+              <button
+                className="text-2xl px-16 py-4 text-white border-4 rounded cursor-pointer hover:opacity-80 transition-opacity"
+                style={{ 
+                  backgroundColor: "#d4543c",
+                  borderColor: "#d4543c"
+                }}
+                onClick={deleteTask}
               >
-                <div
-                  className="text-2xl px-16 py-4 text-white"
-                  style={{ backgroundColor: "#d4543c" }}
-                  onClick={deleteTask}
-                >
-                  删除
-                </div>
-              </PixelBox>
+                删除
+              </button>
             )}
           </div>
         }
