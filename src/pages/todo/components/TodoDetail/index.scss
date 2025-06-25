@@ -227,6 +227,46 @@ body {
     }
     
     &.editing {
+      .drag-handle {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+        color: #999;
+        cursor: grab;
+        transition: color 0.2s;
+        
+        &:active {
+          cursor: grabbing;
+        }
+        
+        &:hover {
+          color: var(--color-button-primary);
+        }
+        
+        i {
+          font-size: 14px;
+        }
+      }
+      
+      &.dragging {
+        opacity: 0.6;
+        transform: scale(0.98);
+        transition: all 0.2s ease;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+      }
+      
+      &.drag-over {
+        background-color: rgba(59, 130, 246, 0.1);
+        border: 2px dashed var(--color-button-primary);
+        border-radius: 4px;
+        transition: all 0.2s ease;
+      }
+      
       .subtodo-input {
         flex: 1;
         border: 1px solid #ddd;

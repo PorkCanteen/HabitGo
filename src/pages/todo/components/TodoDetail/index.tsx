@@ -47,6 +47,8 @@ const TodoDetail = () => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [isEditingSubTodos, setIsEditingSubTodos] = useState(false);
   const [editingSubTodos, setEditingSubTodos] = useState<SubTodoItem[]>([]);
+  const [draggedItem, setDraggedItem] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { sendRequest } = useHttp();
@@ -124,7 +126,7 @@ const TodoDetail = () => {
         isCompleted: task.isCompleted
       }));
 
-      const res = await sendRequest<ApiResponse<any>>({
+      const res = await sendRequest<ApiResponse<SubTodoItem[]>>({
         url: `/todo/${id}/children`,
         method: "PUT",
         data: childrenData
@@ -193,7 +195,7 @@ const TodoDetail = () => {
   const handleSubTodoToggle = async (subTodoId: number) => {
     try {
       // 调用切换状态接口
-      const res = await sendRequest<ApiResponse<any>>({
+      const res = await sendRequest<ApiResponse<SubTodoItem>>({
         url: `/todo/${id}/children/${subTodoId}/toggle`,
         method: "PUT"
       });
@@ -238,6 +240,50 @@ const TodoDetail = () => {
   };
 
   const stats = getCompletionStats();
+
+  // 拖拽开始
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedItem(index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', '');
+  };
+
+  // 拖拽经过
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    setDragOverIndex(index);
+  };
+
+  // 拖拽离开
+  const handleDragLeave = () => {
+    setDragOverIndex(null);
+  };
+
+  // 拖拽结束
+  const handleDragEnd = () => {
+    setDraggedItem(null);
+    setDragOverIndex(null);
+  };
+
+  // 放置
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    
+    if (draggedItem === null || draggedItem === dropIndex) return;
+    
+    const newEditingSubTodos = [...editingSubTodos];
+    const draggedSubTodo = newEditingSubTodos[draggedItem];
+    
+    // 删除拖拽的项目
+    newEditingSubTodos.splice(draggedItem, 1);
+    
+    // 在新位置插入
+    newEditingSubTodos.splice(dropIndex, 0, draggedSubTodo);
+    
+    setEditingSubTodos(newEditingSubTodos);
+    setDraggedItem(null);
+    setDragOverIndex(null);
+  };
 
   return (
     <div className={`todo-detail-container ${isExiting ? 'exiting' : ''}`}>
@@ -312,7 +358,19 @@ const TodoDetail = () => {
                 <>
                   {editingSubTodos.length > 0 ? (
                     editingSubTodos.map((subTodo, index) => (
-                      <div key={subTodo.id} className="subtodo-item editing">
+                      <div 
+                        key={subTodo.id} 
+                        className={`subtodo-item editing ${draggedItem === index ? 'dragging' : ''} ${dragOverIndex === index ? 'drag-over' : ''}`}
+                        draggable={true}
+                        onDragStart={(e) => handleDragStart(e, index)}
+                        onDragOver={(e) => handleDragOver(e, index)}
+                        onDragLeave={handleDragLeave}
+                        onDragEnd={handleDragEnd}
+                        onDrop={(e) => handleDrop(e, index)}
+                      >
+                        <div className="drag-handle">
+                          <i className="iconfont icon-x_paixu" style={{cursor: 'grab'}}></i>
+                        </div>
                         <input
                           type="text"
                           className="subtodo-input"
