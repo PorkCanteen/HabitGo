@@ -6,6 +6,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
 import { Popup } from "react-vant";
 import TaskForm from "../../form/TaskForm";
+import { chatWithDeepSeek } from "@/utils/deepseekApi";
+import ReactMarkdown from "react-markdown";
+import { MARKDOWN_COMPONENTS } from "@/config/markdownConfig";
 
 // 定义任务详情数据类型
 interface TaskDetailData {
@@ -40,6 +43,8 @@ const TaskDetail = () => {
   const [taskDetail, setTaskDetail] = useState<TaskDetailData | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState<string>("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { sendRequest } = useHttp();
@@ -47,7 +52,7 @@ const TaskDetail = () => {
   // 获取今天的日期字符串 (YYYY-MM-DD)
   const getTodayString = () => {
     const today = new Date();
-    return today.toISOString().split('T')[0];
+    return today.toISOString().split("T")[0];
   };
 
   // 获取本周开始时间
@@ -85,9 +90,14 @@ const TaskDetail = () => {
   };
 
   // 判断是否完成目标
-  const getIsTargetCompleted = (targetType: number, targetCount: number, completedCount: number) => {
+  const getIsTargetCompleted = (
+    targetType: number,
+    targetCount: number,
+    completedCount: number
+  ) => {
     switch (targetType) {
-      case 1: {// 按日
+      case 1: {
+        // 按日
         // 按日的完成状态根据isCompleted字段判断
         return taskDetail?.isCompleted === 1;
       }
@@ -104,26 +114,29 @@ const TaskDetail = () => {
 
   // 处理完成日期数据，包含当天完成情况
   const getProcessedData = () => {
-    if (!taskDetail) return {
-      completedDates: [],
-      weeklyCompletedCount: 0,
-      monthlyCompletedCount: 0,
-      totalCompletedCount: 0,
-      continuities: 0
-    };
+    if (!taskDetail)
+      return {
+        completedDates: [],
+        weeklyCompletedCount: 0,
+        monthlyCompletedCount: 0,
+        totalCompletedCount: 0,
+        continuities: 0,
+      };
 
     const todayStr = getTodayString();
-    const originalCompletedDates = taskDetail.completedDates 
-      ? taskDetail.completedDates.split(",").filter(date => date.trim() !== "")
+    const originalCompletedDates = taskDetail.completedDates
+      ? taskDetail.completedDates
+          .split(",")
+          .filter((date) => date.trim() !== "")
       : [];
-    
+
     // 检查今天是否已经在完成日期列表中
     const isTodayInList = originalCompletedDates.includes(todayStr);
-    
+
     // 如果今天完成了但不在列表中，需要补充
     const shouldAddToday = taskDetail.isCompleted === 1 && !isTodayInList;
-    
-    const processedCompletedDates = shouldAddToday 
+
+    const processedCompletedDates = shouldAddToday
       ? [...originalCompletedDates, todayStr]
       : [...originalCompletedDates];
     let weeklyCount = taskDetail.weeklyCompletedCount;
@@ -132,29 +145,28 @@ const TaskDetail = () => {
     let continuities = taskDetail.continuities;
 
     if (shouldAddToday) {
-      
       // 更新统计数据
       const weekStart = getWeekStart();
       const monthStart = getMonthStart();
-      
+
       // 如果今天在本周内，本周打卡次数+1
       if (isDateInRange(todayStr, weekStart)) {
         weeklyCount += 1;
       }
-      
+
       // 如果今天在本月内，本月打卡次数+1
       if (isDateInRange(todayStr, monthStart)) {
         monthlyCount += 1;
       }
-      
+
       // 总打卡次数+1
       totalCount += 1;
-      
+
       // 连续打卡天数逻辑：如果昨天也完成了，则+1，否则重置为1
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayStr = yesterday.toISOString().split('T')[0];
-      
+      const yesterdayStr = yesterday.toISOString().split("T")[0];
+
       if (originalCompletedDates.includes(yesterdayStr)) {
         continuities += 1;
       } else {
@@ -167,24 +179,24 @@ const TaskDetail = () => {
       weeklyCompletedCount: weeklyCount,
       monthlyCompletedCount: monthlyCount,
       totalCompletedCount: totalCount,
-      continuities: continuities
+      continuities: continuities,
     };
   };
 
   useEffect(() => {
     const fetchTaskDetail = async () => {
       if (!id) return;
-      
+
       const res = await sendRequest<ApiResponse<TaskDetailData>>({
         url: `/task/${id}`,
         method: "GET",
       });
-      console.log('习惯详情接口返回值:', res);
+      console.log("习惯详情接口返回值:", res);
       if (res && res.code === "200" && res.data) {
         setTaskDetail(res.data);
       }
     };
-    
+
     fetchTaskDetail();
   }, [sendRequest, id]);
 
@@ -226,42 +238,88 @@ const TaskDetail = () => {
   const processedData = getProcessedData();
 
   // 获取当前目标完成情况
-  const isTargetCompleted = taskDetail 
-    ? getIsTargetCompleted(taskDetail.targetType, taskDetail.targetCount, 
-        taskDetail.targetType === 2 ? processedData.weeklyCompletedCount : processedData.monthlyCompletedCount)
+  const isTargetCompleted = taskDetail
+    ? getIsTargetCompleted(
+        taskDetail.targetType,
+        taskDetail.targetCount,
+        taskDetail.targetType === 2
+          ? processedData.weeklyCompletedCount
+          : processedData.monthlyCompletedCount
+      )
     : false;
 
+  // AI分析功能
+  const handleAIAnalysis = async () => {
+    if (!taskDetail) return;
+
+    setIsAnalyzing(true);
+    try {
+      const analysisMessage = `请分析我的习惯数据并给出建议：
+      习惯名称：${taskDetail.name}
+      习惯描述：${taskDetail.description}
+      目标类型：${getTargetTypeText(taskDetail.targetType)}
+      目标次数：${taskDetail.targetType === 1 ? 1 : taskDetail.targetCount}次
+      本周完成：${processedData.weeklyCompletedCount}次
+      本月完成：${processedData.monthlyCompletedCount}次
+      总完成次数：${processedData.totalCompletedCount}次
+      连续打卡：${processedData.continuities}天
+      是否完成目标：${isTargetCompleted ? "是" : "否"}
+      
+      请给出具体的分析和改进建议（200字以内）`;
+
+      const result = await chatWithDeepSeek(analysisMessage);
+      setAiAnalysis(result || "分析失败，请稍后重试");
+    } catch (error) {
+      console.error("AI分析失败:", error);
+      setAiAnalysis("分析失败，请稍后重试");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   return (
-    <div className={`task-detail-container ${isExiting ? 'exiting' : ''}`}>
+    <div className={`task-detail-container ${isExiting ? "exiting" : ""}`}>
       {/* 标题 */}
       <div className="header-container">
         <div className="back-btn" onClick={goBack}>
           <i className="iconfont icon-arrow-pixel-copy"></i>
         </div>
         <div className="title">{taskDetail?.name || "加载中..."}</div>
-        <div className="description">{taskDetail?.description || ""}</div>
+        <div
+          className="description"
+          style={{
+            backgroundColor: "var(--color-primary)",
+            padding: "8px 12px",
+            borderRadius: "8px",
+            wordWrap: "break-word",
+            overflowWrap: "break-word",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          {taskDetail?.description || ""}
+        </div>
         <div className="edit-btn" onClick={handleEdit}>
           <i className="iconfont icon-x_peizhi"></i>
         </div>
       </div>
-      
+
       {/* 可滚动的内容区域 */}
       <div className="content-scroll-area">
         {/* 日历 */}
         <div className="calendar-container">
-        <PixelBox
-          className="w-full"
-          borderColor="var(--color-background-primary)"
-          borderWidth={borderWidth}
-          gapSize={borderWidth}
-          backgroundColor="var(--color-primary)"
-        >
-          <div className="section-container">
-            <Calendar highlightDates={processedData.completedDates} />
-          </div>
-        </PixelBox>
-      </div>
-              {/* 目标 */}
+          <PixelBox
+            className="w-full"
+            borderColor="var(--color-background-primary)"
+            borderWidth={borderWidth}
+            gapSize={borderWidth}
+            backgroundColor="var(--color-primary)"
+          >
+            <div className="section-container">
+              <Calendar highlightDates={processedData.completedDates} />
+            </div>
+          </PixelBox>
+        </div>
+        {/* 目标 */}
         <div className="target-container">
           <PixelBox
             className="w-full"
@@ -273,7 +331,11 @@ const TaskDetail = () => {
             <div className="section-container">目标</div>
             <div className="target-card-container">
               <div className="target">
-                {taskDetail ? `${getTargetTypeText(taskDetail.targetType)}${taskDetail.targetType === 1 ? 1 : taskDetail.targetCount}次` : "加载中..."}
+                {taskDetail
+                  ? `${getTargetTypeText(taskDetail.targetType)}${
+                      taskDetail.targetType === 1 ? 1 : taskDetail.targetCount
+                    }次`
+                  : "加载中..."}
               </div>
               <div className="result flex items-center">
                 {isTargetCompleted ? (
@@ -290,7 +352,7 @@ const TaskDetail = () => {
             </div>
           </PixelBox>
         </div>
-        
+
         {/* 统计 */}
         <div className="statics-container">
           <PixelBox
@@ -304,25 +366,79 @@ const TaskDetail = () => {
             <div className="statics-card-container">
               <div className="statics-card">
                 <div className="statics-card-title">本周打卡次数</div>
-                <div className="statics-card-value">{processedData.weeklyCompletedCount}</div>
+                <div className="statics-card-value">
+                  {processedData.weeklyCompletedCount}
+                </div>
               </div>
               <div className="statics-card">
                 <div className="statics-card-title">本月打卡次数</div>
-                <div className="statics-card-value">{processedData.monthlyCompletedCount}</div>
+                <div className="statics-card-value">
+                  {processedData.monthlyCompletedCount}
+                </div>
               </div>
               <div className="statics-card">
                 <div className="statics-card-title">总打卡次数</div>
-                <div className="statics-card-value">{processedData.totalCompletedCount}</div>
+                <div className="statics-card-value">
+                  {processedData.totalCompletedCount}
+                </div>
               </div>
               <div className="statics-card">
                 <div className="statics-card-title">连续打卡天数</div>
-                <div className="statics-card-value">{processedData.continuities}</div>
+                <div className="statics-card-value">
+                  {processedData.continuities}
+                </div>
               </div>
             </div>
           </PixelBox>
         </div>
+
+        {/* AI分析区域 */}
+        <div className="ai-analysis-container">
+          <PixelBox
+            className="w-full"
+            borderColor="var(--color-background-primary)"
+            borderWidth={borderWidth}
+            gapSize={borderWidth}
+            backgroundColor="var(--color-primary)"
+          >
+            <div className="section-container flex-col">
+              <div className="text-center">AI 习惯分析</div>
+              {!aiAnalysis && (
+                <div className="flex justify-center mt-2">
+                  <button
+                    onClick={handleAIAnalysis}
+                    disabled={isAnalyzing || !taskDetail}
+                    className="px-8 py-4 bg-blue-500 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    {isAnalyzing ? "分析中..." : "获取分析"}
+                  </button>
+                </div>
+              )}
+            </div>
+            {aiAnalysis && (
+              <>
+                <div className="ai-analysis-content  bg-white rounded-lg border-l-4 border-blue-500">
+                  <div className="markdown-content text-xl text-gray-700 leading-9">
+                    <ReactMarkdown components={MARKDOWN_COMPONENTS}>
+                      {aiAnalysis}
+                    </ReactMarkdown>
+                  </div>
+                </div>
+                <div className="flex justify-center pb-6 bg-white">
+                  <button
+                    onClick={handleAIAnalysis}
+                    disabled={isAnalyzing || !taskDetail}
+                    className="px-8 py-4 bg-blue-500 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    {isAnalyzing ? "分析中..." : "重新获取分析"}
+                  </button>
+                </div>
+              </>
+            )}
+          </PixelBox>
+        </div>
       </div>
-      
+
       {/* 编辑表单弹框 */}
       <Popup
         visible={showEditForm}
