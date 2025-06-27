@@ -263,10 +263,9 @@ const TaskDetail = () => {
       本周完成：${processedData.weeklyCompletedCount}次
       本月完成：${processedData.monthlyCompletedCount}次
       总完成次数：${processedData.totalCompletedCount}次
-      连续打卡：${processedData.continuities}天
-      是否完成目标：${isTargetCompleted ? "是" : "否"}
+      当前是否完成目标：${isTargetCompleted ? "是" : "否"}
       
-      请给出具体的分析和改进建议（200字以内）`;
+      请在开头给予一点鼓励（不需要标注"鼓励"），并请给出具体的分析和改进建议（300字以内），内容可以添加一些emoji`;
 
       const result = await chatWithDeepSeek(analysisMessage);
       setAiAnalysis(result || "分析失败，请稍后重试");
