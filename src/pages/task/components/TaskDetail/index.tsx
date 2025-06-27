@@ -419,7 +419,7 @@ const TaskDetail = () => {
                   <button
                     onClick={handleAIAnalysis}
                     disabled={isAnalyzing || !taskDetail}
-                    className="px-8 py-4 bg-blue-500 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="px-8 py-4 bg-blue-400 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {isAnalyzing ? "分析中..." : "获取分析"}
                   </button>
