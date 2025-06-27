@@ -1,5 +1,5 @@
 import Calendar from "@/pages/components/Calendar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./index.scss";
 import { PixelBox } from "@/pages/components";
 import { useNavigate, useParams } from "react-router-dom";
@@ -48,6 +48,7 @@ const TaskDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { sendRequest } = useHttp();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // 获取今天的日期字符串 (YYYY-MM-DD)
   const getTodayString = () => {
@@ -269,6 +270,16 @@ const TaskDetail = () => {
 
       const result = await chatWithDeepSeek(analysisMessage);
       setAiAnalysis(result || "分析失败，请稍后重试");
+      
+      // 如果有结果返回，平滑滚动到底部
+      if (result && scrollContainerRef.current) {
+        setTimeout(() => {
+          scrollContainerRef.current?.scrollTo({
+            top: scrollContainerRef.current.scrollHeight,
+            behavior: 'smooth'
+          });
+        }, 100); // 延迟100ms确保DOM更新完成
+      }
     } catch (error) {
       console.error("AI分析失败:", error);
       setAiAnalysis("分析失败，请稍后重试");
@@ -304,7 +315,7 @@ const TaskDetail = () => {
       </div>
 
       {/* 可滚动的内容区域 */}
-      <div className="content-scroll-area">
+      <div className="content-scroll-area" ref={scrollContainerRef}>
         {/* 日历 */}
         <div className="calendar-container">
           <PixelBox
@@ -402,7 +413,7 @@ const TaskDetail = () => {
             backgroundColor="var(--color-primary)"
           >
             <div className="section-container flex-col">
-              <div className="text-center">AI 习惯分析</div>
+              <div className="text-center">习惯分析</div>
               {!aiAnalysis && (
                 <div className="flex justify-center mt-2">
                   <button
