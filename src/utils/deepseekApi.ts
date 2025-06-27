@@ -1,4 +1,4 @@
-import { getToken } from "./tokenUtils";
+import { http, ResponseData } from "./http";
 
 /**
  * 调用 DeepSeek API
@@ -7,26 +7,15 @@ import { getToken } from "./tokenUtils";
  */
 export async function chatWithDeepSeek(message: string): Promise<string | null> {
     try {
-        const userToken = getToken(); // 获取用户token
-        
-        const response = await fetch('/api/chat/deepseek', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}` // JWT token
-            },
-            body: JSON.stringify({
-                message: message
-            })
+        const data = await http.post<ResponseData<{ reply: string }>>('/chat/deepseek', {
+            message: message
         });
-
-        const data = await response.json();
         
-        if (data.code === '200') {
+        if (data && data.code === '200' && data.data) {
             console.log('DeepSeek API 返回值:', data.data.reply);
             return data.data.reply;
         } else {
-            console.error('API调用失败:', data.message);
+            console.error('API调用失败:', data?.message || '未知错误');
             return null;
         }
         
