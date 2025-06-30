@@ -1,0 +1,21 @@
+.task-cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0;
+  gap: 0; // 不使用gap，因为卡片自己有margin控制间距
+}
+
+// 确保列表容器样式
+.list-container {
+  .list {
+    // 重置react-vant List组件的默认样式
+    .rv-list {
+      .rv-list__item {
+        padding: 0;
+        border: none;
+        background: none;
+      }
+    }
+  }
+} 

@@ -1,25 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Popup } from "react-vant";
 import TaskForm from "../../form/TaskForm";
 import "./index.scss";
 import { Task } from "../TaskList";
 import { useNavigate } from "react-router-dom";
+import taskImage from "@/assets/images/task.png";
+import taskFinishedImage from "@/assets/images/task_finished.jpg";
+import detailIcon from "@/assets/images/more.svg";
 
 interface TaskItemParams {
   task: Task;
   taskClick: () => void;
   updateList: () => void;
 }
-// 图标大小
-const IconSize = 16;
 
 const taskTypeMap: Record<number, { text: string; color: string }> = {
   1: {
-    text: "主要",
+    text: "主",
     color: "var(--color-red)",
   },
   2: {
-    text: "次要",
+    text: "次",
     color: "var(--color-orange)",
   },
 };
@@ -29,108 +30,71 @@ const TaskItem = ({ taskClick, task, updateList }: TaskItemParams) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const navigate = useNavigate();
 
-  // 监听task.isCompleted的变化，当从false变为true时触发动画
-  useEffect(() => {
-    if (task.isCompleted) {
-      setIsAnimating(true);
-      // 动画结束后重置状态
-      const timer = setTimeout(() => setIsAnimating(false), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [task.isCompleted]);
-
-  const handleClick = () => {
+  const handleDetailClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 阻止事件冒泡
     // 携带id跳转到详情页
     navigate(`/task/detail/${task.id}`);
   };
+
   const onFormClose = () => {
     setShowDetail(false);
     updateList();
   };
+
+  const handleCardClick = () => {
+    // 如果任务从未完成变为完成，触发跳动动画
+    if (task.isCompleted === 0) {
+      setIsAnimating(true);
+      // 动画结束后清除动画状态
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 400); // 与动画持续时间一致
+    }
+    
+    // 调用原来的点击处理函数
+    taskClick();
+  };
+
   return (
-    <div
-      className="flex justify-between items-center w-full  bg-white  h-28 "
-      style={{ borderBottom: "4px solid #f7f7f6" }}
-    >
-      {/* 左侧区域 */}
-      <div
-        className="left-wrapper pl-6 py-4 flex-1 active:bg-gray-100 transition-all duration-200"
-        onClick={taskClick}
-      >
-        {/* 标题 */}
-        <div className="flex items-center icon-wrapper">
-          <span className="text-2xl">
-            {task.isCompleted ? (
-              <div className="coin-container relative">
-                {/* 椭圆形影子 */}
-                {(isAnimating || task.isCompleted) && (
-                  <div
-                    className={
-                      isAnimating
-                        ? "coin-shadow shadow-animation"
-                        : "coin-shadow"
-                    }
-                  ></div>
-                )}
-                <svg
-                  className={`icon ${isAnimating ? "coin-jump-animation" : ""}`}
-                  aria-hidden="true"
-                  width={IconSize}
-                  height={IconSize}
-                >
-                  <use xlinkHref="#icon-xiangsu_jinbi"></use>
-                </svg>
-              </div>
-            ) : (
-              <svg
-                className="icon opacity-50"
-                aria-hidden="true"
-                width={IconSize}
-                height={IconSize}
-              >
-                <use xlinkHref="#icon-xiangsu_jinbi1"></use>
-              </svg>
-            )}
-          </span>
-          <span className="text-3xl ml-2 flex items-center ">
-            {task.name}
+    <div className="task-card-container">
+      <div className={`task-card ${task.isCompleted === 0 ? 'task-card-incomplete' : 'task-card-completed'} ${isAnimating ? 'card-jump-animation' : ''}`} onClick={handleCardClick}>
+        {/* 卡片内容区域 */}
+        <div className="card-content">
+          {/* 任务状态图片 */}
+          <div className={task.isCompleted === 0 ? 'task-image-unfinished' : 'task-image'}>
+            <img 
+              className={task.isCompleted === 0 ? 'img-unfinished' : ''}
+              src={task.isCompleted === 1 ? taskFinishedImage : taskImage} 
+              alt={task.isCompleted === 1 ? "已完成" : "未完成"}
+            />
+          </div>
+          
+          {/* 习惯名称和类型标签 - 在一行显示 */}
+          <div className="habit-name">
+            <div className="name-text">{task.name}</div>
             {taskTypeMap[task.taskType] && (
-              <span
-                className="ml-2 px-2 py-0.5 text-white text-xl border-2 rounded inline-block"
-                style={{ 
-                  backgroundColor: taskTypeMap[task.taskType].color,
-                  borderColor: taskTypeMap[task.taskType].color
-                }}
+              <div
+                className="type-tag-text"
+                style={{ backgroundColor: taskTypeMap[task.taskType].color }}
               >
                 {taskTypeMap[task.taskType].text}
-              </span>
+              </div>
             )}
-          </span>
+          </div>
+
+          {/* 完成次数 */}
+          <div className="completion-count">
+            <div className="count-label">完成次数</div>
+            <div className="count-value">{task.count}</div>
+          </div>
         </div>
-        {/* 描述 */}
-        <div className="text-2xl ml-8 text-gray-400 mt-1 text-ellipsis overflow-hidden whitespace-nowrap">
-          {task.description}
-        </div>
-      </div>
-      {/* 右侧区域 */}
-      <div
-        className="right-wrapper flex items-center active:bg-gray-100 transition-all duration-200"
-        onClick={handleClick}
-      >
-        {/* 完成次数 */}
-        <div className="text-2xl px-3 w-52 flex justify-end items-center text-gray-600">
-          完成次数：
-          <span className="text-green-500 text-4xl font-bold ml-2">
-            {task.count}
-          </span>
-        </div>
-        {/* 更多按钮 */}
-        <div className="w-12 h-24 justify-center items-center flex text-4xl text-gray-300 ">
-          <svg aria-hidden="true" width={IconSize} height={IconSize}>
-            <use xlinkHref="#icon-xiangsujiantou"></use>
-          </svg>
+
+        {/* 详情按钮 - 右下角 */}
+        <div className="detail-btn" onClick={handleDetailClick}>
+          <img src={detailIcon} alt="详情" />
         </div>
       </div>
+
       <Popup
         visible={showDetail}
         overlay={true}

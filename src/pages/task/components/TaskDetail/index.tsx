@@ -36,8 +36,6 @@ interface ApiResponse<T> {
   data: T;
 }
 
-
-
 const TaskDetail = () => {
   const [taskDetail, setTaskDetail] = useState<TaskDetailData | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -268,13 +266,13 @@ const TaskDetail = () => {
 
       const result = await chatWithDeepSeek(analysisMessage);
       setAiAnalysis(result || "分析失败，请稍后重试");
-      
+
       // 如果有结果返回，平滑滚动到底部
       if (result && scrollContainerRef.current) {
         setTimeout(() => {
           scrollContainerRef.current?.scrollTo({
             top: scrollContainerRef.current.scrollHeight,
-            behavior: 'smooth'
+            behavior: "smooth",
           });
         }, 100); // 延迟100ms确保DOM更新完成
       }
@@ -316,21 +314,27 @@ const TaskDetail = () => {
       <div className="content-scroll-area" ref={scrollContainerRef}>
         {/* 日历 */}
         <div className="calendar-container">
-        <div className="w-full border-4 rounded" style={{ 
-          borderColor: "var(--color-background-primary)", 
-          backgroundColor: "var(--color-primary)" 
-        }}>
-          <div className="section-container">
-            <Calendar highlightDates={processedData.completedDates} />
+          <div
+            className="w-full border-4 rounded"
+            style={{
+              borderColor: "var(--color-background-primary)",
+              backgroundColor: "var(--color-primary)",
+            }}
+          >
+            <div className="section-container">
+              <Calendar highlightDates={processedData.completedDates} />
+            </div>
           </div>
         </div>
-      </div>
-              {/* 目标 */}
+        {/* 目标 */}
         <div className="target-container">
-          <div className="w-full border-4 rounded" style={{ 
-            borderColor: "var(--color-background-primary)", 
-            backgroundColor: "var(--color-primary)" 
-          }}>
+          <div
+            className="w-full border-4 rounded"
+            style={{
+              borderColor: "var(--color-background-primary)",
+              backgroundColor: "var(--color-primary)",
+            }}
+          >
             <div className="section-container">目标</div>
             <div className="target-card-container">
               <div className="target">
@@ -358,10 +362,13 @@ const TaskDetail = () => {
 
         {/* 统计 */}
         <div className="statics-container">
-          <div className="w-full border-4 rounded" style={{ 
-            borderColor: "var(--color-background-primary)", 
-            backgroundColor: "var(--color-primary)" 
-          }}>
+          <div
+            className="w-full border-4 rounded"
+            style={{
+              borderColor: "var(--color-background-primary)",
+              backgroundColor: "var(--color-primary)",
+            }}
+          >
             <div className="section-container">打卡数据</div>
             <div className="statics-card-container">
               <div className="statics-card">
@@ -394,48 +401,40 @@ const TaskDetail = () => {
 
         {/* AI分析区域 */}
         <div className="ai-analysis-container">
-          <PixelBox
-            className="w-full"
-            borderColor="var(--color-background-primary)"
-            borderWidth={borderWidth}
-            gapSize={borderWidth}
-            backgroundColor="var(--color-primary)"
-          >
-            <div className="section-container flex-col">
-              <div className="text-center">习惯分析</div>
-              {!aiAnalysis && (
-                <div className="flex justify-center mt-2">
-                  <button
-                    onClick={handleAIAnalysis}
-                    disabled={isAnalyzing || !taskDetail}
-                    className="px-8 py-4 bg-blue-400 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    {isAnalyzing ? "分析中..." : "获取分析"}
-                  </button>
-                </div>
-              )}
-            </div>
-            {aiAnalysis && (
-              <>
-                <div className="ai-analysis-content  bg-white rounded-lg border-l-4 border-blue-500">
-                  <div className="markdown-content text-xl text-gray-700 leading-9">
-                    <ReactMarkdown components={MARKDOWN_COMPONENTS}>
-                      {aiAnalysis}
-                    </ReactMarkdown>
-                  </div>
-                </div>
-                <div className="flex justify-center pb-6 bg-white">
-                  <button
-                    onClick={handleAIAnalysis}
-                    disabled={isAnalyzing || !taskDetail}
-                    className="px-8 py-4 bg-blue-500 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    {isAnalyzing ? "分析中..." : "重新获取分析"}
-                  </button>
-                </div>
-              </>
+          <div className="section-container flex-col">
+            <div className="text-center">习惯分析</div>
+            {!aiAnalysis && (
+              <div className="flex justify-center mt-2">
+                <button
+                  onClick={handleAIAnalysis}
+                  disabled={isAnalyzing || !taskDetail}
+                  className="px-8 py-4 bg-blue-400 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                  {isAnalyzing ? "分析中..." : "获取分析"}
+                </button>
+              </div>
             )}
-          </PixelBox>
+          </div>
+          {aiAnalysis && (
+            <>
+              <div className="ai-analysis-content  bg-white rounded-lg border-l-4 border-blue-500">
+                <div className="markdown-content text-xl text-gray-700 leading-9">
+                  <ReactMarkdown components={MARKDOWN_COMPONENTS}>
+                    {aiAnalysis}
+                  </ReactMarkdown>
+                </div>
+              </div>
+              <div className="flex justify-center pb-6 bg-white">
+                <button
+                  onClick={handleAIAnalysis}
+                  disabled={isAnalyzing || !taskDetail}
+                  className="px-8 py-4 bg-blue-500 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                  {isAnalyzing ? "分析中..." : "重新获取分析"}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

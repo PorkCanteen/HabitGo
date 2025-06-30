@@ -218,14 +218,16 @@ const TaskList = forwardRef((_props, ref) => {
               </svg>
             </div>
           ) : (
-            tasks.map((task) => (
-              <TaskItem
-                key={task.id}
-                task={task}
-                taskClick={() => task.id !== undefined && handleClick(task.id)}
-                updateList={fetchData}
-              ></TaskItem>
-            ))
+            <div className="task-cards-grid">
+              {tasks.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  taskClick={() => task.id !== undefined && handleClick(task.id)}
+                  updateList={fetchData}
+                ></TaskItem>
+              ))}
+            </div>
           )}
         </List>
       </div>
