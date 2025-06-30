@@ -3,6 +3,7 @@ import { List } from "react-vant";
 import TaskItem from "../TaskItem";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "@/pages/components/Notify";
+import "./index.scss";
 
 // 习惯项
 export interface Task {
@@ -174,7 +175,7 @@ const TaskList = forwardRef((_props, ref) => {
           {tabs.map((tab) => (
             <button
               key={tab}
-              className={`mr-2 tab-card text-2xl px-3 py-1 border-2 rounded cursor-pointer hover:opacity-80 transition-opacity ${
+              className={`mr-2 tab-card text-2xl px-3 py-1 border-2 cursor-pointer hover:opacity-80 transition-opacity ${
                 animatingTab === tab ? "click-shrink-animate" : ""
               } ${
                 activeTab === tab ? "checked" : ""

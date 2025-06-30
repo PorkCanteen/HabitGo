@@ -23,7 +23,7 @@ const TaskHeader = () => {
           <use xlinkHref="#icon-xiangsu_xigua"></use>
         </svg>
       </div>
-      <div className="text-4xl font-bold">{taskHeaderText}</div>
+      <div className="title font-bold">{taskHeaderText}</div>
       <div>
         <svg
           onClick={handleLogoClick}
