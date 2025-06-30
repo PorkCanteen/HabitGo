@@ -22,7 +22,7 @@ export interface ResponseData<T = unknown> {
 // 全局配置
 const globalConfig = {
   baseUrl: `${API_BASE_URL}/api`,
-  timeout: 10000,
+  timeout: 100000,
   headers: {
     "Content-Type": "application/json",
   },
