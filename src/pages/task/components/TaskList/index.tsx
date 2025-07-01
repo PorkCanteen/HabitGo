@@ -201,7 +201,7 @@ const TaskList = forwardRef((_props, ref) => {
           }`}
         >
           {sortTypeText[sortType]}
-          <i className="iconfont icon-x_paixu ml-2 text-xl"></i>
+          <i className="iconfont icon-paixu ml-2 text-3xl"></i>
         </div>
       </div>
       <div className="list px-2 pb-2 overflow-y-auto">
