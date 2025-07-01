@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 import pig1Image from "@/assets/images/pig1.png";
 import pig2Image from "@/assets/images/pig2.png";
 import pig3Image from "@/assets/images/pig3.png";
-import detailIcon from "@/assets/images/more.svg";
 import footIcon from "@/assets/images/foot2.png";
 
 interface TodoItemParams {
@@ -76,7 +75,7 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
         </div>
 
         {/* 右侧文字内容区域 */}
-        <div className="todo-content">
+        <div className="todo-content" onClick={handleDetailClick}>
           {/* 标题行 */}
           <div className="todo-title">
             <span className={`title-text ${todo.isFinished ? "line-through text-gray-500" : ""}`}>
@@ -115,11 +114,6 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
                 .map((line, index) => <div key={index}>{line}</div>)}
             </div>
           )}
-        </div>
-
-        {/* 详情按钮 - 右下角 */}
-        <div className="detail-btn" onClick={handleDetailClick}>
-          <img src={detailIcon} alt="详情" />
         </div>
       </div>
 
