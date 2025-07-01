@@ -5,6 +5,11 @@ import TodoForm from "../../form/TodoForm";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import pig1Image from "@/assets/images/pig1.png";
+import pig2Image from "@/assets/images/pig2.png";
+import pig3Image from "@/assets/images/pig3.png";
+import detailIcon from "@/assets/images/more.svg";
+import footIcon from "@/assets/images/foot2.png";
 
 interface TodoItemParams {
   todo: Todo;
@@ -29,7 +34,8 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
     }
   };
 
-  const handleDetailClick = () => {
+  const handleDetailClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 阻止事件冒泡
     if (todo.id) {
       navigate(`/todo/detail/${todo.id}`);
     }
@@ -40,111 +46,83 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
     updateList();
   };
 
-  const renderIcon = () => {
-    if (isAnimating) {
-      return (
-        <svg aria-hidden="true" width={20} height={20} className="animate-icon">
-          <use xlinkHref="#icon-xiangsu_jiangbei"></use>
-        </svg>
-      );
-    }
+  const getPigImage = () => {
     if (todo.isFinished) {
-      return (
-        <svg aria-hidden="true" width={20} height={20}>
-          <use xlinkHref="#icon-xiangsu_jiangbei"></use>
-        </svg>
-      );
+      return pig3Image; // 已完成显示pig3
     }
-    return (
-      <svg aria-hidden="true" width={20} height={20}>
-        <use
-          xlinkHref={
-            calculateDayDifference(todo.finishDate).isDelay
-              ? "#icon--shy"
-              : "#icon--happy"
-          }
-        ></use>
-      </svg>
-    );
+    
+    const dayDiff = calculateDayDifference(todo.finishDate);
+    if (dayDiff.isDelay) {
+      return pig2Image; // 已超期显示pig2
+    }
+    
+    return pig1Image; // 未超期显示pig1
   };
 
   return (
-    <div
-      className={`flex justify-between items-center w-full  ${
-        todo.isFinished ? "bg-gray-50" : "bg-white"
-      } h-fit `}
-      style={{ borderBottom: "4px solid #f7f7f6" }}
-    >
-      {/* 左侧区域 */}
-      <div className="pl-6 py-4 flex-1 " onClick={handleDetailClick}>
-        {/* 标题 */}
-        <div className="flex items-center icon-wrapper">
-          <span
-            className="text-2xl cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleTodoClick();
-            }}
-          >
-            {renderIcon()}
-          </span>
-          <span
-            className={`text-3xl ml-2 flex items-center justify-start w-full ${
-              todo.isFinished ? "line-through text-gray-500" : ""
-            }`}
-          >
-            {/* 名称 */}
-            <span>{todo.name}</span>
-            {todo.type === 1 && (
-              <svg aria-hidden="true" width={16} height={16}>
-                <use xlinkHref={"#icon-xiangsu-huomiao"}></use>
-              </svg>
-            )}
-          </span>
-        </div>
-        <div className="flex items-center justify-between w-full pl-10">
-          {/* 剩余/超期时间 */}
-          {!todo.isFinished && (
-            <span
-              className={`mt-1 text-2xl px-3 text-white w-fit border-2 rounded inline-block ${
-                calculateDayDifference(todo.finishDate).isDelay
-                  ? "bg-red-500 border-red-500"
-                  : "bg-green-500 border-green-500"
-              }`}
-            >
-              {calculateDayDifference(todo.finishDate).text}
-            </span>
-          )}
-          {/* 计划时间 */}
-          <span
-            className={todo.isFinished ? "text-gray-500" : "" + " text-2xl"}
-          >
-            计划时间：{dayjs(todo.finishDate).format("YYYY-MM-DD")}
-          </span>
+    <div className="todo-card-container">
+      <div 
+        className={`todo-card ${todo.isFinished ? "todo-card-completed" : "todo-card-incomplete"} ${
+          !todo.isFinished && calculateDayDifference(todo.finishDate).isDelay ? "todo-card-overdue" : ""
+        }`}
+      >
+        {/* 左侧图片区域 */}
+        <div className="todo-image" onClick={handleTodoClick}>
+          <img 
+            src={getPigImage()} 
+            alt="待办图片"
+            className={`todo-img ${isAnimating ? "todo-img-animate" : ""}`}
+          />
         </div>
 
-        {/* 描述 */}
-        {!todo.isFinished && (
-          <div className="text-2xl ml-10 text-gray-500 mt-1">
-            {todo.description &&
-              todo.description
+        {/* 右侧文字内容区域 */}
+        <div className="todo-content">
+          {/* 标题行 */}
+          <div className="todo-title">
+            <span className={`title-text ${todo.isFinished ? "line-through text-gray-500" : ""}`}>
+              {todo.name}
+              {todo.type === 1 && (
+                <img src={footIcon} alt="紧急" width={24} height={24} className="ml-1" />
+              )}
+            </span>
+          </div>
+
+          {/* 时间信息行 */}
+          <div className="todo-time-info">
+            {/* 计划时间 */}
+            <span className={`plan-time ${todo.isFinished ? "text-gray-500" : ""}`}>
+              {dayjs(todo.finishDate).format("YYYY-MM-DD")}
+            </span>
+            {/* 剩余/超期时间 */}
+            {!todo.isFinished && (
+              <span
+                className={`time-badge ${
+                  calculateDayDifference(todo.finishDate).isDelay
+                    ? "time-badge-delay"
+                    : "time-badge-normal"
+                }`}
+              >
+                {calculateDayDifference(todo.finishDate).text}
+              </span>
+            )}
+          </div>
+
+          {/* 内容描述行 */}
+          {!todo.isFinished && todo.description && (
+            <div className="todo-description">
+              {todo.description
                 .split("\n")
                 .map((line, index) => <div key={index}>{line}</div>)}
-          </div>
-        )}
-      </div>
-      {/* 右侧区域 */}
-      <div className="flex items-center ">
-        {/* 更多按钮 */}
-        <div
-          className="w-20 h-24 justify-center items-center flex text-4xl text-gray-300 "
-          onClick={handleDetailClick}
-        >
-          <svg aria-hidden="true" width={18} height={18}>
-            <use xlinkHref="#icon-xiangsujiantou"></use>
-          </svg>
+            </div>
+          )}
+        </div>
+
+        {/* 详情按钮 - 右下角 */}
+        <div className="detail-btn" onClick={handleDetailClick}>
+          <img src={detailIcon} alt="详情" />
         </div>
       </div>
+
       <Popup
         visible={showDetail}
         overlay={true}

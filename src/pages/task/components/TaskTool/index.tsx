@@ -29,7 +29,7 @@ const TaskTool = ({ updateList }: TaskToolParams) => {
       <div className="absolute bottom-5 left-5">
         <i
           onClick={handleClick}
-          className={`text-7xl iconfont icon-jia icon-color opacity-70 ${
+          className={`text-7xl iconfont icon-jia task-icon-color opacity-70 ${
             isAnimating ? "click-shrink-animate" : ""
           }`}
         ></i>

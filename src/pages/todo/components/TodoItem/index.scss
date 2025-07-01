@@ -1,60 +1,179 @@
-@keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    50% {
+.todo-card-container {
+  width: calc(100% - 16px);
+  margin: 8px;
+
+  .todo-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    min-height: 120px;
+    padding: 10px;
+    background-color: white;
+    border: 6px solid black;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+
+    &.todo-card-completed {
+      background-color: #ced4da;
       opacity: 0.8;
-      transform: scale(1.8);
+      min-height: 60px;
+
+      .todo-image .todo-img {
+        height: 20vw;
+      }
+
+      .detail-btn {
+        background-color: white;
+        
+        &:hover {
+          background-color: #f8f9fa;
+        }
+      }
     }
-    100% {
-      opacity: 1;
-      transform: scale(1);
+
+    &.todo-card-incomplete {
+      background-color: white;
+    }
+
+    &.todo-card-overdue {
+      box-shadow: 0 0 0 5px #f25541;
+      background-color: #fef2f2;
+
+      .detail-btn {
+        background-color: white;
+        
+        &:hover {
+          background-color: #f8f9fa;
+        }
+      }
+    }
+
+    // 左下角图片区域
+    .todo-image {
+      position: absolute;
+      bottom: -4vw;
+      left: -5vw;
+      cursor: pointer;
+      z-index: 1;
+
+      .todo-img {
+        height: 30vw;
+        object-fit: cover;
+        border-radius: 12px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+
+        &.todo-img-animate {
+          animation: bounce 0.5s ease;
+        }
+      }
+    }
+
+    // 右侧文字内容区域
+    .todo-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: right;
+      padding-right: 35px; // 为右下角按钮留出空间
+      padding-left: 10px; // 调整左侧内边距
+
+      // 标题行
+      .todo-title {
+        .title-text {
+          font-size: 5vw;
+          font-weight: 600;
+          color: #333;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          justify-content: flex-end;
+        }
+      }
+
+      // 时间信息行
+      .todo-time-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+
+        .time-badge {
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: 500;
+          color: white;
+
+          &.time-badge-normal {
+            background-color: #22c55e;
+            border: 2px solid #22c55e;
+          }
+
+          &.time-badge-delay {
+            background-color: #ef4444;
+            border: 2px solid #ef4444;
+          }
+        }
+
+        .plan-time {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+
+      // 内容描述行
+      .todo-description {
+        font-size: 14px;
+        color: #888;
+        line-height: 1.4;
+        max-height: 120px;
+        overflow-y: auto;
+        text-align: right;
+      }
+    }
+
+    // 详情按钮 - 右下角
+    .detail-btn {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 6vw;
+      height: 6vw;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 2;
+
+      &:hover {
+        background-color: #e0e0e0;
+        transform: scale(1.1);
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+        opacity: 0.7;
+      }
     }
   }
-  
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-  }
-  
-  @keyframes shakeAndScale {
-    0% {
-      transform: scale(1);
-    }
-    25% {
-      transform: scale(1.5) rotate(-10deg);
-    }
-    50% {
-      transform: scale(1.5) rotate(10deg);
-    }
-    75% {
-      transform: scale(1.5) rotate(-10deg);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-  
-  .icon-wrapper .icon {
-    transition: all 0.6s ease-in-out;
-  }
-  
-  .icon-wrapper .icon.active {
-    animation: fadeIn 0.6s ease-in-out forwards;
-  }
-  
-  .icon-wrapper .icon.leaving {
-    animation: fadeOut 0.6s ease-in-out forwards;
-  }
-  
-  .animate-icon {
-    animation: shakeAndScale 0.5s ease-in-out;
-  }
+}
+
+// 图片点击动画
+@keyframes bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1) rotate(5deg); }
+  100% { transform: scale(1); }
+}
   

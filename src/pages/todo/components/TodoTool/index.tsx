@@ -31,7 +31,7 @@ const TodoTool = ({ updateList }: TodoToolParams) => {
       <div className="absolute bottom-5 left-5">
         <i
           onClick={handleClick}
-          className={`icon-color text-7xl iconfont icon-jia ${
+          className={`todo-icon-color text-7xl iconfont icon-jia ${
             isAnimating ? "click-shrink-animate" : ""
           } `}
         ></i>
