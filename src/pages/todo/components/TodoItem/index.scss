@@ -1,6 +1,11 @@
 .todo-card-container {
   width: calc(100% - 16px);
-  margin: 8px;
+  margin: 8px 4px;
+
+  // 第一个卡片顶部不需要margin
+  &:first-child {
+    margin-top: 4px;
+  }
 
   .todo-card {
     position: relative;

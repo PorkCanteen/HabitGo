@@ -13,7 +13,7 @@ html {
 
 @font-face {
   font-family: "my-font";
-  src: url("@/assets/fonts/字帮玩酷体.ttf")
+  src: url("@/assets/fonts/font1.ttf")
     format("woff2");
 }
 
