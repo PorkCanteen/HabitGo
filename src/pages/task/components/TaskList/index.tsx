@@ -4,6 +4,7 @@ import TaskItem from "../TaskItem";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "@/pages/components/Notify";
 import "./index.scss";
+import foot1Icon from "@/assets/images/foot1.png";
 
 // 习惯项
 export interface Task {
@@ -214,9 +215,7 @@ const TaskList = forwardRef((_props, ref) => {
               >
                 请创建您的第一个习惯吧！
               </div>
-              <svg aria-hidden="true" width={40} height={40}>
-                <use xlinkHref="#icon--happy"></use>
-              </svg>
+              <img src={foot1Icon} alt="创建习惯" width={50} height={50} />
             </div>
           ) : (
             <div className="task-cards-grid">

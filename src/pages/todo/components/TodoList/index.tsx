@@ -4,6 +4,7 @@ import TodoItem from "../TodoItem";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "@/pages/components/Notify";
 import "./index.scss";
+import foot2Icon from "@/assets/images/foot2.png";
 
 // 习惯项
 export interface Todo {
@@ -206,9 +207,7 @@ const TodoList = forwardRef((_props, ref) => {
               >
                 请创建您的第一个待办吧！
               </div>
-              <svg aria-hidden="true" width={40} height={40}>
-                <use xlinkHref="#icon--happy"></use>
-              </svg>
+              <img src={foot2Icon} alt="创建待办" width={50} height={50} />
             </div>
           ) : (
             todos.map((todo) => (

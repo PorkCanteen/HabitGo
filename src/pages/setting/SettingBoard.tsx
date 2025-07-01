@@ -1,5 +1,5 @@
-import dogIcon from "@/assets/dogPixel.png";
-import pigIcon from "@/assets/pigPixel.png";
+import dogIcon from "@/assets/images/dogIconBold.png";
+import pigIcon from "@/assets/images/pigIconBold.png";
 import otherIcon from "@/assets/other.svg";
 import "./SettingBoard.scss";
 import { useState, useEffect } from "react";
@@ -38,8 +38,8 @@ const SettingBoard = () => {
       <div className="nickname text-3xl font-medium mb-12">{user.nickname}</div>
       <div className="button-container flex flex-col gap-3 w-full max-w-xs items-center">
         <button
-          className="text-2xl px-16 py-4 bg-white border-4 border-white rounded cursor-pointer hover:opacity-80 transition-opacity"
-          style={{ backgroundColor: bgColor }}
+          className="text-2xl px-16 py-4 bg-white border-white cursor-pointer hover:opacity-80 transition-opacity"
+          style={{ backgroundColor: bgColor, borderRadius: "12px" }}
           onClick={handleLogout}
         >
           退出登录

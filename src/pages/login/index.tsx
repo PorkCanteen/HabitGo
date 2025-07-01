@@ -1,6 +1,6 @@
 import { Form, Input } from "react-vant";
-import dogIcon from "@/assets/dogPixel.png";
-import pigIcon from "@/assets/pigPixel.png";
+import dogIcon from "@/assets/images/dogIconBold.png";
+import pigIcon from "@/assets/images/pigIconBold.png";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { useHttp } from "@/hooks/useHttp";
