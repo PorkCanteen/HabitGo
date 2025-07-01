@@ -22,14 +22,6 @@
       .todo-image .todo-img {
         height: 20vw;
       }
-
-      .detail-btn {
-        background-color: white;
-        
-        &:hover {
-          background-color: #f8f9fa;
-        }
-      }
     }
 
     &.todo-card-incomplete {
@@ -39,14 +31,6 @@
     &.todo-card-overdue {
       box-shadow: 0 0 0 5px #f25541;
       background-color: #fef2f2;
-
-      .detail-btn {
-        background-color: white;
-        
-        &:hover {
-          background-color: #f8f9fa;
-        }
-      }
     }
 
     // 左下角图片区域
@@ -73,6 +57,21 @@
       }
     }
 
+    // 中央旋转图标
+    .center-icon {
+      position: absolute;
+      bottom: 15vw;
+      left: 25vw;
+      z-index: 1;
+      pointer-events: none;
+
+      img {
+        width: 40px;
+        height: 40px;
+        animation: rotate 5s linear infinite;
+      }
+    }
+
     // 右侧文字内容区域
     .todo-content {
       flex: 1;
@@ -80,8 +79,8 @@
       flex-direction: column;
       gap: 12px;
       text-align: right;
-      padding-right: 10px; // 为右下角按钮留出空间
-      padding-left: 10px; // 调整左侧内边距
+      padding-right: 10px;
+      padding-left: 10px;
 
       // 标题行
       .todo-title {
@@ -139,34 +138,6 @@
         text-align: right;
       }
     }
-
-    // 详情按钮 - 右下角
-    .detail-btn {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      width: 6vw;
-      height: 6vw;
-      border-radius: 50%;
-      background-color: #f0f0f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      z-index: 2;
-
-      &:hover {
-        background-color: #e0e0e0;
-        transform: scale(1.1);
-      }
-
-      img {
-        width: 16px;
-        height: 16px;
-        opacity: 0.7;
-      }
-    }
   }
 }
 
@@ -175,5 +146,11 @@
   0% { transform: scale(1); }
   50% { transform: scale(1.1) rotate(5deg); }
   100% { transform: scale(1); }
+}
+
+// 中央图标旋转动画
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
   

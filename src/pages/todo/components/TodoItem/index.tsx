@@ -9,6 +9,8 @@ import pig1Image from "@/assets/images/pig1.png";
 import pig2Image from "@/assets/images/pig2.png";
 import pig3Image from "@/assets/images/pig3.png";
 import footIcon from "@/assets/images/foot2.png";
+import flowerIcon from "@/assets/images/flower.png";
+import spiralIcon from "@/assets/images/spiral.png";
 
 interface TodoItemParams {
   todo: Todo;
@@ -58,6 +60,19 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
     return pig1Image; // 未超期显示pig1
   };
 
+  const getCenterIcon = () => {
+    if (todo.isFinished) {
+      return null; // 已完成不显示图标
+    }
+    
+    const dayDiff = calculateDayDifference(todo.finishDate);
+    if (dayDiff.isDelay) {
+      return spiralIcon; // 已超期显示spiral
+    }
+    
+    return flowerIcon; // 未超期显示flower
+  };
+
   return (
     <div className="todo-card-container">
       <div 
@@ -73,6 +88,16 @@ const TodoItem = ({ todo, todoClick, updateList }: TodoItemParams) => {
             className={`todo-img ${isAnimating ? "todo-img-animate" : ""}`}
           />
         </div>
+
+        {/* 中央旋转图标 */}
+        {getCenterIcon() && (
+          <div className="center-icon">
+            <img 
+              src={getCenterIcon()!} 
+              alt={calculateDayDifference(todo.finishDate).isDelay ? "焦虑" : "开心"}
+            />
+          </div>
+        )}
 
         {/* 右侧文字内容区域 */}
         <div className="todo-content" onClick={handleDetailClick}>
