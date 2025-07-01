@@ -3,6 +3,7 @@ import { List } from "react-vant";
 import TodoItem from "../TodoItem";
 import { useHttp } from "@/hooks/useHttp";
 import Notify from "@/pages/components/Notify";
+import "./index.scss";
 
 // 习惯项
 export interface Todo {
@@ -166,16 +167,16 @@ const TodoList = forwardRef((_props, ref) => {
           {tabs.map((tab) => (
             <button
               key={tab}
-              className={`mr-2 tab-card text-2xl px-3 py-1 border-2 rounded cursor-pointer hover:opacity-80 transition-opacity ${
+              className={`mr-2 tab-card text-2xl px-3 py-1 border-2 cursor-pointer hover:opacity-80 transition-opacity ${
                 animatingTab === tab ? "click-shrink-animate" : ""
               } ${
                 activeTab === tab ? "checked" : ""
               }`}
               style={{
                 borderColor: activeTab === tab
-                  ? "var(--color-button-primary)"
+                  ? "var(--color-tertiary-pink)"
                   : "var(--color-button-secondary)",
-                backgroundColor: activeTab === tab ? "var(--color-button-primary)" : "transparent",
+                backgroundColor: activeTab === tab ? "var(--color-tertiary-pink)" : "transparent",
                 color: activeTab === tab ? "white" : "inherit"
               }}
               onClick={() => handleTabClick(tab)}
@@ -184,13 +185,15 @@ const TodoList = forwardRef((_props, ref) => {
             </button>
           ))}
         </div>
-        <div 
+        <div
           style={{ color: "var(--color-text-secondary)" }}
           onClick={handleSortClick}
-          className={`flex items-center cursor-pointer pr-2 ${animatingSortType ? "click-shrink-animate" : ""}`}
+          className={`flex items-center cursor-pointer pr-2 ${
+            animatingSortType ? "click-shrink-animate" : ""
+          }`}
         >
           {sortTypeText[sortType]}
-          <i className="iconfont icon-x_paixu ml-2 text-xl"></i>
+          <i className="iconfont icon-paixu ml-2 text-3xl"></i>
         </div>
       </div>
       <div className="list px-2 pb-2 overflow-y-auto">

@@ -1,0 +1,17 @@
+.tab-card {
+  border-radius: 12px;
+}
+
+// 确保列表容器样式
+.list-container {
+  .list {
+    // 重置react-vant List组件的默认样式
+    .rv-list {
+      .rv-list__item {
+        padding: 0;
+        border: none;
+        background: none;
+      }
+    }
+  }
+} 
