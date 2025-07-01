@@ -18,10 +18,15 @@
   transform: translateX(-50%);
   width: 36px;
   height: 36px;
-  background-color: rgba(250, 223, 99, 0.5);
+  background-color: rgba(250, 223, 99, 1);
   border-radius: 50%;
   filter: blur(1px);
   animation: scaleUp 0.3s ease forwards;
+}
+
+.nav-icon {
+  width: 10vw!important;
+  height: 10vw!important;
 }
 
 @keyframes scaleUp {

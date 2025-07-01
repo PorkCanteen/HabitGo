@@ -2,10 +2,12 @@ import { Tabbar } from "react-vant";
 import { map } from "lodash";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./TabGroup.scss";  // 添加这行
+import taskImage from "@/assets/images/b.png";
+import todoImage from "@/assets/images/b2.png";
+import settingImage from "@/assets/images/b3.png";
+import "./TabGroup.scss"; // 添加这行
 
 // 图标大小
-const IconSize = 28;
 interface tabItem {
   name: string;
   text: string; // 显示文本
@@ -17,46 +19,19 @@ const originalTabList: Array<tabItem> = [
   {
     name: "task",
     text: "习惯",
-    icon: (
-      <svg
-        className="icon"
-        aria-hidden="true"
-        width={IconSize}
-        height={IconSize}
-      >
-        <use xlinkHref="#icon--star"></use>
-      </svg>
-    ),
+    icon: <img className="nav-icon" src={taskImage} alt="task" />,
     path: "/task",
   },
   {
     name: "todo",
     text: "待办",
-    icon: (
-      <svg
-        className="icon"
-        aria-hidden="true"
-        width={IconSize}
-        height={IconSize}
-      >
-        <use xlinkHref="#icon--calendar"></use>
-      </svg>
-    ),
+    icon: <img className="nav-icon" src={todoImage} alt="task" />,
     path: "/todo",
   },
   {
     name: "setting",
     text: "设置",
-    icon: (
-      <svg
-        className="icon"
-        aria-hidden="true"
-        width={IconSize}
-        height={IconSize}
-      >
-        <use xlinkHref="#icon--settings"></use>
-      </svg>
-    ),
+    icon: <img className="nav-icon" src={settingImage} alt="task" />,
     path: "/setting",
   },
 ];
@@ -78,7 +53,11 @@ const TabGroup = () => {
     setTabList(originalTabList);
   }, []);
   return (
-    <Tabbar value={tabName} activeColor="var(--color-primary)" onChange={(name: string | number) => onTabChange(name.toString())}>
+    <Tabbar
+      value={tabName}
+      activeColor="var(--color-primary)"
+      onChange={(name: string | number) => onTabChange(name.toString())}
+    >
       {map(tabList, (tab) => {
         return (
           <Tabbar.Item

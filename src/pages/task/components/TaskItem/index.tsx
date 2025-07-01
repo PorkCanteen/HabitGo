@@ -4,8 +4,8 @@ import TaskForm from "../../form/TaskForm";
 import "./index.scss";
 import { Task } from "../TaskList";
 import { useNavigate } from "react-router-dom";
-import taskImage from "@/assets/images/task.png";
-import taskFinishedImage from "@/assets/images/task_finished.jpg";
+import taskImage from "@/assets/images/dog2.png";
+import taskFinishedImage from "@/assets/images/dog1.png";
 import detailIcon from "@/assets/images/more.svg";
 
 interface TaskItemParams {
