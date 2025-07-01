@@ -1,30 +1,8 @@
-@keyframes jump {
-  from {
-    transform: scale3d(1, 1, 1);
+.todo-header-container {
+  background-color: var(--color-secondary-pink);
+  border-bottom: 5px solid var(--color-text-primary);
+  box-shadow: 0 3px 0 var(--color-primary-pink);
+  .title {
+    font-size: 7vw;
   }
-  10%,
-  20% {
-    transform: scale3d(0.8, 0.8, 0.8) rotate3d(0, 0, 1, -4deg);
-  }
-  30%,
-  50%,
-  70%,
-  90% {
-    transform: scale3d(1.3, 1.3, 1.3) rotate3d(0, 0, 1, 4deg);
-  }
-  40%,
-  60%,
-  80% {
-    transform: scale3d(1.3, 1.3, 1.3) rotate3d(0, 0, 1, -4deg);
-  }
-  to {
-    transform: scale3d(1, 1, 1);
-  }
-}
-.header-container {
-  background-color: var(--color-secondary);
-  border-bottom: 3px solid var(--color-primary);
-}
-.logo-active {
-  animation: jump 1s;
 }
