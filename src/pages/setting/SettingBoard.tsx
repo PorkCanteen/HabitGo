@@ -1,6 +1,6 @@
 import dogIcon from "@/assets/images/dogIconBold.png";
 import pigIcon from "@/assets/images/pigIconBold.png";
-import otherIcon from "@/assets/other.svg";
+import otherIcon from "@/assets/images/麦当劳.png";
 import "./SettingBoard.scss";
 import { useState, useEffect } from "react";
 import { clearAuth, getUserInfo } from "@/utils/tokenUtils";

@@ -75,10 +75,11 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
             style={{ margin: "16px 16px 0" }}
           >
             <button
-              className="text-2xl px-16 py-4 text-white border-4 rounded cursor-pointer hover:opacity-80 transition-opacity"
-              style={{ 
-                backgroundColor: "var(--color-button-primary)",
-                borderColor: "var(--color-button-primary)"
+              className="text-2xl px-16 py-4 text-white border-4 cursor-pointer hover:opacity-80 transition-opacity"
+              style={{
+                backgroundColor: "var(--color-tertiary-pink)",
+                borderColor: "var(--color-tertiary-pink)",
+                borderRadius: "12px",
               }}
               onClick={() => form.submit()}
             >
@@ -86,10 +87,11 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
             </button>
             {isEditMode && (
               <button
-                className="text-2xl px-16 py-4 text-white border-4 rounded cursor-pointer hover:opacity-80 transition-opacity"
-                style={{ 
+                className="text-2xl px-16 py-4 text-white border-4 cursor-pointer hover:opacity-80 transition-opacity"
+                style={{
                   backgroundColor: "var(--color-red)",
-                  borderColor: "var(--color-red)"
+                  borderColor: "var(--color-red)",
+                  borderRadius: "12px",
                 }}
                 onClick={deleteTodo}
               >
@@ -126,28 +128,10 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
           label="待办类型"
         >
           <Radio.Group defaultValue={1} direction="horizontal">
-            <Radio
-              name={1}
-              iconRender={({ checked }) => (
-                <i 
-                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
-                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
-                />
-              )}
-              checkedColor="var(--color-orange)"
-            >
+            <Radio name={1} checkedColor="var(--color-tertiary-pink)">
               紧急
             </Radio>
-            <Radio
-              name={2}
-              iconRender={({ checked }) => (
-                <i 
-                  className={`iconfont ${checked ? 'icon-x_xuanzhong' : 'icon-x_danxuan'}`}
-                  style={{ color: checked ? 'var(--color-button-primary)' : '' }} 
-                />
-              )}
-              checkedColor="var(--color-orange)"
-            >
+            <Radio name={2} checkedColor="var(--color-tertiary-pink)">
               常规
             </Radio>
           </Radio.Group>
