@@ -91,6 +91,24 @@ const TodoDetail = () => {
     }, 300);
   };
 
+  // 只关闭表单，不返回列表页（用于编辑完成后）
+  const onFormCloseOnly = () => {
+    setShowEditForm(false);
+    // 重新查询数据
+    if (id) {
+      const fetchTodoDetail = async () => {
+        const res = await sendRequest<ApiResponse<TodoDetailData>>({
+          url: `/todo/${id}`,
+          method: "GET",
+        });
+        if (res && res.code === "200" && res.data) {
+          setTodoDetail(res.data);
+        }
+      };
+      fetchTodoDetail();
+    }
+  };
+
   const toggleDescription = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
@@ -447,7 +465,8 @@ const TodoDetail = () => {
               createTime: todoDetail.createTime,
               updateTime: todoDetail.updateTime
             }} 
-            close={onFormClose} 
+            close={onFormCloseOnly}
+            onDelete={onFormClose}
           />
         )}
       </Popup>

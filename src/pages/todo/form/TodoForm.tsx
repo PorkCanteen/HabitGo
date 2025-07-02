@@ -2,6 +2,7 @@ import { Input, Form, DatetimePicker, Radio } from "react-vant";
 import { Todo } from "../components/TodoList";
 import { useHttp } from "@/hooks/useHttp";
 import dayjs from "dayjs";
+import { useState } from "react";
 import Notify from "@/pages/components/Notify";
 import { Dialog } from "@/pages/components/Dialog";
 import { ResponseData } from "@/utils/http";
@@ -13,57 +14,88 @@ const defaultTodo: Todo = {
   isFinished: 0,
 };
 
-const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
+const TodoForm = ({ 
+  todo = defaultTodo, 
+  close = () => {}, 
+  onDelete = () => {} 
+}) => {
   const isEditMode = !!todo.id;
   const [form] = Form.useForm();
   const { sendRequest } = useHttp();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onFinish = async (values: Todo) => {
+    if (isSubmitting) return; // 防止重复提交
+    
     const params = {
       ...values,
       finishDate: dayjs(values.finishDate).format("YYYY-MM-DD"),
     };
-    // 创建
-    if (!isEditMode) {
-      const res: ResponseData | null = await sendRequest({
-        url: "/todo",
-        method: "POST",
-        data: params,
-      });
+    
+    setIsSubmitting(true);
+    try {
+      // 创建
+      if (!isEditMode) {
+        const res: ResponseData | null = await sendRequest({
+          url: "/todo",
+          method: "POST",
+          data: params,
+        });
 
-      if (res && res.code === "200") {
-        Notify.show({ type: "success", message: "创建成功" });
-        close();
+        if (res && res.code === "200") {
+          Notify.show({ type: "success", message: "创建成功" });
+          close();
+        } else {
+          Notify.show({ type: "danger", message: res?.message || "系统错误" });
+        }
       } else {
-        Notify.show({ type: "danger", message: res?.message || "系统错误" });
+        // 编辑
+        const res: ResponseData | null = await sendRequest({
+          url: `/todo/${todo.id}`,
+          method: "PUT",
+          data: params,
+        });
+        if (res && res.code === "200") {
+          Notify.show({ type: "success", message: "修改成功" });
+          close(); // 编辑完成后调用close
+        } else {
+          Notify.show({ type: "danger", message: res?.message || "系统错误" });
+        }
       }
-    } else {
-      // 编辑
-      const res: ResponseData | null = await sendRequest({
-        url: `/todo/${todo.id}`,
-        method: "PUT",
-        data: params,
-      });
-      if (res && res.code === "200") {
-        Notify.show({ type: "success", message: "修改成功" });
-        close();
-      } else {
-        Notify.show({ type: "danger", message: res?.message || "系统错误" });
-      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   const deleteTodo = async () => {
-    await Dialog.confirm({
-      title: "确认删除",
-      message: "删除后无法恢复，是否继续？",
-    });
-    await sendRequest({
-      url: `/todo/${todo.id}`,
-      method: "DELETE",
-    });
-    Notify.show({ type: "success", message: "删除成功" });
-    close();
+    if (isSubmitting) return;
+    
+    try {
+      await Dialog.confirm({
+        title: "确认删除",
+        message: "删除后无法恢复，是否继续？",
+      });
+      
+      setIsSubmitting(true);
+      const res: ResponseData | null = await sendRequest({
+        url: `/todo/${todo.id}`,
+        method: "DELETE",
+      });
+      
+      if (res && res.code === "200") {
+        Notify.show({ type: "success", message: "删除成功" });
+        onDelete(); // 删除成功后调用onDelete回调
+      } else {
+        Notify.show({ type: "danger", message: res?.message || "删除失败" });
+      }
+    } catch {
+      // 用户取消删除 - 不调用任何回调，保持在当前页面
+      console.log("用户取消删除或删除失败");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
   return (
     <div className="px-6">
       <Form
@@ -75,19 +107,26 @@ const TodoForm = ({ todo = defaultTodo, close = () => {} }) => {
             style={{ margin: "16px 16px 0" }}
           >
             <button
-              className="text-2xl px-16 py-4 text-white border-4 cursor-pointer hover:opacity-80 transition-opacity"
+              type="submit"
+              disabled={isSubmitting}
+              className={`text-2xl px-16 py-4 text-white border-4 transition-opacity ${
+                isSubmitting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:opacity-80'
+              }`}
               style={{
                 backgroundColor: "var(--color-tertiary-pink)",
                 borderColor: "var(--color-tertiary-pink)",
                 borderRadius: "12px",
               }}
-              onClick={() => form.submit()}
             >
-              确定
+              {isSubmitting ? "提交中..." : "确定"}
             </button>
             {isEditMode && (
               <button
-                className="text-2xl px-16 py-4 text-white border-4 cursor-pointer hover:opacity-80 transition-opacity"
+                type="button"
+                disabled={isSubmitting}
+                className={`text-2xl px-16 py-4 text-white border-4 transition-opacity ${
+                  isSubmitting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:opacity-80'
+                }`}
                 style={{
                   backgroundColor: "var(--color-red)",
                   borderColor: "var(--color-red)",

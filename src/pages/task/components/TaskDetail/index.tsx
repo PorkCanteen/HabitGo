@@ -238,6 +238,24 @@ const TaskDetail = () => {
     }, 300);
   };
 
+  // 只关闭表单，不返回列表页（用于编辑完成后）
+  const onFormCloseOnly = () => {
+    setShowEditForm(false);
+    // 重新查询数据
+    if (id) {
+      const fetchTaskDetail = async () => {
+        const res = await sendRequest<ApiResponse<TaskDetailData>>({
+          url: `/task/${id}`,
+          method: "GET",
+        });
+        if (res && res.code === "200" && res.data) {
+          setTaskDetail(res.data);
+        }
+      };
+      fetchTaskDetail();
+    }
+  };
+
   // 获取处理后的数据
   const processedData = getProcessedData();
 
@@ -453,7 +471,7 @@ const TaskDetail = () => {
         position="right"
         onClose={() => setShowEditForm(false)}
       >
-        {taskDetail && <TaskForm task={taskDetail} close={onFormClose} />}
+        {taskDetail && <TaskForm task={taskDetail} close={onFormCloseOnly} onDelete={onFormClose} />}
       </Popup>
     </div>
   );

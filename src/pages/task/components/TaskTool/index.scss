@@ -1,4 +1,24 @@
+.task-tool-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999; /* 确保在最顶层 */
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+    opacity: 1 !important;
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
 .task-icon-color {
   color: var(--color-button-hard);
   opacity: 0.8;
+  display: block; /* 确保图标正确显示 */
+  line-height: 1; /* 防止字体影响布局 */
 }

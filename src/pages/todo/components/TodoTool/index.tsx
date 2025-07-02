@@ -28,7 +28,7 @@ const TodoTool = ({ updateList }: TodoToolParams) => {
   
   return (
     <div>
-      <div className="absolute bottom-5 left-5">
+      <div className="todo-tool-container">
         <i
           onClick={handleClick}
           className={`todo-icon-color text-7xl iconfont icon-jia ${

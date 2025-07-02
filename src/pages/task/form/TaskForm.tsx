@@ -14,10 +14,15 @@ const defaultTask: Task = {
   targetCount: 1,
 };
 
-const TaskForm = ({ task = defaultTask, close = () => {} }) => {
+const TaskForm = ({ 
+  task = defaultTask, 
+  close = () => {}, 
+  onDelete = () => {} 
+}) => {
   const isEditMode = !!task.id;
   const [form] = Form.useForm();
   const { sendRequest } = useHttp();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [targetType, setTargetType] = useState(task.targetType);
   const handleTargetTypeChange = (value: number) => {
@@ -25,45 +30,69 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
   };
 
   const onFinish = async (values: unknown) => {
-    // 创建
-    if (!isEditMode) {
-      const res: ResponseData | null = await sendRequest({
-        url: "/task",
-        method: "POST",
-        data: values,
-      });
-      if (res && res.code === "200") {
-        Notify.show({ type: "success", message: "创建成功" });
-        close();
+    if (isSubmitting) return; // 防止重复提交
+    
+    setIsSubmitting(true);
+    try {
+      // 创建
+      if (!isEditMode) {
+        const res: ResponseData | null = await sendRequest({
+          url: "/task",
+          method: "POST",
+          data: values,
+        });
+        if (res && res.code === "200") {
+          Notify.show({ type: "success", message: "创建成功" });
+          close();
+        } else {
+          Notify.show({ type: "danger", message: res?.message || "系统错误" });
+        }
       } else {
-        Notify.show({ type: "danger", message: res?.message || "系统错误" });
+        // 编辑
+        const res: ResponseData | null = await sendRequest({
+          url: `/task/${task.id}`,
+          method: "PUT",
+          data: values,
+        });
+        if (res && res.code === "200") {
+          Notify.show({ type: "success", message: "修改成功" });
+          close(); // 编辑完成后调用close
+        } else {
+          Notify.show({ type: "danger", message: res?.message || "系统错误" });
+        }
       }
-    } else {
-      // 编辑
-      const res: ResponseData | null = await sendRequest({
-        url: `/task/${task.id}`,
-        method: "PUT",
-        data: values,
-      });
-      if (res && res.code === "200") {
-        Notify.show({ type: "success", message: "修改成功" });
-        close();
-      } else {
-        Notify.show({ type: "danger", message: res?.message || "系统错误" });
-      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   const deleteTask = async () => {
-    await Dialog.confirm({
-      title: "确认删除",
-      message: "删除后无法恢复，是否继续？",
-    });
-    await sendRequest({
-      url: `/task/${task.id}`,
-      method: "DELETE",
-    });
-    Notify.show({ type: "success", message: "删除成功" });
-    close();
+    if (isSubmitting) return;
+    
+    try {
+      await Dialog.confirm({
+        title: "确认删除",
+        message: "删除后无法恢复，是否继续？",
+      });
+      
+      setIsSubmitting(true);
+      const res: ResponseData | null = await sendRequest({
+        url: `/task/${task.id}`,
+        method: "DELETE",
+      });
+      
+      if (res && res.code === "200") {
+        Notify.show({ type: "success", message: "删除成功" });
+        onDelete(); // 删除成功后调用onDelete回调
+      } else {
+        Notify.show({ type: "danger", message: res?.message || "删除失败" });
+      }
+    } catch {
+      // 用户取消删除 - 不调用任何回调，保持在当前页面
+      console.log("用户取消删除或删除失败");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <div className="px-6">
@@ -76,19 +105,26 @@ const TaskForm = ({ task = defaultTask, close = () => {} }) => {
             style={{ margin: "16px 16px 0" }}
           >
             <button
-              className="text-2xl px-16 py-4 text-white border-4 cursor-pointer hover:opacity-80 transition-opacity"
+              type="submit"
+              disabled={isSubmitting}
+              className={`text-2xl px-16 py-4 text-white border-4 transition-opacity ${
+                isSubmitting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:opacity-80'
+              }`}
               style={{
                 backgroundColor: "#f19c34",
                 borderColor: "#f19c34",
                 borderRadius: "12px",
               }}
-              onClick={() => form.submit()}
             >
-              确定
+              {isSubmitting ? "提交中..." : "确定"}
             </button>
             {isEditMode && (
               <button
-                className="text-2xl px-16 py-4 text-white border-4 cursor-pointer hover:opacity-80 transition-opacity"
+                type="button"
+                disabled={isSubmitting}
+                className={`text-2xl px-16 py-4 text-white border-4 transition-opacity ${
+                  isSubmitting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:opacity-80'
+                }`}
                 style={{
                   backgroundColor: "#d4543c",
                   borderColor: "#d4543c",

@@ -1,3 +1,21 @@
+.todo-tool-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+    opacity: 1 !important;
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
 @keyframes scaleAnimation {
   0% {
     transform: scale(1);
@@ -18,4 +36,6 @@
 .todo-icon-color {
   color: var(--color-tertiary-pink);
   opacity: 0.9;
+  display: block;
+  line-height: 1;
 }
