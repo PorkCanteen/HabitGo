@@ -8,6 +8,7 @@ import TaskForm from "../../form/TaskForm";
 import { chatWithDeepSeek } from "@/utils/deepseekApi";
 import ReactMarkdown from "react-markdown";
 import { MARKDOWN_COMPONENTS } from "@/config/markdownConfig";
+import dog1 from "@/assets/images/dog1.png";
 
 // 定义任务详情数据类型
 interface TaskDetailData {
@@ -40,6 +41,7 @@ const TaskDetail = () => {
   const [taskDetail, setTaskDetail] = useState<TaskDetailData | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState<string>("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const navigate = useNavigate();
@@ -210,6 +212,10 @@ const TaskDetail = () => {
     setShowEditForm(true);
   };
 
+  const toggleDescription = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
+
   const onFormClose = () => {
     setShowEditForm(false);
     // 重新查询数据
@@ -289,24 +295,23 @@ const TaskDetail = () => {
       {/* 标题 */}
       <div className="header-container">
         <div className="back-btn" onClick={goBack}>
-          <i className="iconfont icon-arrow-pixel-copy"></i>
+          <i className="iconfont icon-xiangzuo"></i>
         </div>
         <div className="title">{taskDetail?.name || "加载中..."}</div>
-        <div
-          className="description"
-          style={{
-            backgroundColor: "var(--color-primary)",
-            padding: "8px 12px",
-            borderRadius: "8px",
-            wordWrap: "break-word",
-            overflowWrap: "break-word",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {taskDetail?.description || ""}
-        </div>
+        {taskDetail?.description && (
+          <div className="description-wrapper">
+            {isDescriptionExpanded && (
+              <div className="description">
+                {taskDetail.description}
+              </div>
+            )}
+            <div className="expand-btn" onClick={toggleDescription}>
+              <i className={`iconfont ${isDescriptionExpanded ? 'icon-xiangshang' : 'icon-xiangxia'}`}></i>
+            </div>
+          </div>
+        )}
         <div className="edit-btn" onClick={handleEdit}>
-          <i className="iconfont icon-x_peizhi"></i>
+          <i className="iconfont icon-shezhi01"></i>
         </div>
       </div>
 
@@ -315,7 +320,7 @@ const TaskDetail = () => {
         {/* 日历 */}
         <div className="calendar-container">
           <div
-            className="w-full border-4 rounded"
+            className="w-full border-4"
             style={{
               borderColor: "var(--color-background-primary)",
               backgroundColor: "var(--color-primary)",
@@ -329,7 +334,7 @@ const TaskDetail = () => {
         {/* 目标 */}
         <div className="target-container">
           <div
-            className="w-full border-4 rounded"
+            className="w-full border-4"
             style={{
               borderColor: "var(--color-background-primary)",
               backgroundColor: "var(--color-primary)",
@@ -348,9 +353,7 @@ const TaskDetail = () => {
                 {isTargetCompleted ? (
                   <>
                     已完成!
-                    <svg aria-hidden="true" width={24} height={24}>
-                      <use xlinkHref="#icon--trophy"></use>
-                    </svg>
+                    <img className="ml-5" src={dog1} alt="完成" width={70} height={70} />
                   </>
                 ) : (
                   <span className="uncompleted">未完成</span>
@@ -363,7 +366,7 @@ const TaskDetail = () => {
         {/* 统计 */}
         <div className="statics-container">
           <div
-            className="w-full border-4 rounded"
+            className="w-full border-4"
             style={{
               borderColor: "var(--color-background-primary)",
               backgroundColor: "var(--color-primary)",
@@ -417,7 +420,7 @@ const TaskDetail = () => {
           </div>
           {aiAnalysis && (
             <>
-              <div className="ai-analysis-content  bg-white rounded-lg border-l-4 border-blue-500">
+              <div className="ai-analysis-content  bg-white border-l-4 border-blue-500">
                 <div className="markdown-content text-xl text-gray-700 leading-9">
                   <ReactMarkdown components={MARKDOWN_COMPONENTS}>
                     {aiAnalysis}
@@ -428,7 +431,7 @@ const TaskDetail = () => {
                 <button
                   onClick={handleAIAnalysis}
                   disabled={isAnalyzing || !taskDetail}
-                  className="px-8 py-4 bg-blue-500 text-white text-xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="px-8 py-4 bg-blue-500 text-white text-2xl font-medium hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   {isAnalyzing ? "分析中..." : "重新获取分析"}
                 </button>

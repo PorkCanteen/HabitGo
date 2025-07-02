@@ -15,7 +15,7 @@
   }
   .header-container {
     position: relative;
-    height: 70px;
+    min-height: 70px;
     color: var(--color-background-primary);
     display: flex;
     line-height: 40px;
@@ -23,28 +23,77 @@
     align-items: center;
     flex-shrink: 0;
     background: transparent !important; /* 覆盖全局header-container样式 */
-    padding: 0 16px;
+    padding: 0 48px 12px 48px; /* 增加左右padding避免与按钮重叠，增加底部padding */
     z-index: 10;
+    
     .title {
       font-size: 18px;
       font-weight: 600;
+      text-align: center;
+      margin-bottom: 4px;
     }
-    .description {
-      line-height: 20px;
-      font-size: 12px;
+    
+    .description-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      
+      .description {
+        line-height: 1.4;
+        font-size: 12px;
+        text-align: center;
+        max-width: 100%;
+        word-wrap: break-word;
+        white-space: pre-wrap; /* 保持换行符 */
+        opacity: 0.8;
+        margin-bottom: 4px;
+        animation: descriptionFadeIn 0.3s ease;
+      }
+      
+      .expand-btn {
+        height: 20px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          opacity: 1;
+        }
+        
+        i {
+          font-size: 14px;
+        }
+      }
     }
+
+    // 淡入动画
+    @keyframes descriptionFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 0.8;
+        transform: translateY(0);
+      }
+    }
+    
     .back-btn {
       position: absolute;
       left: 10px;
       top: 12px;
+      
       i {
         font-size: 18px;
       }
     }
+    
     .edit-btn {
       position: absolute;
       right: 10px;
       top: 12px;
+      
       i {
         font-size: 20px;
       }
@@ -97,12 +146,22 @@ body {
   flex-shrink: 0;
   min-height: 300px; /* 确保日历有足够的最小高度 */
   margin-bottom: 24px;
+  overflow: hidden;
+  border-radius: 12px;
+  
+  .w-full.border-4 {
+    border-radius: 12px;
+  }
 }
 
 .target-container,
 .statics-container {
   flex-shrink: 0;
   margin-bottom: 24px;
+  
+  .w-full.border-4 {
+    border-radius: 12px;
+  }
 }
 .section-container {
   font-size: 16px;
@@ -156,4 +215,15 @@ body {
 }
 .ai-analysis-content {
   padding: 0 20px 20px;
+}
+
+// AI分析区域
+.ai-analysis-container {
+  margin-bottom: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  
+  button {
+    border-radius: 12px;
+  }
 }
