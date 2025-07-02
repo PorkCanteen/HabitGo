@@ -4,14 +4,14 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  animation: slideInFromRight 0.3s ease-out;
+  animation: todoSlideInFromRight 0.3s ease-out;
   position: fixed;
   top: 0;
   left: 0;
   overflow: hidden;
   
   &.exiting {
-    animation: slideOutToRight 0.3s ease-in forwards;
+    animation: todoSlideOutToRight 0.3s ease-in forwards;
   }
   
   .header-container {
@@ -49,7 +49,7 @@
         white-space: pre-wrap; /* 保持换行符 */
         opacity: 0.8;
         margin-bottom: 4px;
-        animation: descriptionFadeIn 0.3s ease;
+        animation: todoDescriptionFadeIn 0.3s ease;
       }
       
       .expand-btn {
@@ -68,8 +68,8 @@
       }
     }
 
-    // 淡入动画
-    @keyframes descriptionFadeIn {
+    // 淡入动画 - 添加todo前缀避免冲突
+    @keyframes todoDescriptionFadeIn {
       0% {
         opacity: 0;
         transform: translateY(-10px);
@@ -100,321 +100,321 @@
       }
     }
   }
-}
 
-// 从右到左滑动进入动画
-@keyframes slideInFromRight {
-  0% {
-    transform: translateX(100%);
-    opacity: 0;
+  // 可滚动的内容区域
+  .content-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 16px 20px;
+    -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
+    background-color: var(--color-primary-pink); /* 确保背景色一致 */
   }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
+
+  // 内容区域样式
+  .progress-container,
+  .subtodos-container {
+    flex-shrink: 0;
+    margin-bottom: 24px;
+    
+    .w-full.border-4 {
+      border-radius: 12px;
+    }
   }
-}
 
-// 从左到右滑动退出动画
-@keyframes slideOutToRight {
-  0% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
-// 确保动画期间不会有横向滚动条
-body {
-  overflow-x: hidden;
-}
-
-// 可滚动的内容区域
-.content-scroll-area {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0 16px 20px;
-  -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
-  background-color: var(--color-primary-pink); /* 确保背景色一致 */
-}
-
-// 内容区域样式
-.progress-container,
-.subtodos-container {
-  flex-shrink: 0;
-  margin-bottom: 24px;
-  
-  .w-full.border-4 {
-    border-radius: 12px;
-  }
-}
-
-.section-container {
-  font-size: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-  color: var(--color-tertiary-pink);
-  background-color: var(--color-background-primary);
-  position: relative;
-  
-  .edit-subtodos-btn {
-    position: absolute;
-    right: 16px;
-    background: none;
-    border: none;
+  .section-container {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
     color: var(--color-tertiary-pink);
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 12px;
-    transition: background-color 0.2s;
+    background-color: var(--color-background-primary);
+    position: relative;
     
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-    
-    i {
-      margin-right: 4px;
+    .edit-subtodos-btn {
+      position: absolute;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--color-tertiary-pink);
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 12px;
+      transition: background-color 0.2s;
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      
+      i {
+        margin-right: 4px;
+        font-size: 14px;
+      }
     }
   }
-}
 
-// 进度条样式
-.progress-content {
-  background-color: var(--color-background-primary);
-  padding: 16px 20px 16px; /* 减少上下padding */
-  
-  .progress-text {
-    font-size: 14px; /* 稍微减小字体 */
-    color: var(--color-text-secondary);
-    text-align: center;
-    margin-bottom: 12px; /* 减少底部间距 */
-  }
-  
-  .progress-bar {
-    width: 100%;
-    height: 6px; /* 稍微减小高度 */
-    background-color: #e0e0e0;
-    border-radius: 3px;
-    overflow: hidden;
+  // 进度条样式
+  .progress-content {
+    background-color: var(--color-background-primary);
+    padding: 16px 20px 16px; /* 减少上下padding */
     
-    .progress-fill {
-      height: 100%;
-      background-color: var(--color-tertiary-pink);
+    .progress-text {
+      font-size: 14px; /* 稍微减小字体 */
+      color: var(--color-text-secondary);
+      text-align: center;
+      margin-bottom: 12px; /* 减少底部间距 */
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 6px; /* 稍微减小高度 */
+      background-color: #e0e0e0;
       border-radius: 3px;
-      transition: width 0.3s ease;
+      overflow: hidden;
+      
+      .progress-fill {
+        height: 100%;
+        background-color: var(--color-tertiary-pink);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+      }
     }
   }
-}
 
-// 子待办列表样式
-.subtodos-list {
-  background-color: var(--color-background-primary);
-  padding: 0 16px 20px; // 在移动端减少左右padding，给删除按钮更多空间
-  
-  .subtodo-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #f0f0f0;
+  // 子待办列表样式
+  .subtodos-list {
+    background-color: var(--color-background-primary);
+    padding: 0 16px 20px; // 在移动端减少左右padding，给删除按钮更多空间
     
-    &:last-child {
-      border-bottom: none;
-    }
-    
-    &.editing {
-      .drag-handle {
-        flex-shrink: 0;
+    .subtodo-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &.editing {
+        .drag-handle {
+          flex-shrink: 0;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 8px;
+          color: #999;
+          cursor: grab;
+          transition: color 0.2s;
+          
+          &:active {
+            cursor: grabbing;
+          }
+          
+          &:hover {
+            color: var(--color-button-primary);
+          }
+          
+          i {
+            font-size: 14px;
+          }
+        }
+        
+        &.dragging {
+          opacity: 0.6;
+          transform: scale(0.98);
+          transition: all 0.2s ease;
+          background-color: rgba(0, 0, 0, 0.05);
+          border-radius: 12px;
+        }
+        
+        &.drag-over {
+          background-color: rgba(59, 130, 246, 0.1);
+          border: 2px dashed var(--color-button-primary);
+          border-radius: 12px;
+          transition: all 0.2s ease;
+        }
+        
+        .subtodo-input {
+          flex: 1;
+          border: 1px solid #ddd;
+          border-radius: 12px;
+          padding: 8px 12px;
+          font-size: 14px;
+          outline: none;
+          transition: border-color 0.2s;
+          margin-right: 8px; // 确保与删除按钮有间距
+          min-width: 0; // 允许收缩，防止挤压删除按钮
+          
+          &:focus {
+            border-color: var(--color-tertiary-pink);
+          }
+          
+          &::placeholder {
+            color: #999;
+          }
+        }
+        
+        .delete-btn {
+          flex-shrink: 0; // 防止被压缩
+          width: 20px; // 固定宽度
+          height: 20px; // 固定高度
+          background: none;
+          border: none;
+          color: #999;
+          cursor: pointer;
+          border-radius: 12px;
+          transition: all 0.2s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #666;
+          }
+          
+          i {
+            font-size: 16px; // 稍微减小图标以确保在按钮内显示完整
+          }
+        }
+      }
+      
+      .checkbox {
         width: 20px;
         height: 20px;
+        border: 2px solid #ddd;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 8px;
-        color: #999;
-        cursor: grab;
-        transition: color 0.2s;
-        
-        &:active {
-          cursor: grabbing;
-        }
+        margin-right: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
         
         &:hover {
-          color: var(--color-button-primary);
-        }
-        
-        i {
-          font-size: 14px;
-        }
-      }
-      
-      &.dragging {
-        opacity: 0.6;
-        transform: scale(0.98);
-        transition: all 0.2s ease;
-        background-color: rgba(0, 0, 0, 0.05);
-        border-radius: 12px;
-      }
-      
-      &.drag-over {
-        background-color: rgba(59, 130, 246, 0.1);
-        border: 2px dashed var(--color-button-primary);
-        border-radius: 12px;
-        transition: all 0.2s ease;
-      }
-      
-      .subtodo-input {
-        flex: 1;
-        border: 1px solid #ddd;
-        border-radius: 12px;
-        padding: 8px 12px;
-        font-size: 14px;
-        outline: none;
-        transition: border-color 0.2s;
-        margin-right: 8px; // 确保与删除按钮有间距
-        min-width: 0; // 允许收缩，防止挤压删除按钮
-        
-        &:focus {
           border-color: var(--color-tertiary-pink);
         }
         
-        &::placeholder {
-          color: #999;
+        &.checked {
+          background-color: var(--color-tertiary-pink);
+          border-color: var(--color-tertiary-pink);
+          
+          i {
+            color: white;
+            font-size: 12px;
+          }
         }
       }
       
-      .delete-btn {
-        flex-shrink: 0; // 防止被压缩
-        width: 20px; // 固定宽度
-        height: 20px; // 固定高度
-        background: none;
-        border: none;
-        color: #999;
-        cursor: pointer;
-        border-radius: 12px;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .subtodo-content {
+        flex: 1;
+        font-size: 14px;
+        color: var(--color-text-primary);
+        line-height: 1.4;
+        transition: all 0.2s ease;
         
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.1);
-          color: #666;
-        }
-        
-        i {
-          font-size: 16px; // 稍微减小图标以确保在按钮内显示完整
+        &.completed {
+          color: #999;
+          text-decoration: line-through;
         }
       }
     }
     
-    .checkbox {
-      width: 20px;
-      height: 20px;
-      border: 2px solid #ddd;
-      border-radius: 12px;
+    .add-subtodo-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 12px;
+      padding: 16px;
+      margin-top: 8px;
+      border: 2px dashed #ddd;
+      border-radius: 12px;
       cursor: pointer;
       transition: all 0.2s ease;
+      color: #666;
       
       &:hover {
         border-color: var(--color-tertiary-pink);
+        color: var(--color-tertiary-pink);
+        background-color: rgba(0, 0, 0, 0.02);
       }
       
-      &.checked {
-        background-color: var(--color-tertiary-pink);
-        border-color: var(--color-tertiary-pink);
-        
-        i {
-          color: white;
-          font-size: 12px;
-        }
+      i {
+        margin-right: 8px;
+        font-size: 16px;
       }
-    }
-    
-    .subtodo-content {
-      flex: 1;
-      font-size: 14px;
-      color: var(--color-text-primary);
-      line-height: 1.4;
-      transition: all 0.2s ease;
       
-      &.completed {
-        color: #999;
-        text-decoration: line-through;
+      span {
+        font-size: 14px;
       }
     }
-  }
-  
-  .add-subtodo-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    margin-top: 8px;
-    border: 2px dashed #ddd;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #666;
     
-    &:hover {
-      border-color: var(--color-tertiary-pink);
-      color: var(--color-tertiary-pink);
-      background-color: rgba(0, 0, 0, 0.02);
-    }
-    
-    i {
-      margin-right: 8px;
-      font-size: 16px;
-    }
-    
-    span {
-      font-size: 14px;
-    }
-  }
-  
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: #999;
-    
-    .empty-text {
-      font-size: 16px;
-      margin-bottom: 8px;
-    }
-    
-    .empty-tip {
-      font-size: 12px;
-    }
-  }
-  
-  .empty-edit-state {
-    text-align: center;
-    padding: 30px 20px;
-    color: #999;
-    background-color: var(--color-background-primary);
-    
-    .empty-edit-text {
-      font-size: 16px;
-      margin-bottom: 8px;
-      color: #666;
-    }
-    
-    .empty-edit-tip {
-      font-size: 12px;
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
       color: #999;
+      
+      .empty-text {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+      
+      .empty-tip {
+        font-size: 12px;
+      }
+    }
+    
+    .empty-edit-state {
+      text-align: center;
+      padding: 30px 20px;
+      color: #999;
+      background-color: var(--color-background-primary);
+      
+      .empty-edit-text {
+        font-size: 16px;
+        margin-bottom: 8px;
+        color: #666;
+      }
+      
+      .empty-edit-tip {
+        font-size: 12px;
+        color: #999;
+      }
     }
   }
 }
+
+// 从右到左滑动进入动画 - 添加todo前缀避免冲突
+@keyframes todoSlideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// 从左到右滑动退出动画 - 添加todo前缀避免冲突
+@keyframes todoSlideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+// 确保动画期间不会有横向滚动条 - 移除全局body样式避免冲突
+// body {
+//   overflow-x: hidden;
+// }
