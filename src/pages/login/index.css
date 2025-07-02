@@ -28,3 +28,9 @@
 .login-body {
   background-color: var(--color-tertiary);
 }
+
+.login-form {
+  .rv-cell {
+    border-radius: 12px !important;
+  }
+}

@@ -61,10 +61,10 @@ const Login = () => {
           </div>
         </div>
         <h1 className="text-7xl font-bold mb-15">
-            <span style={{ color: "var(--color-button-primary)" }}>GoGo</span>
-            Habit
-          </h1>
-        <Form form={form} onFinish={handleLogin} className="w-full">
+          <span style={{ color: "var(--color-button-primary)" }}>GoGo</span>
+          Habit
+        </h1>
+        <Form form={form} onFinish={handleLogin} className="login-form w-full">
           <Form.Item
             name="username"
             label={<span>账号</span>}
@@ -83,10 +83,11 @@ const Login = () => {
           </Form.Item>
           <div className="flex justify-center">
             <button
-              className="text-2xl px-28 py-4 text-white border-4 rounded cursor-pointer hover:opacity-80 transition-opacity"
-              style={{ 
+              className="text-2xl px-28 py-4 text-white border-4 cursor-pointer hover:opacity-80 transition-opacity"
+              style={{
                 backgroundColor: "var(--color-button-primary)",
-                borderColor: "var(--color-button-primary)"
+                borderColor: "var(--color-button-primary)",
+                borderRadius: "12px",
               }}
               onClick={() => form.submit()}
             >
