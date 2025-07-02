@@ -289,7 +289,7 @@ const TodoDetail = () => {
       {/* 标题 */}
       <div className="header-container">
         <div className="back-btn" onClick={goBack}>
-          <i className="iconfont icon-arrow-pixel-copy"></i>
+          <i className="iconfont icon-xiangzuo"></i>
         </div>
         <div className="title">{todoDetail?.name || "加载中..."}</div>
         {todoDetail?.description && (
@@ -300,12 +300,12 @@ const TodoDetail = () => {
               </div>
             )}
             <div className="expand-btn" onClick={toggleDescription}>
-              <i className={`iconfont ${isDescriptionExpanded ? 'icon-top' : 'icon-bottom'}`}></i>
+              <i className={`iconfont ${isDescriptionExpanded ? 'icon-xiangshang' : 'icon-xiangxia'}`}></i>
             </div>
           </div>
         )}
         <div className="edit-btn" onClick={handleEdit}>
-          <i className="iconfont icon-x_peizhi"></i>
+          <i className="iconfont icon-shezhi01"></i>
         </div>
       </div>
       
@@ -313,9 +313,9 @@ const TodoDetail = () => {
       <div className="content-scroll-area">
         {/* 完成进度 */}
         <div className="progress-container">
-          <div className="w-full border-4 rounded" style={{ 
+          <div className="w-full border-4" style={{ 
             borderColor: "var(--color-background-primary)", 
-            backgroundColor: "var(--color-primary)" 
+            backgroundColor: "var(--color-primary-pink)" 
           }}>
             <div className="section-container">完成进度</div>
             <div className="progress-content">
@@ -334,14 +334,14 @@ const TodoDetail = () => {
 
         {/* 待办项列表 */}
         <div className="subtodos-container">
-          <div className="w-full border-4 rounded" style={{ 
+          <div className="w-full border-4" style={{ 
             borderColor: "var(--color-background-primary)", 
-            backgroundColor: "var(--color-primary)" 
+            backgroundColor: "var(--color-primary-pink)" 
           }}>
             <div className="section-container">
               待办项
               <button className="edit-subtodos-btn" onClick={handleEditSubTodos}>
-                <i className={`iconfont ${isEditingSubTodos ? 'icon-check' : 'icon-x_peizhi'}`}></i>
+                <i className={`iconfont ${isEditingSubTodos ? 'icon-gouxuan' : 'icon-shezhi01'}`}></i>
                 {isEditingSubTodos ? '完成' : '管理'}
               </button>
             </div>
@@ -362,7 +362,7 @@ const TodoDetail = () => {
                         onDrop={(e) => handleDrop(e, index)}
                       >
                         <div className="drag-handle">
-                          <i className="iconfont icon-x_paixu" style={{cursor: 'grab'}}></i>
+                          <i className="iconfont icon-paixu" style={{cursor: 'grab'}}></i>
                         </div>
                         <input
                           type="text"
@@ -375,7 +375,7 @@ const TodoDetail = () => {
                           className="delete-btn"
                           onClick={() => handleDeleteSubTodo(index)}
                         >
-                          <i className="iconfont icon-x_lajitong"></i>
+                          <i className="iconfont icon-shanchu"></i>
                         </button>
                       </div>
                     ))
@@ -387,7 +387,7 @@ const TodoDetail = () => {
                   )}
                   
                   <div className="add-subtodo-btn" onClick={handleAddSubTodo}>
-                    <i className="iconfont icon-x_jiaru"></i>
+                    <i className="iconfont icon-jia"></i>
                     <span>添加待办项</span>
                   </div>
                 </>
@@ -401,7 +401,7 @@ const TodoDetail = () => {
                         onClick={() => handleSubTodoToggle(subTodo.id)}
                       >
                         {subTodo.isCompleted === 1 && (
-                          <i className="iconfont icon-duihao-copy"></i>
+                          <i className="iconfont icon-gouxuan"></i>
                         )}
                       </div>
                       <div className={`subtodo-content ${subTodo.isCompleted === 1 ? 'completed' : ''}`}>
